@@ -1,0 +1,36 @@
+2024-04-18 10:41:25.189 [restartedMain]  INFO com.eco.todo.TodoApplication - Starting TodoApplication using Java 21.0.2 with PID 19692 (C:\Dev\Eclipse\Todo\bin\main started by lenovo in C:\Dev\Eclipse\Todo)
+2024-04-18 10:41:25.190 [restartedMain] DEBUG com.eco.todo.TodoApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2024-04-18 10:41:25.190 [restartedMain]  INFO com.eco.todo.TodoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-18 10:41:25.496 [restartedMain]  WARN org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.eco.todo]' package. Please check your configuration.
+2024-04-18 10:41:25.576 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-18 10:41:25.580 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-18 10:41:25.581 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-18 10:41:25.581 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-18 10:41:25.611 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-18 10:41:25.611 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 417 ms
+2024-04-18 10:41:25.654 [restartedMain]  INFO org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-04-18 10:41:25.727 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-18 10:41:25.731 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-18 10:41:25.733 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-04-18 10:41:25.735 [restartedMain]  INFO com.eco.todo.TodoApplication - Started TodoApplication in 0.614 seconds (process running for 664.188)
+2024-04-18 10:41:25.736 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2024-04-18 10:41:28.183 [File Watcher]  INFO org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-04-18 10:41:28.186 [Thread-59]  INFO org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2024-04-18 10:41:28.293 [restartedMain]  INFO com.eco.todo.TodoApplication - Starting TodoApplication using Java 21.0.2 with PID 19692 (C:\Dev\Eclipse\Todo\bin\main started by lenovo in C:\Dev\Eclipse\Todo)
+2024-04-18 10:41:28.293 [restartedMain] DEBUG com.eco.todo.TodoApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2024-04-18 10:41:28.293 [restartedMain]  INFO com.eco.todo.TodoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-18 10:41:28.405 [restartedMain]  WARN org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.eco.todo]' package. Please check your configuration.
+2024-04-18 10:41:28.431 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-18 10:41:28.432 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-18 10:41:28.432 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-18 10:41:28.432 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-18 10:41:28.442 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-18 10:41:28.442 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 147 ms
+2024-04-18 10:41:28.456 [restartedMain]  INFO org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-04-18 10:41:28.523 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-18 10:41:28.528 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-18 10:41:28.530 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-04-18 10:41:28.533 [restartedMain]  INFO com.eco.todo.TodoApplication - Started TodoApplication in 0.269 seconds (process running for 666.987)
+2024-04-18 10:41:28.535 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2024-04-18 10:41:48.350 [File Watcher]  INFO org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-04-18 10:41:48.352 [Thread-63]  INFO org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]

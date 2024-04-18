@@ -1,0 +1,25 @@
+-- USERS
+
+-- 회원 추가/생성
+INSERT INTO USERS
+			( USER_ID
+			, USER_PW
+			, USER_NM
+			)
+	 VALUES ( 'test'
+	 		, '1234'
+	 		, '테스터'
+	   		);
+	   	
+INSERT INTO USERS
+			( USER_ID
+			, USER_PW
+			, USER_NM
+			)
+	 VALUES ( 'test2'
+	 		, '1234'
+	 		, '이클립스'
+	   		);
+
+-- 회원 조회
+SELECT * FROM USERS;

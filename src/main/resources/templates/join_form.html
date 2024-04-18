@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입</title>
+
+<link rel="stylesheet" type="text/css" href="/css/join.css"/>
+
+</head>
+<body>
+	<div class="main_container">
+
+		<div class="container">
+			<h1>회원가입</h1>
+
+			<form action="/api/user/join" method="post">
+				<div>
+					<label for="user_id">사용자ID</label> <input type="text"
+						name="user_id" />
+					<button>아이디 중복 확인하기</button>
+				</div>
+
+				<div>
+					<label for="user_pw">비밀번호</label> <input type="password"
+						name="user_pw" />
+				</div>
+
+				<div>
+					<label for="user_pw2">비밀번호 확인</label> <input type="password"
+						name="user_pw2" />
+				</div>
+
+				<div>
+					<label for="user_nm">이름</label> <input type="text" name="user_nm" />
+				</div>
+
+				<button type="submit" class="btn btn-primary">회원가입</button>
+				<button type="reset">새로 작성</button>
+
+			</form>
+
+		</div>
+
+	</div>
+
+</body>
+</html>
