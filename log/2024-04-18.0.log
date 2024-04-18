@@ -21818,3 +21818,85 @@ This generated password is for development use only. Your security configuration
 2024-04-18 17:07:32.013 [http-nio-8080-exec-1]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2024-04-18 17:07:32.013 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2024-04-18 17:07:32.016 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2024-04-18 23:33:01.778 [background-preinit]  INFO org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-18 23:33:01.803 [restartedMain]  INFO com.eco.todo.TodoApplication - Starting TodoApplication using Java 17.0.9 with PID 62487 (/Users/jeongjayun/git/Todo/bin/main started by jeongjayun in /Users/jeongjayun/git/Todo)
+2024-04-18 23:33:01.803 [restartedMain] DEBUG com.eco.todo.TodoApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2024-04-18 23:33:01.803 [restartedMain]  INFO com.eco.todo.TodoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-18 23:33:01.905 [restartedMain]  INFO org.springframework.boot.devtools.restart.ChangeableUrls - The Class-Path manifest attribute in /Users/jeongjayun/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/21.9.0.0/1aad2e20684ee075bb9ebdca2d83f028e4fd35fa/ojdbc11-21.9.0.0.jar referenced one or more files that do not exist: file:/Users/jeongjayun/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/21.9.0.0/1aad2e20684ee075bb9ebdca2d83f028e4fd35fa/oraclepki.jar
+2024-04-18 23:33:01.905 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-18 23:33:01.905 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-18 23:33:02.315 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-18 23:33:02.320 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:33:02.321 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-18 23:33:02.321 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-18 23:33:02.340 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-18 23:33:02.340 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 434 ms
+2024-04-18 23:33:02.483 [restartedMain]  WARN org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 9bef5b2b-1235-4315-9bc5-58ef3e79f485
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-04-18 23:33:02.515 [restartedMain]  INFO org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-04-18 23:33:02.575 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6d777f2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a5bad71, org.springframework.security.web.context.SecurityContextHolderFilter@42679be4, org.springframework.security.web.header.HeaderWriterFilter@2202dd8a, org.springframework.web.filter.CorsFilter@2de8461b, org.springframework.security.web.csrf.CsrfFilter@22d54539, org.springframework.security.web.authentication.logout.LogoutFilter@50dff29f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2dd0fcfb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2444e4d0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4dd23a2a, org.springframework.security.web.access.ExceptionTranslationFilter@710ee04c, org.springframework.security.web.access.intercept.AuthorizationFilter@45e732f3]
+2024-04-18 23:33:02.672 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-18 23:33:02.681 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:33:02.688 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-04-18 23:33:02.693 [restartedMain]  INFO com.eco.todo.TodoApplication - Started TodoApplication in 1.105 seconds (process running for 1.438)
+2024-04-18 23:33:26.967 [http-nio-8080-exec-1]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-18 23:33:26.968 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-04-18 23:33:26.973 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2024-04-18 23:36:08.928 [File Watcher]  INFO org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 13 class path changes (0 additions, 0 deletions, 13 modifications)
+2024-04-18 23:36:08.956 [Thread-5]  INFO org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:36:09.028 [restartedMain]  INFO com.eco.todo.TodoApplication - Starting TodoApplication using Java 17.0.9 with PID 62487 (/Users/jeongjayun/git/Todo/bin/main started by jeongjayun in /Users/jeongjayun/git/Todo)
+2024-04-18 23:36:09.029 [restartedMain] DEBUG com.eco.todo.TodoApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2024-04-18 23:36:09.029 [restartedMain]  INFO com.eco.todo.TodoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-18 23:36:09.143 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-18 23:36:09.144 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:36:09.144 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-18 23:36:09.144 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-18 23:36:09.149 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-18 23:36:09.149 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 119 ms
+2024-04-18 23:36:09.184 [restartedMain]  WARN org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: a1151272-0924-4090-afe0-3354674b437f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-04-18 23:36:09.188 [restartedMain]  INFO org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-04-18 23:36:09.216 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@53b055ed, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3cf53275, org.springframework.security.web.context.SecurityContextHolderFilter@4716c9dd, org.springframework.security.web.header.HeaderWriterFilter@692740fb, org.springframework.web.filter.CorsFilter@5ca1d84d, org.springframework.security.web.csrf.CsrfFilter@2e770881, org.springframework.security.web.authentication.logout.LogoutFilter@53d79fb9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5133e2be, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@710d4458, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2bc29f4, org.springframework.security.web.access.ExceptionTranslationFilter@690932e2, org.springframework.security.web.access.intercept.AuthorizationFilter@68b0904]
+2024-04-18 23:36:09.245 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-18 23:36:09.251 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:36:09.252 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-04-18 23:36:09.255 [restartedMain]  INFO com.eco.todo.TodoApplication - Started TodoApplication in 0.239 seconds (process running for 188.002)
+2024-04-18 23:36:09.256 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2024-04-18 23:37:04.596 [File Watcher]  INFO org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 24 class path changes (0 additions, 0 deletions, 24 modifications)
+2024-04-18 23:37:04.610 [Thread-7]  INFO org.apache.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:38:52.324 [background-preinit]  INFO org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-18 23:38:52.341 [restartedMain]  INFO com.eco.todo.TodoApplication - Starting TodoApplication using Java 17.0.9 with PID 63781 (/Users/jeongjayun/git/Todo/bin/main started by jeongjayun in /Users/jeongjayun/git/Todo)
+2024-04-18 23:38:52.341 [restartedMain] DEBUG com.eco.todo.TodoApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2024-04-18 23:38:52.341 [restartedMain]  INFO com.eco.todo.TodoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-18 23:38:52.447 [restartedMain]  INFO org.springframework.boot.devtools.restart.ChangeableUrls - The Class-Path manifest attribute in /Users/jeongjayun/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/21.9.0.0/1aad2e20684ee075bb9ebdca2d83f028e4fd35fa/ojdbc11-21.9.0.0.jar referenced one or more files that do not exist: file:/Users/jeongjayun/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/21.9.0.0/1aad2e20684ee075bb9ebdca2d83f028e4fd35fa/oraclepki.jar
+2024-04-18 23:38:52.447 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-18 23:38:52.447 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-18 23:38:52.890 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-18 23:38:52.895 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:38:52.896 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-18 23:38:52.896 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-18 23:38:52.914 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-18 23:38:52.915 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 468 ms
+2024-04-18 23:38:53.073 [restartedMain]  WARN org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ecffb5bf-36d1-4875-8f2c-14e0efc5cb51
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-04-18 23:38:53.113 [restartedMain]  INFO org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2024-04-18 23:38:53.185 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3ee2cce6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@65769c35, org.springframework.security.web.context.SecurityContextHolderFilter@1462c9a3, org.springframework.security.web.header.HeaderWriterFilter@6ffba786, org.springframework.web.filter.CorsFilter@1aec2d7e, org.springframework.security.web.csrf.CsrfFilter@65b1f0dd, org.springframework.security.web.authentication.logout.LogoutFilter@6fc03a02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@45276b1b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@407e1bc4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@47737d97, org.springframework.security.web.access.ExceptionTranslationFilter@260ff032, org.springframework.security.web.access.intercept.AuthorizationFilter@2cb2097]
+2024-04-18 23:38:53.296 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-18 23:38:53.306 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-18 23:38:53.314 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-04-18 23:38:53.320 [restartedMain]  INFO com.eco.todo.TodoApplication - Started TodoApplication in 1.176 seconds (process running for 1.445)
+2024-04-18 23:38:57.973 [http-nio-8080-exec-1]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-18 23:38:57.974 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-04-18 23:38:57.977 [http-nio-8080-exec-1]  INFO org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
