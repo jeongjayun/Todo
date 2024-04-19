@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eco.todo.mapper.UserMapper">
+
+<!-- 아이디 중복확인 -->
+	<select id="chkUserId">
+		SELECT COUNT(USER_ID) AS 아이디검색개수
+		  FROM USERS
+		 WHERE USER_ID = #{user_id}
+	</select>
 
 <!-- 회원가입 -->
 	<insert id="join">

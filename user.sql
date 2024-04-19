@@ -1,4 +1,8 @@
 -- USERS
+-- 아이디 중복 확인
+SELECT COUNT(USER_ID)
+  FROM USERS
+ WHERE USER_ID='test';
 
 -- 회원 추가/생성
 INSERT INTO USERS

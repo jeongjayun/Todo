@@ -7,6 +7,8 @@ import com.eco.todo.dto.Users;
 @Mapper
 public interface UserMapper {
 	
+	public int chkUserId(String user_id);
+	
 	public void join(Users user);
 	
 }

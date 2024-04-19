@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<htm lang="kr" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,43 +10,70 @@
   <body>
     <div class="main_container">
       <div class="container">
-        <form action="/api/user/join" method="post">
+        <!-- <form action="/api/user/join" method="post">
           <h1>회원가입</h1>
 
-          <div>
+          <div id="userIdDiv">
             <label for="user_id">사용자ID</label>
-            <input type="text" name="user_id" />
-            <button>중복 확인</button>
+            <input type="text" name="user_id"  id="user_id" maxlength="20"/>
+            <button id="id-duplication-btn">중복 확인</button>
             <span></span>
           </div>
 
-          <div>
+          <div id="userPw1Div">
             <label for="user_pw">비밀번호</label>
-            <input type="password" name="user_pw" />
+            <input type="password" name="user_pw" id="user_pw" maxlength="20"/>
             <span></span>
           </div>
 
-          <div>
+          <div id="userPw2Div">
             <label for="user_pw2">비밀번호 확인</label>
-            <input type="password" name="user_pw2" />
+            <input type="password" name="user_pw2" id="user_pw2" maxlength="20"/>
             <span></span>
           </div>
 
           <div>
             <label for="user_nm">이름</label>
-            <input type="text" name="user_nm" />
+            <input type="text" name="user_nm" id="user_nm" maxlength="10"/>
             <span></span>
           </div>
 
           <div class="button-div">
             <p>
-              <button type="submit" class="btn btn-primary">회원가입</button>
+              <button type="submit" class="btn btn-primary" id="join_btn">회원가입</button>
               <button type="reset">새로 작성</button>
             </p>
             <a href="/">처음 화면으로</a>
           </div>
-        </form>
+        </form> -->
+
+        <form th:action="@{/join}" th:object="${userJoinForm}" method="post">
+          <div class="mb-3">
+              <label for="user_id" class="form-label">사용자ID</label>
+              <input type="text" th:field="*{user_id}" class="form-control">
+              <div class="field-error" th:errors="*{user_id}"></div>
+          </div>
+          <div class="mb-3">
+              <label for="user_pw" class="form-label">비밀번호</label>
+              <input type="password" th:field="*{user_pw}" class="form-control">
+             
+          </div>
+          <div class="mb-3">
+              <label for="user_pw2" class="form-label">비밀번호 확인</label>
+              <input type="password" th:field="*{user_pw2}" class="form-control">
+
+              <div class="field-error" th:errors="*{user_pw}"></div>
+          </div>
+          <div class="mb-3">
+              <label for="user_nm" class="form-label">이름</label>
+              <input type="text" th:field="*{user_nm}" class="form-control">
+         
+          </div>
+          <button type="submit" class="btn btn-primary">회원가입</button>
+      </form>
       </div>
     </div>
+
+    <!-- <script src="/js/join.js"></script> -->
   </body>
 </html>

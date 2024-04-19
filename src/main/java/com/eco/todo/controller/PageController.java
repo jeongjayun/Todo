@@ -1,7 +1,10 @@
 package com.eco.todo.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.eco.todo.form.UserJoinForm;
 
 @Controller
 public class PageController {
@@ -11,7 +14,7 @@ public class PageController {
 	}
 	
 	@GetMapping("/join")
-	public String joinPage() {
+	public String joinPage(UserJoinForm userJoinForm) {
 		return "join_form";
 	}
 	
