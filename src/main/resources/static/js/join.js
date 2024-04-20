@@ -1,29 +1,48 @@
+
 // 회원 가입 시 유효성 검사 변수
 let idOk = false;
 let pwOk = false;
 let nmOk = false;
 
-//아이디 중복확인
-const idDplCkBtn = document.getElementById("id-duplication-btn");
-const idChkMsg = document.querySelector("#userIdDiv span");
+//아이디 확인
+const idChkMsg = document.getElementById("id-chk-msg");
 const idInput = document.getElementById("user_id");
+const idDplCkBtn = document.getElementById("id-duplication-btn");
 
+//아이디 확인
+idInput.addEventListener("change", function () {
+  if (idInput.value.length < 3) {
+    idChkMsg.textContent = `아이디는 최소 3글자부터 20자까지 가능합니다.`;
+    idInput.focus();
+    idDplCkBtn.disabled = true; //비활성화
+  } else {
+    idDplCkBtn.disabled = false; //활성화
+  }
+});
+
+//중복 확인
 idDplCkBtn.addEventListener("click", onIdDplChk);
 
 function onIdDplChk(event) {
   event.preventDefault();
 
-  fetch(`/api/user/chkId/${idInput.value}`)
+  fetch(`/api/join/chkId/${idInput.value}`)
     .then((response) => response.json())
     .then((response) => {
-      idChkMsg.innerText = `${Object.values(response)}`;
+      let idDplResult = Object.values(response);
+      console.log("결과", idDplResult);
+      console.log("idChkMsg", idChkMsg);
 
-      if (idChkMsg.innerText === "사용 가능한 아이디입니다.") {
+      if (idDplResult > 0) {
+        idChkMsg.textContent = `이미 중복된 아이디 입니다.`;
+        idInput.focus();
+      } else if (idDplResult == 0) {
+        idChkMsg.textContent = `사용 가능한 아이디 입니다.`;
         idOk = true;
       } else {
+        idChkMsg.textContent = `입력된 아이디가 없습니다.`;
         idInput.focus();
       }
-      // TODO : 이후 중복되는 값 입력 후 버튼 클릭 시 true 가 되버림
     });
 }
 
@@ -32,73 +51,88 @@ const pwInput1 = document.getElementById("user_pw");
 const pwInput2 = document.getElementById("user_pw2");
 
 let msg;
-const pw1ChkMsg = document.querySelector("#userPw1Div span");
-const pw2ChkMsg = document.querySelector("#userPw2Div span");
+const pwChkMsg = document.getElementById("pw-chk-msg");
+const pwChk2Msg = document.getElementById("pw-chk2-msg");
 
-pwInput2.addEventListener("change", onPwDblCk);
+pwInput1.addEventListener("change", onPwChk);
 
-function onPwDblCk(event) {
+function onPwChk(event) {
+  if (pwInput1.value.length < 8) {
+    msg = "비밀번호는 최소 8글자여야 합니다.";
+    pwChkMsg.textContent = msg;
+    pwInput1.focus();
+  }
+}
+
+pwInput2.addEventListener("change", onPwDblChk);
+
+function onPwDblChk(event) {
   if (pwInput1.value != pwInput2.value) {
     msg = "비밀번호가 일치하지 않습니다.";
-    pw2ChkMsg.innerText = msg;
+    pwChk2Msg.textContent = msg;
     pwInput2.focus();
   } else {
     pwOk = true;
     msg = "";
-    pw2ChkMsg.innerText = msg;
+    pwChk2Msg.textContent = msg;
   }
 }
 
 const nmInput = document.getElementById("user_nm");
 
 //등록 버튼
-const joinBtn = document.getElementById("join_btn");
+const submitBtn = document.getElementById("submit-btn");
+const nmChkMsg = document.getElementById("nm-chk-msg");
+const form = document.querySelector("form");
+const formBtn = document.getElementById("submit-btn");
 
-joinBtn.addEventListener("click", onJoin);
+submitBtn.addEventListener("click", onSubmit);
 
-function onJoin(event) {
+function onSubmit(event) {
   event.preventDefault();
   // 가입 전 유효성 검사
-
-  if (nmInput.value.length > 0) {
-    nmOk = true;
-  }
 
   console.log(idOk);
   console.log(pwOk);
   console.log(nmOk);
 
-  if (idOk && pwOk && nmOk) {
-    alert("pass");
+  if (nmInput.value.length > 0) {
+    nmOk = true;
+  }
 
-    fetch("/api/user/join", {
-      method: "POST",
-      headers: {
-        "Content-Tpe": "application/json"
-      },
-      body: JSON.stringify({
-        user_id: `${idInput.value}`,
-        user_pw: `${pwInput1.value}`,
-        user_nm: `${nmInput.value}`
-      })
-    })
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-    // 전부 pass일 때 fetch 로 회원가입
+  if (idOk && pwOk && nmOk) {
+    console.log("pass");
+    form.submit();
+    alert("회원가입이 완료되었습니다.");
+
   } else {
+
     if (idOk == false) {
       idInput.classList.add("error");
+
+      if (idInput.value == "") {
+        idChkMsg.textContent = `아이디가 입력되지 않았습니다.`;
+      }
+
     }
 
     if (pwOk == false) {
-      pwInput1.classList.add("error");
+
+      if (pwInput1.value.length == "" && pwInput2.value.length == "") {
+        pwChkMsg.textContent = `비밀번호가 입력되지 않았습니다.`;
+      }
       pwInput2.classList.add("error");
+      pwInput1.classList.add("error");
+
+      pwChk2Msg.textContent = `비밀번호를 확인해주세요.`;
     }
 
     if (nmOk == false) {
       nmInput.classList.add("error");
+      nmChkMsg.textContent = `이름을 확인해주세요.`;
     }
+
     return false;
   }
+
 }

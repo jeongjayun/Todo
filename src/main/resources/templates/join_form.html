@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <htm lang="kr" xmlns:th="http://www.thymeleaf.org">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,73 +8,54 @@
 
     <link rel="stylesheet" type="text/css" href="/css/join.css" />
   </head>
+
   <body>
     <div class="main_container">
       <div class="container">
-        <!-- <form action="/api/user/join" method="post">
-          <h1>회원가입</h1>
+        <h1>회원가입</h1>
+        <form th:action="@{/join}" th:object="${userJoinForm}" method="post">
 
-          <div id="userIdDiv">
-            <label for="user_id">사용자ID</label>
-            <input type="text" name="user_id"  id="user_id" maxlength="20"/>
-            <button id="id-duplication-btn">중복 확인</button>
-            <span></span>
-          </div>
+          <div>
+            <label for="user_id" class="form-label">사용자ID</label>
+            <div id="input-btn-div">
+              <input type="text" th:field="*{user_id}" maxlength="20">
+              <button id="id-duplication-btn" disabled="disabled">중복 검사</button>
+            </div>
 
-          <div id="userPw1Div">
-            <label for="user_pw">비밀번호</label>
-            <input type="password" name="user_pw" id="user_pw" maxlength="20"/>
-            <span></span>
-          </div>
-
-          <div id="userPw2Div">
-            <label for="user_pw2">비밀번호 확인</label>
-            <input type="password" name="user_pw2" id="user_pw2" maxlength="20"/>
-            <span></span>
+            <div id="id-chk-msg"></div>
+            <div class="field-error" th:errors="*{user_id}"></div>
           </div>
 
           <div>
-            <label for="user_nm">이름</label>
-            <input type="text" name="user_nm" id="user_nm" maxlength="10"/>
-            <span></span>
+            <label for="user_pw" class="form-label">비밀번호</label>
+            <input type="password" th:field="*{user_pw}" minlength="8" maxlength="20">
+            <div id="pw-chk-msg"></div>
+            <div class="field-error" th:errors="*{user_pw}"></div>
           </div>
 
-          <div class="button-div">
-            <p>
-              <button type="submit" class="btn btn-primary" id="join_btn">회원가입</button>
-              <button type="reset">새로 작성</button>
-            </p>
-            <a href="/">처음 화면으로</a>
+          <div>
+            <label for="user_pw2" class="form-label">비밀번호 확인</label>
+            <input type="password" th:field="*{user_pw2}" minlength="8" maxlength="20">
+            <div id="pw-chk2-msg"></div>
+            <div class="field-error" th:if="${#fields.hasErrors('user_pw2')}" th:errors="*{user_pw2}"></div>
           </div>
-        </form> -->
 
-        <form th:action="@{/join}" th:object="${userJoinForm}" method="post">
-          <div class="mb-3">
-              <label for="user_id" class="form-label">사용자ID</label>
-              <input type="text" th:field="*{user_id}" class="form-control">
-              <div class="field-error" th:errors="*{user_id}"></div>
+          <div>
+            <label for="user_nm" class="form-label">이름</label>
+            <input type="text" th:field="*{user_nm}">
+            <div id="nm-chk-msg"></div>
+            <div class="field-error" th:errors="*{user_nm}"></div>
           </div>
-          <div class="mb-3">
-              <label for="user_pw" class="form-label">비밀번호</label>
-              <input type="password" th:field="*{user_pw}" class="form-control">
-             
-          </div>
-          <div class="mb-3">
-              <label for="user_pw2" class="form-label">비밀번호 확인</label>
-              <input type="password" th:field="*{user_pw2}" class="form-control">
 
-              <div class="field-error" th:errors="*{user_pw}"></div>
+          <div class="btn-div">
+            <button type="submit" id="submit-btn">가입</button>
+            <button type="button" onclick="location.href='/'">메인</button>
           </div>
-          <div class="mb-3">
-              <label for="user_nm" class="form-label">이름</label>
-              <input type="text" th:field="*{user_nm}" class="form-control">
-         
-          </div>
-          <button type="submit" class="btn btn-primary">회원가입</button>
-      </form>
+
+        </form>
       </div>
     </div>
-
-    <!-- <script src="/js/join.js"></script> -->
+    <script src=" /js/join.js" defer></script>
   </body>
-</html>
+
+  </html>

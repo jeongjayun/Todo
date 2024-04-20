@@ -74,6 +74,7 @@ input {
 
 .container form div button:hover {
   background-color: #195abc;
+  color: #fff;
 }
 
 .container form div button:disabled {
@@ -82,7 +83,10 @@ input {
 }
 
 .container form button[type="submit"] {
-  background-color: #28a745;
+  background-color: #fff;
+  border-color: #3c9eec;
+  border: 1px solid;
+  color: #3c9eec;
 }
 
 .error {

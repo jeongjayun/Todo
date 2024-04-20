@@ -2,11 +2,12 @@
 server:
   port: 8080
 
-# database
+# spring
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:oracle:thin:@localhost:1522:xe
+#    url: jdbc:log4jdbc:oracle:thin:@localhost:1522:xe
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe 
     username: eco_todo
     password: eco1505!
   thymeleaf:
@@ -14,9 +15,10 @@ spring:
         suffix : .html
         cache : false
 
+jwt:
+  secret: 1772f187aa17bf0f2ff51901954cd85e0dfe76ea1d4405151c0fbc48c79e1c12
+
 # mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   config-location: classpath:mybatis-config.xml
-  
-

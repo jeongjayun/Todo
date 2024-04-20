@@ -24,5 +24,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 		, #{user_nm}
 			   		)
 	</insert>
+	
+<!-- 로그인 -->
+	<select id="findUser">
+		SELECT *
+		  FROM USERS
+		 WHERE USER_ID = #{user_id}
+		  
+	</select>
 
 </mapper>

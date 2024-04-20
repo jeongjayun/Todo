@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>로그인</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/login.css" />
 </head>
+
 <body>
-로그인 페이지
+  <div class="main_container">
+    <div class="container">
+      <form th:action="@{/login}" th:object="${userLoginForm}" method="post">
+        <h1>로그인</h1>
+
+        <div>
+          <label for="user_id" class="form-label">사용자ID</label>
+          <input type="text" th:field="*{user_id}" maxlength="20">
+        </div>
+
+        <div>
+          <label for="user_pw" class="form-label">비밀번호</label>
+          <input type="password" th:field="*{user_pw}" minlength="8" maxlength="20">
+        </div>
+
+        <div th:if="${param.error}">
+          <div class="alert alert-danger">
+            사용자ID 또는 비밀번호를 확인해 주세요.
+          </div>
+        </div>
+
+        <div class="btn-div">
+          <button type="submit" id="submit-btn">로그인</button>
+          <button type="button" onclick="location.href='/join'">회원가입</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
 </body>
+
 </html>

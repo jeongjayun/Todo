@@ -11,4 +11,6 @@ public interface UserMapper {
 	
 	public void join(Users user);
 	
+	public Users findUser(String user_id);
+	
 }

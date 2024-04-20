@@ -4,5 +4,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eco.todo.mapper.TodoMapper">
+<!-- 투두 작성 -->
+	<insert id="saveTodo">
+		<selectKey keyProperty="todo_idx" resultType="int" order="BEFORE">
+			select TODO_SEQ.nextval FROM DUAL
+		</selectKey>
+		
+		INSERT INTO TODO
+			   ( TODO_IDX
+			   , USER_ID
+			   , TODO_TITLE
+			   , CREATED_TIME
+			   )
+		VALUES ( #{todo_idx}
+			   , #{user_id}
+			   , #{todo_title}
+			   , #{created_time}
+			   )
+	</insert>
 
 </mapper>
