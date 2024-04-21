@@ -30,8 +30,6 @@ function onIdDplChk(event) {
     .then((response) => response.json())
     .then((response) => {
       let idDplResult = Object.values(response);
-      console.log("결과", idDplResult);
-      console.log("idChkMsg", idChkMsg);
 
       if (idDplResult > 0) {
         idChkMsg.textContent = `이미 중복된 아이디 입니다.`;
@@ -43,7 +41,8 @@ function onIdDplChk(event) {
         idChkMsg.textContent = `입력된 아이디가 없습니다.`;
         idInput.focus();
       }
-    });
+    })
+    .catch((error) => console.log(error));
 }
 
 //비밀번호 확인

@@ -18,10 +18,8 @@
         <div class="user-profile">
           <div class="user-img"></div>
           <div class="user-detail">
-            <ul>
-              <li><span th:text="${#authentication.name}"></span></li>
-              <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
-            </ul>
+            <span th:text="${#authentication.name}"></span>
+            <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
           </div>
         </div>
 
@@ -42,10 +40,10 @@
         <div class="list-main">
           <div class="list-top">
             <div class="list-title">
-              리스트 타이틀
+              <h1>리스트 타이틀</h1>
             </div>
-            <div class="today">
-              0월 0일 0요일
+            <div class="today" id="today">
+              <h2>0월 0일</h2>
             </div>
           </div>
 
@@ -61,7 +59,9 @@
         </div>
 
         <div class="new-todo-div">
-          <input type="text" placeholder="할 일 작성" maxlength="50">
+          <form action="/api/todo/save" method="post" id="todo-form">
+            <input type="text" placeholder="할 일 작성" maxlength="50" />
+          </form>
         </div>
 
       </div>

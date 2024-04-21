@@ -18,17 +18,18 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/**").permitAll())
-
+		http
+				.csrf(csrf->csrf.disable())
+				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**","/join/**","/api/**", "/").permitAll()
+						.anyRequest().authenticated())
 				.headers((headers) -> headers.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-
 				.formLogin((formlogin) -> formlogin
 						.loginPage("/login")
 						.usernameParameter("user_id")
 						.passwordParameter("user_pw")
 						.defaultSuccessUrl("/list"))
-				
 				.logout((logout)->logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/"));
