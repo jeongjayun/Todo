@@ -133,6 +133,10 @@ body {
   padding: 0px;
 }
 
+.hidden {
+  display: none;
+}
+
 .list-div .list-todo {
   overflow-y: auto;
   margin: 10px;

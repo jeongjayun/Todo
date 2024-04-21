@@ -46,5 +46,66 @@ function getDate() {
 }
 
 // 리스트 받아오기 
-// API로 리스트도 가져올 수 있고 ...
-// 뷰에 뿌려주면 목록은 만들 수 있을 것 같음 ...
+
+const listTitle = document.querySelector(".list-title h1")
+
+let Todos = [];
+
+//1. 오늘 할 일
+const filTdy = document.getElementById("fil-tdy");
+
+filTdy.addEventListener("click", changeFilTdyList);
+
+function changeFilTdyList(event) {
+  listTitle.innerText = "오늘 할 일";
+  today.classList.remove("hidden");
+
+  fetch(`/api/todo/list`)
+    .then((response) => response.json())
+    .then((response) => {
+      Todos.push(response);
+      console.log("Todos", Todos);
+      //json화 해서 Todos 에 넣은 값들을 li로 뽑아내야 됨 ~~
+    })
+    .catch(error => console.log(error));
+}
+
+//2. 중요한 일
+const filImp = document.getElementById("fil-imp");
+
+filImp.addEventListener("click", changeFilImpList);
+
+function changeFilImpList(event) {
+  listTitle.innerText = "중요한 일";
+  today.classList.add("hidden");
+}
+
+//3. 계획된 일
+const filScheduled = document.getElementById("fil-scheduled");
+
+filScheduled.addEventListener("click", changeFilScheduledList);
+
+function changeFilScheduledList(event) {
+  listTitle.innerText = "계획된 일";
+  today.classList.add("hidden");
+}
+
+//4. 완료된 일
+const filCmplt = document.getElementById("fil-cmplt");
+
+filCmplt.addEventListener("click", changeFilCmpltList);
+
+function changeFilCmpltList(event) {
+  listTitle.innerText = "완료된 일";
+  today.classList.add("hidden");
+}
+
+//5. 작업 (미완료)
+const filNotCmplt = document.getElementById("fil-notCmplt");
+
+filNotCmplt.addEventListener("click", changeFilNotCmpltList);
+
+function changeFilNotCmpltList(event) {
+  listTitle.innerText = "작업";
+  today.classList.add("hidden");
+}
