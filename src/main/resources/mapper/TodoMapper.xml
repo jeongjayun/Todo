@@ -28,5 +28,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
+	  ORDER BY CREATED_TIME ASC
+	</select>
+	
+<!-- 오늘 할 일만 필터 -->
+	<select id="filterTdy">
+		SELECT *
+		  FROM V_TODO_FILTER
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_TDY='1'
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 중요한 일만 필터 -->
+	<select id="filterImp">
+		SELECT *
+		  FROM V_TODO_FILTER
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_IMP='1'
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 미완료된 일 필터 -->
+	<select id="filterNotCmplt">
+		SELECT *
+		  FROM V_TODO_FILTER
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_CMPLT ='0'
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 현재 저장된 투두 갯수 / 가장 큰 수 구하기 -->
+	<select id="findMaxNum">
+		SELECT MAX(TODO_IDX)
+		  FROM TODO
 	</select>
 </mapper>

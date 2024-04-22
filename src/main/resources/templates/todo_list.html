@@ -23,6 +23,11 @@
           </div>
         </div>
 
+        <div class="search-div">
+          <input type="text" placeholder="기능구현아직"/>
+          <button>검색</button>
+        </div>
+
         <div class="menu-list">
           <ul>
             <li id="fil-tdy">오늘 할 일</li>
@@ -49,11 +54,7 @@
 
           <div class="list-todo">
             <ul>
-              <li name="Todos">투두</li>
-              <li name="Todos">투두</li>
-              <li name="Todos">투두</li>
-              <li name="Todos">투두</li>
-              <li name="Todos">투두</li>
+            <!--Fetch API 통하여 db에서 데이터 가져와 li 생성 -->
             </ul>
           </div>
 
@@ -61,7 +62,10 @@
 
         <div class="new-todo-div">
           <form action="/api/todo/save" method="post" id="todo-form">
-            <input type="text" placeholder="할 일 작성" maxlength="50" />
+            <!-- <button>완료표시</button> -->
+            <input type="text" placeholder="할 일 작성" minlength="1" maxlength="50" />
+            <!-- <button>중요표시</button> -->
+            <!-- <button>달력예정</button> -->
           </form>
         </div>
 

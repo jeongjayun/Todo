@@ -13,7 +13,15 @@ public interface TodoMapper {
 	public int saveTodo(Todo todo);
 
 	public int saveTodoFilter(Filters filters);
-	
+
 	public ArrayList<Todo> findAllTodo(String user_id);
+	
+	public ArrayList<Todo> filterTdy(String user_id);
+	
+	public ArrayList<Todo> filterImp(String user_id);
+	
+	public ArrayList<Todo> filterNotCmplt(String user_id);
+
+	public int findMaxNum();
 
 }

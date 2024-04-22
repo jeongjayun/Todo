@@ -45,26 +45,55 @@ public class ApiController {
 	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody Todo todo) {
 		logger.info("ApiController. 할 일 저장");
 
-		Map<String, Object> responseData = new HashMap<>();
-
 		String user_id = todo.getUser_id();
 		String todo_title = todo.getTodo_title();
 
-		String result = todoService.saveTodo(todo_title, user_id);
-		responseData.put("저장 결과", result);
-
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
+		Map<String, Object> result = todoService.saveTodo(todo_title, user_id);
+		
+		System.out.println(result);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping("/todo/list")
-	public ResponseEntity<List<Todo>> findAllTodo(Authentication authentication) {
-		logger.info("ApiController. 목록 불러오기");
+	@GetMapping("/todo/tdyList")
+	public ResponseEntity<List<Todo>> filterTdy(Authentication authentication) {
+		logger.info("ApiController. 오늘 할 일 불러오기");
 
 		String user_id = authentication.getName();
 		System.out.println(user_id);
-		List<Todo> list = todoService.findAllTodo(user_id);
-		
+		List<Todo> list = todoService.filterTdy(user_id);
+
 		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/todo/impList")
+	public ResponseEntity<List<Todo>> filterImp(Authentication authentication) {
+		logger.info("ApiController. 중요한 일 불러오기");
+
+		String user_id = authentication.getName();
+		System.out.println(user_id);
+		List<Todo> list = todoService.filterImp(user_id);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/todo/NotCmpltList")
+	public ResponseEntity<List<Todo>> filterNotCmplt(Authentication authentication) {
+		logger.info("ApiController. 중요한 일 불러오기");
+
+		String user_id = authentication.getName();
+		System.out.println(user_id);
+		List<Todo> list = todoService.filterNotCmplt(user_id);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/todo/findMaxNum")
+	public ResponseEntity<Map<String, Object>> findMaxNum() {
+		// client에서 newTodoObj의 id값 구하기
+		Map<String, Object> responseData = new HashMap<>();
+		int max = todoService.findMaxNum();
+		responseData.put("todo_idx", max);
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
 
 }
