@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.mapper.TodoMapper;
 
@@ -74,5 +75,16 @@ public class TodoService {
 	public int findMaxNum() {
 		logger.info("Todo 테이블에 현재 가장 큰 수 구하기");
 		return mapper.findMaxNum();
+	}
+	
+	public int updateFilters(Filters filter) {
+		logger.info("filter 수정하기");
+		
+		System.out.println(filter);
+		
+		int result = mapper.updateFilters(filter);
+		System.out.println(result);
+		
+		return result;
 	}
 }

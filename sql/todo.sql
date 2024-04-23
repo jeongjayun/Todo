@@ -129,3 +129,86 @@ SELECT *
   FROM V_TODO_FILTER
  WHERE USER_ID='test2'AND FIL_TDY='1'
  ORDER BY CREATED_TIME DESC;
+ 
+-- Todo 완료표시로 변경
+
+UPDATE (SELECT * FROM TODO t INNER JOIN FILTERS f ON t.TODO_IDX =f.TODO_IDX)u 
+SET u.UPDATED_TIME = CURRENT_TIMESTAMP,
+	u.FIL_CMPLT = '1'
+WHERE u.TODO_IDX = '105'; -- 실패 
+
+
+UPDATE (
+    SELECT t.UPDATED_TIME, f.FIL_CMPLT
+    FROM TODO t
+    JOIN FILTERS f ON t.TODO_IDX = f.TODO_IDX
+    WHERE t.TODO_IDX = '105' AND f.TODO_IDX = '105'
+) u
+SET u.UPDATED_TIME = CURRENT_TIMESTAMP,
+    u.FIL_CMPLT = '1'
+WHERE u.TODO_IDX='105'; -- 실패 
+
+UPDATE (
+    SELECT t.UPDATED_TIME, t.FIL_CMPLT
+    FROM TODO t
+    INNER JOIN FILTERS f ON t.TODO_IDX = f.TODO_IDX
+    WHERE t.TODO_IDX = '105'
+) u
+SET u.UPDATED_TIME = CURRENT_TIMESTAMP,
+    u.FIL_CMPLT = '1'; -- 실패 
+
+
+------------------------------------------------------------- 따로따로 하면 성공 .. --
+UPDATE V_TODO_FILTER
+   SET FIL_CMPLT = '0'
+ WHERE TODO_IDX ='103';
+
+UPDATE V_TODO_FILTER
+   SET UPDATED_TIME = CURRENT_TIMESTAMP 
+ WHERE TODO_IDX ='103';
+    
+SELECT * FROM V_TODO_FILTER vtf  WHERE TODO_IDX = '103';
+
+-- Todo 테이블과 Filter 테이블 조인
+SELECT   t.TODO_IDX
+		,t.USER_ID 
+		,t.TODO_TITLE
+		,t.TODO_MEMO
+		,t.TODO_DDLN
+		,t.CREATED_TIME
+		,t.UPDATED_TIME
+		,t.DELETED_TIME
+		,f.FIL_TDY
+		,f.FIL_IMP
+		,f.FIL_IMP
+		,f.FIL_CMPLT
+		,f.FIL_DLT 
+  FROM  TODO t LEFT JOIN FILTERS f
+ 	ON  t.TODO_IDX =f.TODO_IDX;
+ 
+ 
+UPDATE (
+     SELECT   t.TODO_IDX
+            ,t.USER_ID 
+            ,t.TODO_TITLE
+            ,t.TODO_MEMO
+            ,t.TODO_DDLN
+            ,t.CREATED_TIME
+            ,t.UPDATED_TIME
+            ,t.DELETED_TIME
+            ,f.FIL_TDY
+            ,f.FIL_IMP
+            ,f.FIL_IMP
+            ,f.FIL_CMPLT
+            ,f.FIL_DLT 
+      FROM  TODO t LEFT JOIN FILTERS f
+         ON  t.TODO_IDX =f.TODO_IDX
+) AS u
+SET u.FIL_CMPLT='1', u.UPDATED_TIME = CURRENT_TIMESTAMP
+WHERE u.TODO_IDX='120'; -- 실패 
+
+
+-- Todo 완료표시만 
+SELECT *
+  FROM V_TODO_FILTER
+ WHERE FIL_CMPLT='1';

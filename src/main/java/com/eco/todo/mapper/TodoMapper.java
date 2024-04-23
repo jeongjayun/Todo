@@ -21,6 +21,8 @@ public interface TodoMapper {
 	public ArrayList<Todo> filterImp(String user_id);
 	
 	public ArrayList<Todo> filterNotCmplt(String user_id);
+	
+	public int updateFilters(Filters filter);
 
 	public int findMaxNum();
 

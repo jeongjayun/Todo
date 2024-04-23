@@ -32,7 +32,7 @@
           <ul>
             <li id="fil-tdy">오늘 할 일</li>
             <li id="fil-imp">중요한 일</li>
-            <li id="fil-scheduled">계획 된 일</li>
+            <li id="fil-scheduled">계획된 일</li>
             <li id="fil-cmplt">완료된 일</li>
             <li id="fil-notCmplt">작업</li>
           </ul>
@@ -62,10 +62,10 @@
 
         <div class="new-todo-div">
           <form action="/api/todo/save" method="post" id="todo-form">
-            <!-- <button>완료표시</button> -->
+            <button>완료표시</button>
             <input type="text" placeholder="할 일 작성" minlength="1" maxlength="50" />
-            <!-- <button>중요표시</button> -->
-            <!-- <button>달력예정</button> -->
+            <button>중요표시</button>
+            <button>달력예정</button>
           </form>
         </div>
 
@@ -74,6 +74,8 @@
   </div>
 
   <script src="/js/todo_list.js"></script>
+  <script src="/js/date.js"></script>
+  <script src="/js/todo_save.js"></script>
 
 </body>
 

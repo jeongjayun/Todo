@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.service.TodoService;
 import com.eco.todo.service.UserService;
@@ -49,7 +50,7 @@ public class ApiController {
 		String todo_title = todo.getTodo_title();
 
 		Map<String, Object> result = todoService.saveTodo(todo_title, user_id);
-		
+
 		System.out.println(result);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
@@ -59,7 +60,6 @@ public class ApiController {
 		logger.info("ApiController. 오늘 할 일 불러오기");
 
 		String user_id = authentication.getName();
-		System.out.println(user_id);
 		List<Todo> list = todoService.filterTdy(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
@@ -70,7 +70,6 @@ public class ApiController {
 		logger.info("ApiController. 중요한 일 불러오기");
 
 		String user_id = authentication.getName();
-		System.out.println(user_id);
 		List<Todo> list = todoService.filterImp(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
@@ -78,22 +77,32 @@ public class ApiController {
 
 	@GetMapping("/todo/NotCmpltList")
 	public ResponseEntity<List<Todo>> filterNotCmplt(Authentication authentication) {
-		logger.info("ApiController. 중요한 일 불러오기");
+		logger.info("ApiController. 작업 불러오기");
 
 		String user_id = authentication.getName();
-		System.out.println(user_id);
 		List<Todo> list = todoService.filterNotCmplt(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
-	@GetMapping("/todo/findMaxNum")
-	public ResponseEntity<Map<String, Object>> findMaxNum() {
-		// client에서 newTodoObj의 id값 구하기
+//	@GetMapping("/todo/findMaxNum")
+//	public ResponseEntity<Map<String, Object>> findMaxNum() {
+//		Map<String, Object> responseData = new HashMap<>();
+//		int max = todoService.findMaxNum();
+//		responseData.put("todo_idx", max);
+//		return new ResponseEntity<>(responseData, HttpStatus.OK);
+//	}
+
+	@PostMapping("/todo/filterUpdate")
+	public ResponseEntity<Map<String, Object>> updateFilters(@RequestBody Filters filters) {
+		System.out.println(filters);
+
 		Map<String, Object> responseData = new HashMap<>();
-		int max = todoService.findMaxNum();
-		responseData.put("todo_idx", max);
+		int result = todoService.updateFilters(filters);
+		responseData.put("result", result);
+
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
+
 	}
 
 }

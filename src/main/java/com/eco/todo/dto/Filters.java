@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Filters {
-	private int TODO_IDX;
-	private String USER_ID;
-	private char FIL_TDY;
-	private char FIL_IMP;
-	private char FIL_CMPLT;
-	private char FIL_DLT;
+	private int todo_idx;
+	private String user_id;
+	private char fil_tdy;
+	private char fil_imp;
+	private char fil_cmplt;
+	private char fil_del;
 }

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eco.todo.mapper.TodoMapper">
-<!-- 투두 작성 -->
+<!-- 투두 작성 && 트리거 사용하여 자동으로 0000 됨 -->
 	<insert id="saveTodo">
 		<selectKey keyProperty="todo_idx" resultType="int" order="BEFORE">
 			SELECT TODO_SEQ.nextval FROM DUAL
@@ -22,6 +22,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   , #{created_time}
 			   )
 	</insert>
+	
+<!-- 투두 필터 수정  -->
+	<update id="updateFilters">
+		UPDATE FILTERS
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="fil_tdy != null">FIL_TDY = #{fil_tdy},</if>
+			<if test="fil_imp != null">FIL_IMP = #{fil_imp},</if>
+			<if test="fil_cmplt != null">FIL_CMPLT = #{fil_cmplt},</if>
+			<if test="fil_del != null">FIL_DLT = #{fil_del},</if>
+		</trim>
+		WHERE TODO_IDX = #{todo_idx}  
+	</update>
 	
 <!-- 회원이 저장한 투두 전체 조회 -->
 	<select id="findAllTodo">
