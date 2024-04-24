@@ -4,23 +4,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eco.todo.mapper.TodoMapper">
-<!-- 투두 작성 && 트리거 사용하여 자동으로 0000 됨 -->
+<!-- 투두 작성 -->
 	<insert id="saveTodo">
 		<selectKey keyProperty="todo_idx" resultType="int" order="BEFORE">
 			SELECT TODO_SEQ.nextval FROM DUAL
 		</selectKey>
-		
-		INSERT INTO TODO
-			   ( TODO_IDX
-			   , USER_ID
-			   , TODO_TITLE
-			   , CREATED_TIME
-			   )
-		VALUES ( #{todo_idx}
-			   , #{user_id}
-			   , #{todo_title}
-			   , #{created_time}
-			   )
+		INSERT ALL
+				  	 INTO TODO
+							   ( TODO_IDX
+							   , USER_ID
+							   , TODO_TITLE
+							   , CREATED_TIME
+							   )
+						VALUES ( #{todo_idx}
+							   , #{user_id}
+							   , #{todo_title}
+							   , #{created_time}
+							   )
+				   INTO FILTERS
+				   			   ( TODO_IDX
+				   			   , USER_ID
+				   			   , FIL_TDY
+				   			   , FIL_IMP
+				   			   , FIL_CMPLT
+				   			   , FIL_DLT
+				   			   )
+				   	 	VALUES (
+				   	 			 #{todo_idx}
+				   	 		   , #{user_id}
+								<if test="fil_tdy != null and fil_tdy != ''">, #{fil_tdy}</if>
+								<if test="fil_tdy == null or fil_tdy == ''">, 0</if>
+								<if test="fil_imp != null and fil_imp != ''">, #{fil_imp}</if>
+								<if test="fil_imp == null or fil_imp == ''">, 0</if>
+								<if test="fil_cmplt != null and fil_cmplt != ''">, #{fil_imp}</if>
+								<if test="fil_cmplt == null or fil_cmplt == ''">, 0</if>			
+				   	 		   , 0
+				   	 		   )
+				   	 	SELECT * FROM DUAL   				   	 		   
 	</insert>
 	
 <!-- 투두 필터 수정  -->

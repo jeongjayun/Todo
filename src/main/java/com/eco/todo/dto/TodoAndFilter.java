@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class Todos {
+public class TodoAndFilter {
 	private int todo_idx;
 	private String user_id;
 	private String todo_title;

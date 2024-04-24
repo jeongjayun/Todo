@@ -15,20 +15,10 @@ function handleToDoSubmit(event) {
 
   const newTodoObj = {
     todo_title: newTodo,
-    user_id: loginUserId
+    user_id: loginUserId,
+    fil_tdy: isTdy ? '1' : '0',
+    fil_imp: isImp ? '1' : '0'
   };
-
-  if (isTdy) {
-    newTodoObj.fil_tdy = "1";
-  } else if (isImp) {
-    newTodoObj.fil_imp = "1";
-  } else if (isCmplt) {
-    newTodoObj.fil_cmplt = "1";
-  } else if (isNotCmplt) {
-    newTodoObj.fil_cmplt = "0";
-  }
-
-  console.log(newTodoObj);
 
   fetch("/api/todo/save", {
     method: "POST",
@@ -39,9 +29,9 @@ function handleToDoSubmit(event) {
     .then((response) => {
       const jsonData = JSON.stringify(response);
       const parsedData = JSON.parse(jsonData);
-      console.log(parsedData.todo_idx);
       newTodoObj.todo_idx = parsedData.todo_idx;
       addTodo(newTodoObj);
+      console.log(newTodoObj);
     })
     .catch((error) => {
       alert("저장에 실패하였습니다.");

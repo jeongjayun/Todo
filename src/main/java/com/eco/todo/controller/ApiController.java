@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eco.todo.dto.Filters;
-import com.eco.todo.dto.Todo;
-import com.eco.todo.dto.Todos;
+import com.eco.todo.dto.TodoAndFilter;
 import com.eco.todo.service.TodoService;
 import com.eco.todo.service.UserService;
 
@@ -44,54 +43,53 @@ public class ApiController {
 	}
 
 	@PostMapping("/todo/save")
-	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody Todo todo) {
+	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody TodoAndFilter todoAndFilter) {
 		logger.info("ApiController. 할 일 저장");
+		
+		System.out.println(todoAndFilter);
 
-		String user_id = todo.getUser_id();
-		String todo_title = todo.getTodo_title();
-
-		Map<String, Object> result = todoService.saveTodo(todo_title, user_id);
+		Map<String, Object> result = todoService.saveTodo(todoAndFilter);
 
 		System.out.println(result);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("/todo/tdyList")
-	public ResponseEntity<List<Todos>> filterTdy(Authentication authentication) {
+	public ResponseEntity<List<TodoAndFilter>> filterTdy(Authentication authentication) {
 		logger.info("ApiController. 오늘 할 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<Todos> list = todoService.filterTdy(user_id);
+		List<TodoAndFilter> list = todoService.filterTdy(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	@GetMapping("/todo/impList")
-	public ResponseEntity<List<Todos>> filterImp(Authentication authentication) {
+	public ResponseEntity<List<TodoAndFilter>> filterImp(Authentication authentication) {
 		logger.info("ApiController. 중요한 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<Todos> list = todoService.filterImp(user_id);
+		List<TodoAndFilter> list = todoService.filterImp(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/todo/cmpltList")
-	public ResponseEntity<List<Todos>> filterCmplt(Authentication authentication) {
+	public ResponseEntity<List<TodoAndFilter>> filterCmplt(Authentication authentication) {
 		logger.info("ApiController. 완료된 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<Todos> list = todoService.filterCmplt(user_id);
+		List<TodoAndFilter> list = todoService.filterCmplt(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	@GetMapping("/todo/NotCmpltList")
-	public ResponseEntity<List<Todos>> filterNotCmplt(Authentication authentication) {
+	public ResponseEntity<List<TodoAndFilter>> filterNotCmplt(Authentication authentication) {
 		logger.info("ApiController. 작업 불러오기");
 
 		String user_id = authentication.getName();
-		List<Todos> list = todoService.filterNotCmplt(user_id);
+		List<TodoAndFilter> list = todoService.filterNotCmplt(user_id);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}

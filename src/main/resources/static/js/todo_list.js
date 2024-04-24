@@ -26,6 +26,7 @@ function addTodo(newTodo) {
   impBtn.innerText = "중요X";
   impBtn.value = "";
 
+  //중요 표시 된 작업들
   if (newTodo.fil_imp == "1") {
     impBtn.innerText = "중요O";
     impBtn.value = "imp";
@@ -60,8 +61,6 @@ document.querySelector(".list-todo ul").addEventListener("click", function (e) {
     } else {
       filters.fil_cmplt = "0";
     }
-
-    //필터 변경되었으니 목록이 실시간 반영 되어야 함
   }
 
   if (e.target.nodeName == "BUTTON") {
@@ -85,7 +84,6 @@ document.querySelector(".list-todo ul").addEventListener("click", function (e) {
   }
 
   changeFilter(filters);
-  delTodoList(); // ?????
   onLoadList();
 });
 
@@ -97,7 +95,7 @@ let isCmplt = false;
 let isNotCmplt = false;
 
 function onLoadList() {
-  delTodoList(); //todo 삭제후 및의 함수에서 새로 그리기
+  delTodoList(); //todo 삭제 후 밑의 함수에서 새로 그리기
 
   if (isTdy) {
     const url = "tdyList";
