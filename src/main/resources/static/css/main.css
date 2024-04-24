@@ -161,17 +161,28 @@ body {
   background-color: cornflowerblue;
 }
 
-.list-div .list-todo li {
+.list-div .list-todo ul li {
   height: 40px;
   margin: 15px 5px;
   background-color: ghostwhite;
   border: 1px solid #ccc;
   border-radius: 5px;
   display: flex;
+  cursor: pointer;
+}
+
+.list-div .list-todo li span {
   align-items: center;
   justify-content: center;
+  text-justify: auto;
   text-align: center;
-  cursor: pointer;
+  flex: 1;
+}
+
+.list-div .list-todo li .cmplt-btn {
+}
+
+.list-div .list-todo li .imp-btn {
 }
 
 .list-div .new-todo-div {

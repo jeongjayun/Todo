@@ -9,5 +9,5 @@ public class Filters {
 	private char fil_tdy;
 	private char fil_imp;
 	private char fil_cmplt;
-	private char fil_del;
+	private char fil_dlt;
 }

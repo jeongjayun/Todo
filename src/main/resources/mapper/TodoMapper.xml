@@ -24,16 +24,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 <!-- 투두 필터 수정  -->
-	<update id="updateFilters">
-		UPDATE FILTERS
-		<trim prefix="SET" suffixOverrides=",">
-			<if test="fil_tdy != null">FIL_TDY = #{fil_tdy},</if>
-			<if test="fil_imp != null">FIL_IMP = #{fil_imp},</if>
-			<if test="fil_cmplt != null">FIL_CMPLT = #{fil_cmplt},</if>
-			<if test="fil_del != null">FIL_DLT = #{fil_del},</if>
-		</trim>
-		WHERE TODO_IDX = #{todo_idx}  
-	</update>
+<update id="updateFilters">
+    UPDATE FILTERS
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="fil_tdy != null and fil_tdy != ''">FIL_TDY = #{fil_tdy},</if>
+        <if test="fil_imp != null and fil_imp != ''">FIL_IMP = #{fil_imp},</if>
+        <if test="fil_cmplt != null and fil_cmplt != ''">FIL_CMPLT = #{fil_cmplt},</if>
+        <if test="fil_dlt != null and fil_dlt != ''">FIL_DLT = #{fil_dlt},</if>
+    </trim>
+    WHERE TODO_IDX = #{todo_idx}  
+</update>
+
 	
 <!-- 회원이 저장한 투두 전체 조회 -->
 	<select id="findAllTodo">
@@ -58,6 +59,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_IMP='1'
+		   AND FIL_CMPLT='0'
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 완료된 일만 필터 -->
+	<select id="filterCmplt">
+		SELECT *
+		  FROM V_TODO_FILTER
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_CMPLT='1'
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -70,9 +81,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
-<!-- 현재 저장된 투두 갯수 / 가장 큰 수 구하기 -->
-	<select id="findMaxNum">
-		SELECT MAX(TODO_IDX)
-		  FROM TODO
-	</select>
 </mapper>

@@ -1,118 +1,44 @@
 // 페이지 로딩 시 Today 기능 켜기
-window.addEventListener("DOMContentLoaded", FilTdyList);
+window.addEventListener("DOMContentLoaded", onLoadList);
 
-// 수정해야됨 ㅠㅠㅠㅠㅠㅠ
-function FilTdyList() {
-  listTitle.innerText = "오늘 할 일";
-  today.classList.remove("hidden");
-
-  fetch(`/api/todo/tdyList`)
-    .then((response) => response.json())
-    .then((response) => {
-      // console.log(response);
-      toDos = response;
-      toDos.forEach(function (response) {
-        // !! addTodo 함수와 거의 내용 일치함. 함수화 하기
-        const li = document.createElement("li");
-        li.id = response.todo_idx;
-
-        const cmpltBtn = document.createElement("button");
-        cmpltBtn.innerText = "클릭시완료";
-
-        const span = document.createElement("span");
-        span.innerText = response.todo_title;
-
-        const impBtn = document.createElement("button");
-        impBtn.innerText = "클릭시중요";
-
-        li.appendChild(cmpltBtn);
-        li.appendChild(span);
-        li.appendChild(impBtn);
-
-        todoList.append(li);
-      });
-    })
-    .catch((error) => console.log(error));
-}
-
-// 리스트 타이틀 받아오기
 const listTitle = document.querySelector(".list-title h1");
-
-// JS에서 list element 만들기
 const todoList = document.querySelector(".list-todo ul");
 
+//동적으로 li 데이터 생성
 function addTodo(newTodo) {
   const li = document.createElement("li");
-  // console.log("newTodo의 값 받아오기", newTodo);
-  li.id = newTodo.id;
+  li.id = newTodo.todo_idx;
 
-  const cmpltBtn = document.createElement("button");
-  cmpltBtn.innerText = "클릭시완료";
+  const cmpltChk = document.createElement("input");
+  cmpltChk.setAttribute("type", "checkbox");
 
   const span = document.createElement("span");
   span.innerText = newTodo.todo_title;
 
-  const impBtn = document.createElement("button");
-  impBtn.innerText = "클릭시중요";
+  //완료된 작업 불러올 시 체크박스 체크
+  if (newTodo.fil_cmplt == "1") {
+    cmpltChk.checked = true;
+    span.style = "text-decoration:line-through;";
+  }
 
-  li.appendChild(cmpltBtn);
+  const impBtn = document.createElement("button");
+  impBtn.className = "imp-btn";
+  impBtn.innerText = "중요X";
+  impBtn.value = "";
+
+  if (newTodo.fil_imp == "1") {
+    impBtn.innerText = "중요O";
+    impBtn.value = "imp";
+  }
+
+  li.appendChild(cmpltChk);
   li.appendChild(span);
   li.appendChild(impBtn);
 
   todoList.append(li);
 }
 
-let toDos = [];
-
-//목록 스위치
-let isTdy = false;
-let isImp = false;
-let isScheduled = false;
-let isCmplt = false;
-let isNotCmplt = false;
-
-function changeListBtn() {
-  toDos.length = 0; //배열 초기화
-  delTodoList(); //todo 삭제후 및의 함수에서 새로 그리기
-
-  if (isTdy) {
-    const url = "tdyList";
-    listTitle.innerText = "오늘 할 일";
-    today.classList.remove("hidden");
-    onChangeList(url);
-  }
-
-  if (isImp) {
-    const url = "impList";
-    listTitle.innerText = "중요한 일";
-    today.classList.add("hidden");
-    onChangeList(url);
-  }
-
-  if (isScheduled) {
-    // const url = "tdyList";
-    listTitle.innerText = "계획된 일";
-    today.classList.add("hidden");
-    // onChangeList(url);
-  }
-
-  if (isCmplt) {
-    const url = "cmpltList";
-    listTitle.innerText = "완료된 일";
-    today.classList.add("hidden");
-    onChangeList(url);
-  }
-
-  if (isNotCmplt) {
-    const url = "NotCmpltList";
-    listTitle.innerText = "작업";
-    today.classList.add("hidden");
-    onChangeList(url);
-    // FilNotCmpltList();
-  }
-}
-
-// paintTodo로 그린 list 삭제하기
+// 동적으로 그린 li 전부 지우기
 function delTodoList() {
   let ul = document.querySelector(".list-todo ul");
   while (ul.firstChild) {
@@ -120,58 +46,108 @@ function delTodoList() {
   }
 }
 
+//동적으로 그린 li 안의 요소에 이벤트 할당
+document.querySelector(".list-todo ul").addEventListener("click", function (e) {
+  const filters = {
+    //filter 기본값
+    todo_idx: e.target.parentElement.id,
+    user_id: loginUserId
+  };
+
+  if (e.target.nodeName == "INPUT") {
+    if (e.target.checked) {
+      filters.fil_cmplt = "1";
+    } else {
+      filters.fil_cmplt = "0";
+    }
+
+    //필터 변경되었으니 목록이 실시간 반영 되어야 함
+  }
+
+  if (e.target.nodeName == "BUTTON") {
+    //버튼을 클릭했을 때
+    if (e.target.value == "imp") {
+      //imp 중요 속성이면
+      filters.fil_imp = "0"; //중요 취소
+      e.target.value = ""; //속성 없애기
+      e.target.innerText = "중요X";
+    } else {
+      //imp 중요속성이 아니면
+      filters.fil_imp = "1"; //중요로 변경
+      e.target.value = "imp"; //속성 추가
+      e.target.innerText = "중요O";
+    }
+  }
+
+  if (e.target.nodeName == "SPAN") {
+    alert(e.target);
+    //클릭되면 input text 활성화, submit 되면 수정되게 하고 싶음
+  }
+
+  changeFilter(filters);
+  delTodoList(); // ?????
+  onLoadList();
+});
+
+//목록 스위치
+let isTdy = true;
+let isImp = false;
+let isScheduled = false;
+let isCmplt = false;
+let isNotCmplt = false;
+
+function onLoadList() {
+  delTodoList(); //todo 삭제후 및의 함수에서 새로 그리기
+
+  if (isTdy) {
+    const url = "tdyList";
+    listTitle.innerText = "오늘 할 일";
+    today.classList.remove("hidden");
+
+    onChangeList(url);
+  }
+
+  if (isImp) {
+    const url = "impList";
+    listTitle.innerText = "중요한 일";
+    today.classList.add("hidden");
+
+    onChangeList(url);
+  }
+
+  if (isScheduled) {
+    // const url = "tdyList";
+    listTitle.innerText = "계획된 일";
+    today.classList.add("hidden");
+    alert("기능 구현 아직");
+    // onChangeList(url);
+  }
+
+  if (isCmplt) {
+    const url = "cmpltList";
+    listTitle.innerText = "완료된 일";
+    today.classList.add("hidden");
+
+    onChangeList(url);
+  }
+
+  if (isNotCmplt) {
+    const url = "NotCmpltList";
+    listTitle.innerText = "작업";
+    today.classList.add("hidden");
+
+    onChangeList(url);
+  }
+}
+
+let toDos = [];
+
 function onChangeList(url) {
   fetch(`/api/todo/${url}`)
     .then((response) => response.json())
     .then((response) => {
       toDos = response;
-      toDos.forEach(function (response) {
-        // !! addTodo 함수와 거의 내용 일치함. 함수화 하기
-        const li = document.createElement("li");
-        li.id = response.todo_idx;
-
-        const cmpltBtn = document.createElement("button");
-        cmpltBtn.value = "notCmplt";
-        cmpltBtn.innerText = "미완료";
-
-        const span = document.createElement("span");
-        span.innerText = response.todo_title;
-
-        const impBtn = document.createElement("button");
-        impBtn.innerText = "클릭시중요";
-
-        li.appendChild(cmpltBtn);
-        li.appendChild(span);
-        li.appendChild(impBtn);
-
-        todoList.append(li);
-
-        cmpltBtn.addEventListener("click", function (event) {
-          if (event.target.innerText == "미완료") {
-            alert("클릭!!");
-            event.target.value = "cmplt";
-            event.target.innerText = "완료";
-
-            const filters = {
-              todo_idx: li.id,
-              user_id: loginUserId,
-              fil_tdy: "0",
-              fil_imp: "0",
-              fil_cmplt: "1",
-              fil_del: "0"
-            };
-
-            changeFilter(filters);
-
-            //e.target.어쩌고 ~~~.click으로 꺼내기 꺼내기 꺼내기
-
-            console.log("fetch 밖에서 filter 로그찍기", filters);
-          } else {
-            event.target.innerText = "미완료";
-            cmpltBtn.value = "notCmplt";
-          }
-        });
-      });
+      toDos.forEach(addTodo);
     })
     .catch((error) => {
       alert("불러오기에 실패하였습니다.");
@@ -188,7 +164,6 @@ function changeFilter(filters) {
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log("fetch 내에서 filter 로그찍기", filters);
       console.log(response);
     })
     .catch((error) => {
@@ -207,7 +182,8 @@ function changeTdy(event) {
   isScheduled = false;
   isCmplt = false;
   isNotCmplt = false;
-  changeListBtn();
+
+  onLoadList();
 }
 
 //2. 중요한 일
@@ -220,7 +196,8 @@ function changeImp(event) {
   isScheduled = false;
   isCmplt = false;
   isNotCmplt = false;
-  changeListBtn();
+
+  onLoadList();
 }
 
 //3. 계획된 일
@@ -233,7 +210,8 @@ function changeSchduled(event) {
   isScheduled = true;
   isCmplt = false;
   isNotCmplt = false;
-  changeListBtn();
+
+  onLoadList();
 }
 
 //4. 완료된 일
@@ -246,7 +224,8 @@ function changeCmplt(event) {
   isScheduled = false;
   isCmplt = true;
   isNotCmplt = false;
-  changeListBtn();
+
+  onLoadList();
 }
 
 //5. 작업 (미완료)
@@ -259,7 +238,6 @@ function changeNotCmplt(event) {
   isScheduled = false;
   isCmplt = false;
   isNotCmplt = true;
-  changeListBtn();
-}
 
-// 각 투두의 버튼 이벤트 확인
+  onLoadList();
+}

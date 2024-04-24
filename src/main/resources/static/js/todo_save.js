@@ -18,6 +18,18 @@ function handleToDoSubmit(event) {
     user_id: loginUserId
   };
 
+  if (isTdy) {
+    newTodoObj.fil_tdy = "1";
+  } else if (isImp) {
+    newTodoObj.fil_imp = "1";
+  } else if (isCmplt) {
+    newTodoObj.fil_cmplt = "1";
+  } else if (isNotCmplt) {
+    newTodoObj.fil_cmplt = "0";
+  }
+
+  console.log(newTodoObj);
+
   fetch("/api/todo/save", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -28,7 +40,7 @@ function handleToDoSubmit(event) {
       const jsonData = JSON.stringify(response);
       const parsedData = JSON.parse(jsonData);
       console.log(parsedData.todo_idx);
-      newTodoObj.id = parsedData.todo_idx;
+      newTodoObj.todo_idx = parsedData.todo_idx;
       addTodo(newTodoObj);
     })
     .catch((error) => {

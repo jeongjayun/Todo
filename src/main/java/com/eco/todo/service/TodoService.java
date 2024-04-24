@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
+import com.eco.todo.dto.Todos;
 import com.eco.todo.mapper.TodoMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -48,34 +49,36 @@ public class TodoService {
 
 	}
 
-	public ArrayList<Todo> findAllTodo(String user_id) {
-		ArrayList<Todo> list = new ArrayList<>();
+	public ArrayList<Todos> findAllTodo(String user_id) {
+		ArrayList<Todos> list = new ArrayList<>();
 		list = mapper.findAllTodo(user_id);
 		return list;
 	}
 
-	public ArrayList<Todo> filterTdy(String user_id) {
-		ArrayList<Todo> list = new ArrayList<>();
+	public ArrayList<Todos> filterTdy(String user_id) {
+		ArrayList<Todos> list = new ArrayList<>();
 		list = mapper.filterTdy(user_id);
 		return list;
 	}
 
-	public ArrayList<Todo> filterImp(String user_id) {
-		ArrayList<Todo> list = new ArrayList<>();
+	public ArrayList<Todos> filterImp(String user_id) {
+		ArrayList<Todos> list = new ArrayList<>();
 		list = mapper.filterImp(user_id);
 		return list;
 	}
+	
+	public ArrayList<Todos> filterCmplt(String user_id){
+		ArrayList<Todos> list = new ArrayList<>();
+		list = mapper.filterCmplt(user_id);
+		return list;
+	}
 
-	public ArrayList<Todo> filterNotCmplt(String user_id) {
-		ArrayList<Todo> list = new ArrayList<>();
+	public ArrayList<Todos> filterNotCmplt(String user_id) {
+		ArrayList<Todos> list = new ArrayList<>();
 		list = mapper.filterNotCmplt(user_id);
 		return list;
 	}
 
-	public int findMaxNum() {
-		logger.info("Todo 테이블에 현재 가장 큰 수 구하기");
-		return mapper.findMaxNum();
-	}
 	
 	public int updateFilters(Filters filter) {
 		logger.info("filter 수정하기");
