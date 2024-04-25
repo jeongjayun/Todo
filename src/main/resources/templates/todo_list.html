@@ -7,14 +7,60 @@
   <title>할 일 목록</title>
 
   <link rel="stylesheet" type="text/css" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css" />
 </head>
 
 <body>
-  <div class="main_container">
-    <div class="container">
 
+  <!-- 큰 영역 -->
+  <div class="wrap collapse">
+   <!-- 사이드바 영역 -->
+   <div class="sidebar">
+
+    <div class="sidebar-top">
+      <div><!--togle위치 이동--></div>
+      <label class="toggle">
+        <!-- 메뉴 상태 변경 버튼 추가 -->
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+     </div>
+
+     <div class ="sidebar-main">
+      <div class="todo-title">
+        <!--요소 불러오기-->
+        <input type="checkbox"/>
+        <span><!--데이터--></span>
+        <button>중요X</button>
+      </div>
+
+      <button>나의 하루에 추가</button>
+
+      <div class="todo-ddln">
+        기한 설정
+      </div>
+
+      <div class="todo-memo">
+        메모
+        4월 17일 수에 업데이트 됨
+      </div>
+     </div>
+
+     <div class="sidebar-bottom">
+      <div>4월 17일 생성됨</div>
+      <button>삭제</button>
+     </div>
+
+  </div>
+    
+  <!-- 메인 영역 -->
+  <div class="main_container">
+   <!-- 컨텐츠 영역 -->
+    <div class="container">
       <div class="menu-div">
 
+        <!-- 현재 로그인 계정 정보 -->
         <div class="user-profile">
           <div class="user-img"></div>
           <div class="user-detail">
@@ -23,11 +69,13 @@
           </div>
         </div>
 
+        <!-- 검색영역 -->
         <div class="search-div">
           <input type="text" placeholder="기능구현아직"/>
           <button>검색</button>
         </div>
 
+        <!-- 메뉴 목록 -->
         <div class="menu-list">
           <ul>
             <li id="fil-tdy">오늘 할 일</li>
@@ -40,6 +88,7 @@
 
       </div>
 
+      <!-- 리스트가 있는 메인영역 -->
       <div class="list-div">
 
         <div class="list-main">
@@ -48,7 +97,9 @@
               <h1><!--동적으로 목록 이름 바뀜--></h1>
             </div>
             <div class="today" id="today">
-              <h2 class="hidden">0월 0일</h2>
+              <h2 class="hidden">
+                <!-- 동적으로 오늘의 날짜 0월 0일 -->
+              </h2>
             </div>
           </div>
 
@@ -62,20 +113,23 @@
 
         <div class="new-todo-div">
           <form action="/api/todo/save" method="post" id="todo-form">
-            <button>완료표시</button>
+            <!-- <button>완료표시</button> -->
             <input type="text" placeholder="할 일 작성" minlength="1" maxlength="50" />
-            <button>중요표시</button>
-            <button>달력예정</button>
+            <!-- <button>중요표시</button>
+            <button>달력예정</button> -->
           </form>
         </div>
 
       </div>
     </div>
   </div>
+</div>
+
 
   <script src="/js/todo_list.js"></script>
   <script src="/js/date.js"></script>
   <script src="/js/todo_save.js"></script>
+  <script src="/js/sidebar.js"></script>
 
 </body>
 

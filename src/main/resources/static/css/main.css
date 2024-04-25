@@ -1,23 +1,230 @@
-body {
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
+/* 초기 리셋 스타일 */
+* {
+  box-sizing: border-box;
 }
 
-.main_container {
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+/* rem 사용을 위한 루트글자 크기 설정 */
+html {
+  font-size: 15px;
+}
+
+/* 
+   기본 배치
+   - <div class="wrap">: 사이드바가 보여지는 화면
+   - <div class="wrap collapse">:  사이드바가 숨겨지는 화면
+*/
+.wrap {
+  position: relative;
+}
+.wrap > .sidebar {
+  background-color: #fff;
+  position: fixed;
+
+  /* 사이드바가 보여지는 중 / sidebar는 화면을 기준으로 배치 */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30rem;
+
+  padding: 1rem;
+  z-index: 9999;
+}
+
+.wrap > .main_container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 30rem; /*사이드바가 나와있는 만큼의 길이 */
+
   display: flex;
   justify-content: center; /* 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
   height: 100vh; /* 화면 전체 높이 */
 }
 
-.container {
+.main_container > .container {
   display: flex;
-  width: 80%;
-  height: 80%;
+  position: relative;
+  width: 60rem;
+  height: 60rem;
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/*
+   숨긴 상태의 처리
+  - 사이드바는 화면 밖으로 이동 시킴
+  - 컨텐츠 영역은 사이드바가 사라진 자리 채움
+ */
+
+.wrap.collapse > .sidebar {
+  margin-right: -30rem;
+}
+
+.wrap.collapse {
+}
+
+.wrap.collapse > .main_container {
+  right: 0;
+}
+
+/* 부드럽게 이동하도록 transition 처리 */
+.wrap > .sidebar {
+  transition-property: margin-right;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+}
+
+.wrap > .main_container {
+  transition-property: right, padding-right;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+}
+
+/* 사이드바 메뉴 상단부 */
+.wrap > .sidebar > .sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+
+  border: 1px dotted red;
+}
+
+.wrap > .sidebar > .sidebar-top > .toggle {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* 사이드바 메인영역 */
+.wrap > .sidebar > .sidebar-main {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  gap: 20px;
+}
+.wrap > .sidebar > .sidebar-main > .todo-title {
+  width: 100%;
+  height: 70px;
+  border: 1px dotted blue;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrap > .sidebar > .sidebar-main > .todo-title > input {
+}
+.wrap > .sidebar > .sidebar-main > .todo-title > span {
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.wrap > .sidebar > .sidebar-main > .todo-title > button {
+}
+
+.wrap > .sidebar > .sidebar-main > button {
+  width: 100%;
+  height: 70px;
+}
+
+.wrap > .sidebar > .sidebar-main > .todo-ddln {
+  width: 100%;
+  height: 70px;
+  border: 1px dotted blue;
+}
+
+.wrap > .sidebar > .sidebar-main > .todo-memo {
+  width: 100%;
+  height: 200px;
+  border: 1px dotted blue;
+}
+
+/* 사이드바 하단 */
+.wrap > .sidebar > .sidebar-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+
+  width: 100%;
+  left: 0;
+  bottom: 1rem;
+  position: absolute;
+
+  padding: 1rem;
+
+  border: 1px dotted blue;
+}
+
+.wrap > .sidebar > .sidebar-bottom > div {
+  position: relative;
+  border: 1px solid purple;
+}
+
+.wrap > .sidebar > .sidebar-bottom > button {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  right: 0;
+  border: 1px dotted red;
+}
+
+/* 사이드바 메뉴 버튼 */
+.wrap > .sidebar > .sidebar-top > .toggle > span {
+  position: absolute;
+
+  width: 80%;
+  height: 10%;
+  background-color: black;
+}
+
+/* 사이드바 내부 닫기 메뉴 버튼 (div class : main_container) */
+.wrap > .sidebar > .sidebar-top > .toggle > span:nth-child(1) {
+  top: 10%;
+  left: 10%;
+}
+.wrap > .sidebar > .sidebar-top > .toggle > span:nth-child(2) {
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+}
+.wrap > .sidebar > .sidebar-top > .toggle > span:nth-child(3) {
+  top: 90%;
+  left: 10%;
+  transform: translateY(-100%);
+}
+
+/* 토글 hover 시 x 버튼으로 */
+.wrap > .sidebar > .sidebar-top > .toggle:hover > span:nth-child(1) {
+  top: 50%;
+  left: 0%;
+  width: 100%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.wrap > .sidebar > .sidebar-top > .toggle:hover > span:nth-child(2) {
+  display: none;
+}
+
+.wrap > .sidebar > .sidebar-top > .toggle:hover > span:nth-child(3) {
+  top: 50%;
+  left: 0%;
+  width: 100%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* 부드럽게 */
+.wrap > .sidebar > .sidebar-top > .toggle > span {
+  transition: all 0.3s linear;
 }
 
 .menu-div,
@@ -151,38 +358,40 @@ body {
 
 .list-div .list-todo {
   margin: 10px;
-  background-color: white;
 }
 
 .list-div .list-todo ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
-  background-color: cornflowerblue;
 }
 
 .list-div .list-todo ul li {
   height: 40px;
   margin: 15px 5px;
-  background-color: ghostwhite;
   border: 1px solid #ccc;
+  background-color: white;
   border-radius: 5px;
   display: flex;
   cursor: pointer;
 }
 
 .list-div .list-todo li span {
+  display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   text-justify: auto;
   text-align: center;
-  flex: 1;
 }
 
 .list-div .list-todo li .cmplt-btn {
 }
 
 .list-div .list-todo li .imp-btn {
+  background-color: #3c9eec;
+  border: none;
+  color: #fff;
 }
 
 .list-div .new-todo-div {

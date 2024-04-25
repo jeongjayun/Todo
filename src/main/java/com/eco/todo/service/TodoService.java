@@ -1,6 +1,5 @@
 package com.eco.todo.service;
 
-import java.io.Console;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.eco.todo.dto.Filters;
-import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
 import com.eco.todo.mapper.TodoMapper;
 
@@ -25,7 +23,6 @@ public class TodoService {
 	private static Logger logger = LoggerFactory.getLogger("ApiController.class");
 
 	public Map<String, Object> saveTodo(TodoAndFilter todoAndFilter) {
-		
 
 		Timestamp created_time = new Timestamp(System.currentTimeMillis());
 		todoAndFilter.setCreated_time(created_time);
@@ -88,5 +85,10 @@ public class TodoService {
 		System.out.println(result);
 
 		return result;
+	}
+
+	public TodoAndFilter getTodoDetail(String user_id, int todo_idx) {
+		TodoAndFilter todoAndFilter = mapper.getTodoDetail(user_id, todo_idx);
+		return todoAndFilter;
 	}
 }

@@ -44,16 +44,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 <!-- 투두 필터 수정  -->
-<update id="updateFilters">
-    UPDATE FILTERS
-    <trim prefix="SET" suffixOverrides=",">
-        <if test="fil_tdy != null and fil_tdy != ''">FIL_TDY = #{fil_tdy},</if>
-        <if test="fil_imp != null and fil_imp != ''">FIL_IMP = #{fil_imp},</if>
-        <if test="fil_cmplt != null and fil_cmplt != ''">FIL_CMPLT = #{fil_cmplt},</if>
-        <if test="fil_dlt != null and fil_dlt != ''">FIL_DLT = #{fil_dlt},</if>
-    </trim>
-    WHERE TODO_IDX = #{todo_idx}  
-</update>
+	<update id="updateFilters">
+	    UPDATE FILTERS
+	    <trim prefix="SET" suffixOverrides=",">
+	        <if test="fil_tdy != null and fil_tdy != ''">FIL_TDY = #{fil_tdy},</if>
+	        <if test="fil_imp != null and fil_imp != ''">FIL_IMP = #{fil_imp},</if>
+	        <if test="fil_cmplt != null and fil_cmplt != ''">FIL_CMPLT = #{fil_cmplt},</if>
+	        <if test="fil_dlt != null and fil_dlt != ''">FIL_DLT = #{fil_dlt},</if>
+	    </trim>
+	    WHERE TODO_IDX = #{todo_idx}  
+	</update>
+
+<!-- 선택한 할 일 상세보기 -->
+	<select id="getTodoDetail">
+		SELECT *
+		  FROM V_TODO_FILTER
+		 WHERE USER_ID = #{user_id} 
+		   AND TODO_IDX = #{todo_idx}
+	</select>
 
 	
 <!-- 회원이 저장한 투두 전체 조회 -->

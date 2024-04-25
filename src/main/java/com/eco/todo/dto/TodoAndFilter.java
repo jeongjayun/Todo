@@ -3,9 +3,13 @@ package com.eco.todo.dto;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class TodoAndFilter {
 	private int todo_idx;
 	private String user_id;

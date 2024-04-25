@@ -39,7 +39,7 @@ function addTodo(newTodo) {
   todoList.append(li);
 }
 
-// 동적으로 그린 li 전부 지우기
+//동적으로 그린 li 전부 지우기
 function delTodoList() {
   let ul = document.querySelector(".list-todo ul");
   while (ul.firstChild) {
@@ -55,16 +55,20 @@ document.querySelector(".list-todo ul").addEventListener("click", function (e) {
     user_id: loginUserId
   };
 
+  //완료버튼
   if (e.target.nodeName == "INPUT") {
     if (e.target.checked) {
       filters.fil_cmplt = "1";
     } else {
       filters.fil_cmplt = "0";
     }
+
+    changeFilter(filters);
+    onLoadList();
   }
 
+  //중요버튼
   if (e.target.nodeName == "BUTTON") {
-    //버튼을 클릭했을 때
     if (e.target.value == "imp") {
       //imp 중요 속성이면
       filters.fil_imp = "0"; //중요 취소
@@ -76,16 +80,67 @@ document.querySelector(".list-todo ul").addEventListener("click", function (e) {
       e.target.value = "imp"; //속성 추가
       e.target.innerText = "중요O";
     }
+
+    changeFilter(filters);
+    onLoadList();
   }
 
+  //사이드바
   if (e.target.nodeName == "SPAN") {
-    alert(e.target);
-    //클릭되면 input text 활성화, submit 되면 수정되게 하고 싶음
+    const wrap = document.querySelector(".wrap");
+    wrap.classList.remove("collapse");
+    loadTodoDetail(filters.todo_idx);
   }
-
-  changeFilter(filters);
-  onLoadList();
 });
+
+//사이드바에 데이터 불러오기
+function loadTodoDetail(todoIdx) {
+  fetch(`/api/todo/${todoIdx}`)
+    .then((response) => response.json())
+    .then((response) => {
+      const TODO_DETAIL = response.result;
+      console.log(TODO_DETAIL);
+
+      const todoTitle = document.querySelector(".todo-title span");
+      todoTitle.innerText = TODO_DETAIL.todo_title;
+
+      const cmpltChk = document.querySelector(".todo-title input");
+      //완료된 작업 불러올 시 체크박스 체크
+      if (TODO_DETAIL.fil_cmplt == "1") {
+        cmpltChk.checked = true;
+        todoTitle.style = "text-decoration:line-through;";
+      } else {
+        cmpltChk.checked = false;
+        todoTitle.style = "none";
+      }
+
+      const impBtn = document.querySelector(".todo-title button");
+      impBtn.className = "imp-btn";
+      impBtn.innerText = "중요X";
+      impBtn.value = "";
+
+      //중요 표시 된 작업들
+      if (TODO_DETAIL.fil_imp == "1") {
+        impBtn.innerText = "중요O";
+        impBtn.value = "imp";
+      } else {
+        impBtn.innerText = "중요X";
+        impBtn.value = "";
+      }
+
+      const addTdy = document.querySelector(".sidebar-main button");
+      addTdy.addEventListener("click", function (event) {
+        alert("클릭 확인");
+      });
+
+      const createdDate = document.querySelector(".sidebar-bottom div");
+      createdDate.innerText = TODO_DETAIL.created_time;
+    })
+    .catch((error) => {
+      alert("통신에 실패하였습니다.");
+      console.log(error);
+    });
+}
 
 //목록 스위치
 let isTdy = true;

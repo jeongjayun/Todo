@@ -45,7 +45,7 @@ public class ApiController {
 	@PostMapping("/todo/save")
 	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody TodoAndFilter todoAndFilter) {
 		logger.info("ApiController. 할 일 저장");
-		
+
 		System.out.println(todoAndFilter);
 
 		Map<String, Object> result = todoService.saveTodo(todoAndFilter);
@@ -110,7 +110,17 @@ public class ApiController {
 		responseData.put("result", message);
 
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
 
+	@GetMapping("/todo/{todo_idx}")
+	public ResponseEntity<Map<String,Object>> getTodoDetail(@PathVariable("todo_idx") int todo_idx, Authentication authentication) {
+		Map<String, Object> responseData = new HashMap<>();
+
+		String user_id = authentication.getName();
+		TodoAndFilter todoAndFilter = todoService.getTodoDetail(user_id, todo_idx);
+
+		responseData.put("result", todoAndFilter);
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
 
 }
