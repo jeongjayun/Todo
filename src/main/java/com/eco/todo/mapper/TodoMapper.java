@@ -1,5 +1,7 @@
 package com.eco.todo.mapper;
 
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -15,6 +17,12 @@ public interface TodoMapper {
 	public int saveTodo(TodoAndFilter todoAndFilter);
 
 	public int updateFilters(Filters filter);
+	
+	public int updateTodoTime(@Param("todo_idx") int todo_idx, @Param("updated_time") Timestamp updated_time);
+	
+	public int deleteTodo(@Param("todo_idx") int todo_idx);
+	
+	public int deleteTodoTime(@Param("todo_idx") int todo_idx, @Param("deleted_time") Timestamp deleted_time);
 	
 	public TodoAndFilter getTodoDetail(@Param("user_id") String user_id, @Param("todo_idx") int todo_idx);
 

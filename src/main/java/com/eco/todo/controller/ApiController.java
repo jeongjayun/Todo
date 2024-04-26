@@ -99,15 +99,17 @@ public class ApiController {
 		System.out.println(filters);
 
 		Map<String, Object> responseData = new HashMap<>();
-		int result = todoService.updateFilters(filters);
+		responseData = todoService.updateFilters(filters);
 
-		String message;
-		if (result > 0) {
-			message = "변경에 성공했습니다.";
-		} else {
-			message = "변경에 실패했습니다.";
-		}
-		responseData.put("result", message);
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
+	
+	@PostMapping("/todo/delete/{todo_idx}")
+	public ResponseEntity<Map<String, Object>> deleteTodo(@PathVariable("todo_idx") int todo_idx, Authentication authentication) {
+		System.out.println(todo_idx);
+
+		Map<String, Object> responseData = new HashMap<>();
+		responseData = todoService.deleteTodo(todo_idx);
 
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}

@@ -13,11 +13,11 @@
 <body>
 
   <!-- 큰 영역 -->
-  <div class="wrap collapse">
+  <div class="wrap">
    <!-- 사이드바 영역 -->
    <div class="sidebar">
 
-    <div class="sidebar-top">
+     <div class="sidebar-top">
       <div><!--togle위치 이동--></div>
       <label class="toggle">
         <!-- 메뉴 상태 변경 버튼 추가 -->
@@ -27,31 +27,53 @@
       </label>
      </div>
 
+  
      <div class ="sidebar-main">
-      <div class="todo-title">
-        <!--요소 불러오기-->
-        <input type="checkbox"/>
-        <span><!--데이터--></span>
-        <button>중요X</button>
-      </div>
+      
+      <form>
+        <div class="todo-title">
+          <!--요소 생성하기 -->
+        </div>
+      </form>
 
-      <button>나의 하루에 추가</button>
-
+      <!-- 나의 하루에 추가버튼 -->
+      
       <div class="todo-ddln">
-        기한 설정
+        <div class="dropdown">
+          <button type="button" class="dropdown-toggle">기한 선택</button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item">
+              <button type="button" class="dropdown-option">오늘</button>
+            </li>
+            <li class="dropdown-item">
+              <button type="button" class="dropdown-option">내일</button>
+            </li>
+            <li class="dropdown-item">
+              <button type="button" class="dropdown-option">다음 주</button>
+            </li>
+            <li class="dropdown-item">
+              <button type="button" class="dropdown-option">날짜 선택</button>
+            </li>
+          </ul>
+          </div>
       </div>
 
       <div class="todo-memo">
-        메모
-        4월 17일 수에 업데이트 됨
+        <form>
+          <label for="todo-memo-textarea">메모</label>
+          <textarea id="todo-memo-textarea"><!-- 동적으로 내용 불러와야 함  --></textarea>
+          <p><!-- 4월 17일 수에 업데이트 됨 --></p>
+        </form>
       </div>
+
+      <!-- <button id="modify-btn">수정</button> -->
      </div>
 
      <div class="sidebar-bottom">
       <div>4월 17일 생성됨</div>
       <button>삭제</button>
      </div>
-
+    </form>
   </div>
     
   <!-- 메인 영역 -->

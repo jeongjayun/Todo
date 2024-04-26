@@ -43,6 +43,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				   	 	SELECT * FROM DUAL   				   	 		   
 	</insert>
 	
+<!-- 투두 삭제 -->
+	<update id="deleteTodo">
+		UPDATE FILTERS
+		   SET FIL_DLT = '1'
+		 WHERE TODO_IDX = #{todo_idx}
+	</update>
+	
+	<update id="deleteTodoTime">
+		UPDATE TODO
+		   SET DELETED_TIME = #{deleted_time}
+		 WHERE TODO_IDX = #{todo_idx}
+	</update>
+	
+<!-- 투두 수정 -->
+	<update id="updateTodo">
+		UPDATE TODO
+		 <trim prefix="SET" suffixOverrides=",">
+	        <if test="fil_tdy != null and fil_tdy != ''">FIL_TDY = #{fil_tdy},</if>
+	        <if test="fil_imp != null and fil_imp != ''">FIL_IMP = #{fil_imp},</if>
+	        <if test="fil_cmplt != null and fil_cmplt != ''">FIL_CMPLT = #{fil_cmplt},</if>
+	        <if test="fil_dlt != null and fil_dlt != ''">FIL_DLT = #{fil_dlt},</if>
+	    </trim>
+		 WHERE TODO_IDX = #{todo_idx}
+		   AND USER_ID = #{user_id}
+	</update>
+	
 <!-- 투두 필터 수정  -->
 	<update id="updateFilters">
 	    UPDATE FILTERS
@@ -54,12 +80,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    </trim>
 	    WHERE TODO_IDX = #{todo_idx}  
 	</update>
+	
+	<update id="updateTodoTime">
+		UPDATE TODO
+		   SET UPDATED_TIME = #{updated_time}
+		 WHERE TODO_IDX = #{todo_idx}
+	</update>
 
 <!-- 선택한 할 일 상세보기 -->
 	<select id="getTodoDetail">
 		SELECT *
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id} 
+		   AND FIL_DLT = '0'
 		   AND TODO_IDX = #{todo_idx}
 	</select>
 
@@ -69,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
 	  ORDER BY CREATED_TIME ASC
 	</select>
 	
@@ -77,7 +111,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
-		   AND FIL_TDY='1'
+		   AND FIL_TDY = '1'
+		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -86,8 +121,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
-		   AND FIL_IMP='1'
-		   AND FIL_CMPLT='0'
+		   AND FIL_IMP = '1'
+		   AND FIL_CMPLT = '0'
+		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -97,6 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_CMPLT='1'
+		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -106,6 +143,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM V_TODO_FILTER
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_CMPLT ='0'
+		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
