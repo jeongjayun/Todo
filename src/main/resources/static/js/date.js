@@ -7,5 +7,16 @@ function getDate() {
   const date = new Date();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  today.innerText = `${month}월 ${day}일`;
+
+  const dayOfWeek = date.getDay();
+  let weekday = new Array();
+  weekday[0] = "일";
+  weekday[1] = "월";
+  weekday[2] = "화";
+  weekday[3] = "수";
+  weekday[4] = "목";
+  weekday[5] = "금";
+  weekday[6] = "토";
+
+  today.innerText = `${month}월 ${day}일 ${weekday[date.getDay()]}요일`;
 }

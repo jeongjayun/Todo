@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.eco.todo.dto.Filters;
+import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
 import com.eco.todo.mapper.TodoMapper;
 
@@ -45,6 +46,12 @@ public class TodoService {
 		}
 
 	}
+	
+	public ArrayList<TodoAndFilter> search(String user_id, String todo_title) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.search(user_id, todo_title);
+		return list;
+	}
 
 	public ArrayList<TodoAndFilter> findAllTodo(String user_id) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
@@ -68,6 +75,32 @@ public class TodoService {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
 		list = mapper.filterCmplt(user_id);
 		return list;
+	}
+
+	public Map<String, Object> updateTodo(Todo todo) {
+		logger.info("filter 수정하기, 수정시간 업데이트 하기");
+
+		int result = mapper.updateTodo(todo);
+		Map<String, Object> responseData = new HashMap<>();
+
+		Timestamp updated_Time = new Timestamp(System.currentTimeMillis());
+		
+		int todo_idx = todo.getTodo_idx();
+		int update_result = mapper.updateTodo(todo);
+
+		String message;
+		if (result > 0) {
+			message = "데이터를 수정했습니다.";
+		} else {
+			message = "데이터를 수정하지 못했습니다.";
+		}
+
+		int updated_time_result = mapper.updateTodoTime(todo_idx, updated_Time);
+
+		responseData.put("수정 성공여부", message);
+		responseData.put("수정 성공시간 변경 성공여부", updated_Time);
+
+		return responseData;
 	}
 
 	public ArrayList<TodoAndFilter> filterNotCmplt(String user_id) {
@@ -152,5 +185,47 @@ public class TodoService {
 		;
 		TodoAndFilter todoAndFilter = mapper.getTodoDetail(user_id, todo_idx);
 		return todoAndFilter;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnYesterDay(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnYesterDay(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnToday(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnToday(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnTommorrow(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnTommorrow(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnLastWeek(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnLastWeek(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnNextWeek(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnNextWeek(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnAfter(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnAfter(user_id);
+		return list;
+	}
+	
+	public ArrayList<TodoAndFilter> ddlnBefore(String user_id) {
+		ArrayList<TodoAndFilter> list = new ArrayList<>();
+		list = mapper.ddlnBefore(user_id);
+		return list;
 	}
 }

@@ -1,5 +1,7 @@
 package com.eco.todo.controller;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eco.todo.dto.Filters;
+import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
 import com.eco.todo.service.TodoService;
 import com.eco.todo.service.UserService;
@@ -45,8 +48,6 @@ public class ApiController {
 	@PostMapping("/todo/save")
 	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody TodoAndFilter todoAndFilter) {
 		logger.info("ApiController. 할 일 저장");
-
-		System.out.println(todoAndFilter);
 
 		Map<String, Object> result = todoService.saveTodo(todoAndFilter);
 
@@ -94,6 +95,17 @@ public class ApiController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
+	@PostMapping("/todo/update")
+	public ResponseEntity<Map<String, Object>> updateTodo(@RequestBody Todo todo) {
+
+		System.out.println(todo);
+
+		Map<String, Object> responseData = new HashMap<>();
+		responseData = todoService.updateTodo(todo);
+
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
+
 	@PostMapping("/todo/filterUpdate")
 	public ResponseEntity<Map<String, Object>> updateFilters(@RequestBody Filters filters) {
 		System.out.println(filters);
@@ -103,9 +115,10 @@ public class ApiController {
 
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/todo/delete/{todo_idx}")
-	public ResponseEntity<Map<String, Object>> deleteTodo(@PathVariable("todo_idx") int todo_idx, Authentication authentication) {
+	public ResponseEntity<Map<String, Object>> deleteTodo(@PathVariable("todo_idx") int todo_idx,
+			Authentication authentication) {
 		System.out.println(todo_idx);
 
 		Map<String, Object> responseData = new HashMap<>();
@@ -115,13 +128,64 @@ public class ApiController {
 	}
 
 	@GetMapping("/todo/{todo_idx}")
-	public ResponseEntity<Map<String,Object>> getTodoDetail(@PathVariable("todo_idx") int todo_idx, Authentication authentication) {
+	public ResponseEntity<Map<String, Object>> getTodoDetail(@PathVariable("todo_idx") int todo_idx,
+			Authentication authentication) {
 		Map<String, Object> responseData = new HashMap<>();
 
 		String user_id = authentication.getName();
 		TodoAndFilter todoAndFilter = todoService.getTodoDetail(user_id, todo_idx);
 
 		responseData.put("result", todoAndFilter);
+		return new ResponseEntity<>(responseData, HttpStatus.OK);
+	}
+
+	@PostMapping("/todo/search")
+	public ResponseEntity<List<TodoAndFilter>> searchTitle(@RequestBody TodoAndFilter todoAndFilter) {
+		logger.info("ApiController. 검색하기");
+
+		String user_id = todoAndFilter.getUser_id();
+		String todo_title = todoAndFilter.getTodo_title();
+
+		List<TodoAndFilter> list = todoService.search(user_id, todo_title);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+
+	@GetMapping("/todo/scheduledList/{user_id}")
+	public ResponseEntity<Map<String, List<TodoAndFilter>>> scheduledList(
+			@PathVariable("user_id") String user_id) {
+
+		Map<String, List<TodoAndFilter>> responseData = new HashMap<>();
+		
+		List<TodoAndFilter> ddlnTodayList = new ArrayList<>();
+		ddlnTodayList = todoService.ddlnToday(user_id);
+		
+		List<TodoAndFilter> ddlnTommorrowList = new ArrayList<>();
+		ddlnTommorrowList = todoService.ddlnTommorrow(user_id);
+
+		List<TodoAndFilter> ddlnYesterDayList = new ArrayList<>();
+		ddlnYesterDayList = todoService.ddlnYesterDay(user_id);
+		
+		List<TodoAndFilter> ddlnLastWeekList = new ArrayList<>();
+		ddlnLastWeekList = todoService.ddlnLastWeek(user_id);
+		
+		List<TodoAndFilter> ddlnNextWeekList = new ArrayList<>();
+		ddlnNextWeekList = todoService.ddlnNextWeek(user_id);
+		
+		List<TodoAndFilter> ddlnAfterList = new ArrayList<>();
+		ddlnAfterList = todoService.ddlnAfter(user_id);
+		
+		List<TodoAndFilter> ddlnBeforeList = new ArrayList<>();
+		ddlnBeforeList = todoService.ddlnBefore(user_id);
+		
+		responseData.put("마감기한 이전에", ddlnBeforeList);
+		responseData.put("마감기한 일주일 전", ddlnLastWeekList);
+		responseData.put("마감기한 어제", ddlnYesterDayList);
+		responseData.put("마감기한 오늘", ddlnTodayList);
+		responseData.put("마감기한 내일", ddlnTommorrowList);
+		responseData.put("마감기한 일주일 후", ddlnNextWeekList);
+		responseData.put("마감기한 나중에", ddlnAfterList);
+
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
 

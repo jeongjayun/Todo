@@ -5,154 +5,158 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>할 일 목록</title>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="stylesheet" type="text/css" href="/css/main.css" />
   <link rel="stylesheet" type="text/css" href="/css/sidebar.css" />
+
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
 <body>
-
   <!-- 큰 영역 -->
-  <div class="wrap">
-   <!-- 사이드바 영역 -->
-   <div class="sidebar">
+  <div class="wrap collapse">
+    <!-- 사이드바 영역 -->
+    <div class="sidebar">
 
-     <div class="sidebar-top">
-      <div><!--togle위치 이동--></div>
-      <label class="toggle">
-        <!-- 메뉴 상태 변경 버튼 추가 -->
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
-     </div>
-
-  
-     <div class ="sidebar-main">
-      
-      <form>
-        <div class="todo-title">
-          <!--요소 생성하기 -->
-        </div>
-      </form>
-
-      <!-- 나의 하루에 추가버튼 -->
-      
-      <div class="todo-ddln">
-        <div class="dropdown">
-          <button type="button" class="dropdown-toggle">기한 선택</button>
-          <ul class="dropdown-menu">
-            <li class="dropdown-item">
-              <button type="button" class="dropdown-option">오늘</button>
-            </li>
-            <li class="dropdown-item">
-              <button type="button" class="dropdown-option">내일</button>
-            </li>
-            <li class="dropdown-item">
-              <button type="button" class="dropdown-option">다음 주</button>
-            </li>
-            <li class="dropdown-item">
-              <button type="button" class="dropdown-option">날짜 선택</button>
-            </li>
-          </ul>
-          </div>
+      <div class="sidebar-top">
+        <div><!--togle위치 이동--></div>
+        <label class="toggle">
+          <!-- 메뉴 상태 변경 버튼 추가 -->
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
       </div>
 
-      <div class="todo-memo">
+
+      <div class="sidebar-main">
+
         <form>
-          <label for="todo-memo-textarea">메모</label>
-          <textarea id="todo-memo-textarea"><!-- 동적으로 내용 불러와야 함  --></textarea>
-          <p><!-- 4월 17일 수에 업데이트 됨 --></p>
+          <div class="todo-title">
+            <!--요소 생성하기 -->
+          </div>
         </form>
-      </div>
 
-      <!-- <button id="modify-btn">수정</button> -->
-     </div>
+        <div class="today-btn-div">
+          <!-- 나의 하루에 추가버튼 -->
+        </div>
 
-     <div class="sidebar-bottom">
-      <div>4월 17일 생성됨</div>
-      <button>삭제</button>
-     </div>
-    </form>
-  </div>
-    
-  <!-- 메인 영역 -->
-  <div class="main_container">
-   <!-- 컨텐츠 영역 -->
-    <div class="container">
-      <div class="menu-div">
+        <div class="todo-ddln">
+          <!-- 드랍메뉴를 동적으로 그려냄 -->
+        </div>
 
-        <!-- 현재 로그인 계정 정보 -->
-        <div class="user-profile">
-          <div class="user-img"></div>
-          <div class="user-detail">
-            <span th:text="${#authentication.name}"></span>
-            <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
+        <form>
+          <div class="todo-memo">
+            <!-- 동적으로 메모공간 만들기 -->
           </div>
-        </div>
+        </form>
 
-        <!-- 검색영역 -->
-        <div class="search-div">
-          <input type="text" placeholder="기능구현아직"/>
-          <button>검색</button>
-        </div>
-
-        <!-- 메뉴 목록 -->
-        <div class="menu-list">
-          <ul>
-            <li id="fil-tdy">오늘 할 일</li>
-            <li id="fil-imp">중요한 일</li>
-            <li id="fil-scheduled">계획된 일</li>
-            <li id="fil-cmplt">완료된 일</li>
-            <li id="fil-notCmplt">작업</li>
-          </ul>
+        <div class="todo-data">
+          <!-- 동적으로 메모공간 만들기 -->
         </div>
 
       </div>
 
-      <!-- 리스트가 있는 메인영역 -->
-      <div class="list-div">
+      <div class="sidebar-bottom">
+        <!--동적으로 생성됨-->
+      </div>
 
-        <div class="list-main">
-          <div class="list-top">
-            <div class="list-title">
-              <h1><!--동적으로 목록 이름 바뀜--></h1>
-            </div>
-            <div class="today" id="today">
-              <h2 class="hidden">
-                <!-- 동적으로 오늘의 날짜 0월 0일 -->
-              </h2>
+    </div>
+
+    <!-- 메인 영역 -->
+    <div class="main_container">
+      <!-- 컨텐츠 영역 -->
+      <div class="container">
+        <div class="menu-div">
+
+          <!-- 현재 로그인 계정 정보 -->
+          <div class="user-profile">
+            <div class="user-img"></div>
+            <div class="user-detail">
+              <span th:text="${#authentication.name}"></span>
+              <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
             </div>
           </div>
 
-          <div class="list-todo">
+          <!-- 검색영역 -->
+          <div class="search-div">
+            <form id="search-form">
+              <input type="text" />
+              <button><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+
+          <!-- 메뉴 목록 -->
+          <div class="menu-list">
             <ul>
-            <!--Fetch API 통하여 db에서 데이터 가져와 li 생성 -->
+              <li id="fil-tdy">오늘 할 일</li>
+              <li id="fil-imp">중요한 일</li>
+              <li id="fil-scheduled">계획된 일</li>
+              <li id="fil-cmplt">완료된 일</li>
+              <li id="fil-notCmplt">작업</li>
             </ul>
           </div>
 
         </div>
 
-        <div class="new-todo-div">
-          <form action="/api/todo/save" method="post" id="todo-form">
-            <!-- <button>완료표시</button> -->
-            <input type="text" placeholder="할 일 작성" minlength="1" maxlength="50" />
-            <!-- <button>중요표시</button>
-            <button>달력예정</button> -->
-          </form>
-        </div>
+        <!-- 리스트가 있는 메인영역 -->
+        <div class="list-div">
 
+          <div class="list-main">
+            <div class="list-top">
+              <div class="list-title">
+                <h1><!--동적으로 목록 이름 바뀜--></h1>
+              </div>
+              <div class="today" id="today">
+                <h2 class="hidden">
+                  <!-- 동적으로 오늘의 날짜 0월 0일 -->
+                </h2>
+              </div>
+            </div>
+
+            <div class="list-todo">
+              <ul>
+                <!--Fetch API 통하여 db에서 데이터 가져와 li 생성 -->
+              </ul>
+              <div class="hidden">
+                <h2>완료됨</h2>
+                <ul>
+                  <!--Fetch API 통하여 db에서 데이터 가져와 li 생성 -->
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="new-todo-div">
+            <form action="/api/todo/save" method="post" id="todo-form">
+              <div class="input-wrapper">
+                <input type="checkbox" class="cmpltChk">
+                <input type="text" class="todo-input" placeholder="할 일 작성" minlength="1" maxlength="50" />
+                <input type="date" class="todoCalendar">
+              </div>
+            </form>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  <div id="copyright">illust by <a href="https://twitter.com/ouie_e">@ouie_e</a></div>
 
   <script src="/js/todo_list.js"></script>
   <script src="/js/date.js"></script>
   <script src="/js/todo_save.js"></script>
   <script src="/js/sidebar.js"></script>
+  <script src="/js/search.js"></script>
+
+
 
 </body>
+
+
 
 </html>

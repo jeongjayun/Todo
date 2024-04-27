@@ -4,6 +4,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eco.todo.mapper.TodoMapper">
+<!-- view  중복문 -->
+	<sql id="selectView">
+		SELECT  TODO_IDX          -- 투두 인덱스 --
+						, USER_ID					-- 사용자 아이디 --
+						, TODO_TITLE			-- 투두 제목 --
+						, TODO_MEMO				-- 투두 메모 --
+						, TODO_DDLN				-- 투두 마감기한 --
+						,	CREATED_TIME		-- 생성 일시 --	
+						, UPDATED_TIME		-- 수정 일시 --
+						, DELETED_TIME		-- 삭제 일시 --
+						, FIL_TDY					-- 하루 여부 --
+						, FIL_IMP					-- 중요 여부 --
+						, FIL_CMPLT				-- 완료 여부 --
+						, FIL_DLT					-- 삭제 여부 --
+				FROM V_TODO_FILTER	
+	</sql>
+
 <!-- 투두 작성 -->
 	<insert id="saveTodo">
 		<selectKey keyProperty="todo_idx" resultType="int" order="BEFORE">
@@ -14,11 +31,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							   ( TODO_IDX
 							   , USER_ID
 							   , TODO_TITLE
+							   , TODO_DDLN
 							   , CREATED_TIME
 							   )
 						VALUES ( #{todo_idx}
 							   , #{user_id}
 							   , #{todo_title}
+							   , #{todo_ddln, jdbcType=DATE}
 							   , #{created_time}
 							   )
 				   INTO FILTERS
@@ -36,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								<if test="fil_tdy == null or fil_tdy == ''">, 0</if>
 								<if test="fil_imp != null and fil_imp != ''">, #{fil_imp}</if>
 								<if test="fil_imp == null or fil_imp == ''">, 0</if>
-								<if test="fil_cmplt != null and fil_cmplt != ''">, #{fil_imp}</if>
+								<if test="fil_cmplt != null and fil_cmplt != ''">, #{fil_cmplt}</if>
 								<if test="fil_cmplt == null or fil_cmplt == ''">, 0</if>			
 				   	 		   , 0
 				   	 		   )
@@ -60,10 +79,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateTodo">
 		UPDATE TODO
 		 <trim prefix="SET" suffixOverrides=",">
-	        <if test="fil_tdy != null and fil_tdy != ''">FIL_TDY = #{fil_tdy},</if>
-	        <if test="fil_imp != null and fil_imp != ''">FIL_IMP = #{fil_imp},</if>
-	        <if test="fil_cmplt != null and fil_cmplt != ''">FIL_CMPLT = #{fil_cmplt},</if>
-	        <if test="fil_dlt != null and fil_dlt != ''">FIL_DLT = #{fil_dlt},</if>
+	        <if test="todo_title != null and todo_title != ''">TODO_TITLE = #{todo_title},</if>
+	        <if test="todo_memo != null and todo_memo != ''">TODO_MEMO = #{todo_memo},</if>
+	        TODO_DDLN = #{todo_ddln, jdbcType=DATE}
 	    </trim>
 		 WHERE TODO_IDX = #{todo_idx}
 		   AND USER_ID = #{user_id}
@@ -89,8 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 선택한 할 일 상세보기 -->
 	<select id="getTodoDetail">
-		SELECT *
-		  FROM V_TODO_FILTER
+		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id} 
 		   AND FIL_DLT = '0'
 		   AND TODO_IDX = #{todo_idx}
@@ -99,8 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 <!-- 회원이 저장한 투두 전체 조회 -->
 	<select id="findAllTodo">
-		SELECT *
-		  FROM V_TODO_FILTER
+		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
 	  ORDER BY CREATED_TIME ASC
@@ -108,29 +124,100 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 <!-- 오늘 할 일만 필터 -->
 	<select id="filterTdy">
-		SELECT *
-		  FROM V_TODO_FILTER
+		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_TDY = '1'
 		   AND FIL_DLT = '0'
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1
+		    OR TRUNC(CREATED_TIME) = TRUNC(SYSDATE)+1
+		 ORDER BY CREATED_TIME DESC
+	</select>
+
+<!-- 마감일 어제 -->
+	<select id="ddlnYesterDay">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 어제 
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 마감일 오늘 -->
+	<select id="ddlnToday">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 오늘 
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 마감일 내일 -->
+	<select id="ddlnTommorrow">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+2 -- 마감일 내일 
+		 ORDER BY CREATED_TIME DESC
+	</select>
+	
+<!-- 지난 주 -->
+	<select id="ddlnLastWeek">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'		   
+		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 6
+		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 1 -- 마감일 1주일 전
+		 ORDER BY CREATED_TIME DESC
+	</select>
+
+<!-- 다음 주 -->
+	<select id="ddlnNextWeek">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 1
+		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 8 -- 마감일 1주일 전
+		 ORDER BY CREATED_TIME DESC
+	</select>
+
+<!-- 나중에 -->
+	<select id="ddlnAfter">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+ 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 8 -- 마감일 나중에 
+		 ORDER BY CREATED_TIME DESC
+	</select>
+
+<!-- 이전에 -->
+	<select id="ddlnBefore">
+		<include refid="selectView"></include>
+		 WHERE USER_ID = #{user_id}
+		   AND FIL_DLT = '0'
+		   AND FIL_CMPLT = '0'
+ 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 6 -- 마감일 이전에 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
 <!-- 중요한 일만 필터 -->
 	<select id="filterImp">
-		SELECT *
-		  FROM V_TODO_FILTER
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_IMP = '1'
-		   AND FIL_CMPLT = '0'
-		   AND FIL_DLT = '0'
-		 ORDER BY CREATED_TIME DESC
+	    <include refid="selectView"></include>
+	    WHERE USER_ID = #{user_id}
+	      AND (FIL_IMP = '1' OR FIL_CMPLT = '1') -- 중요한 항목이거나 완료된 항목만 선택
+	      AND FIL_DLT = '0' -- 삭제되지 않은 항목만 선택
+	    ORDER BY CREATED_TIME DESC
 	</select>
+
 	
 <!-- 완료된 일만 필터 -->
 	<select id="filterCmplt">
-		SELECT *
-		  FROM V_TODO_FILTER
+		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_CMPLT='1'
 		   AND FIL_DLT = '0'
@@ -139,12 +226,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 <!-- 미완료된 일 필터 -->
 	<select id="filterNotCmplt">
-		SELECT *
-		  FROM V_TODO_FILTER
+		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_CMPLT ='0'
 		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
+	</select>
+
+	<!-- 투두 검색 -->
+	<select id="search">
+		<include refid="selectView"></include>
+			WHERE USER_ID = #{user_id}
+			  AND TODO_TITLE LIKE '%'||#{todo_title}||'%'
+			ORDER BY CREATED_TIME DESC
 	</select>
 	
 </mapper>

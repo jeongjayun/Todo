@@ -33,6 +33,16 @@ public class PageController {
 		} else {
 			return "redirect:/";
 		}
+	}
+	
+	@GetMapping("/settings")
+	public String settingPage(Authentication authentication) {
 		
+		if (authentication != null && authentication.isAuthenticated()) {
+			String user_id = authentication.getName();
+			return "settings";
+		} else {
+			return "redirect:/";
+		}
 	}
 }

@@ -1,6 +1,8 @@
 // 할 일 저장하기 (filter 아직)
 const todoForm = document.getElementById("todo-form");
-const todoInput = document.querySelector("#todo-form input");
+const todoInput = document.querySelector("#todo-form .todo-input");
+const ddlnInput = document.querySelector("#todo-form .todoCalendar");
+const cmpltInput = document.querySelector("#todo-form .cmpltChk");
 
 todoForm.addEventListener("submit", handleToDoSubmit);
 
@@ -10,15 +12,26 @@ const loginUserId = document.querySelector(
 
 function handleToDoSubmit(event) {
   event.preventDefault();
+
   const newTodo = todoInput.value;
   todoInput.value = "";
+  const newDdln = new Date(ddlnInput.value); // 문자열로부터 날짜 객체 생성
 
+  //기본값
   const newTodoObj = {
     todo_title: newTodo,
     user_id: loginUserId,
     fil_tdy: isTdy ? '1' : '0',
     fil_imp: isImp ? '1' : '0'
   };
+
+  if (cmpltInput.checked) {
+    newTodoObj.fil_cmplt = "1";
+  }
+
+  if (ddlnInput.value != "") {
+    newTodoObj.todo_ddln = newDdln.toISOString();
+  }
 
   fetch("/api/todo/save", {
     method: "POST",
