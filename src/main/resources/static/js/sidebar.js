@@ -1,4 +1,3 @@
-
 // 사이드바에서 메뉴 상태 변경 버튼 누르면 main_container의 상태 변경하도록
 window.addEventListener("load", function () {
   this.document.querySelector(".toggle").addEventListener("click", function () {
@@ -13,13 +12,13 @@ function loadTodoDetail(todoIdx) {
     .then((response) => {
       const TODO_DETAIL = response.result;
 
-      addTodoTitle(TODO_DETAIL); //동적으로 사이드바 안의 내용들 생성하기
+      //동적으로 사이드바 안의 내용들 생성하기
+      addTodoTitle(TODO_DETAIL);
       addTodayBtn(TODO_DETAIL);
       addDdln(TODO_DETAIL);
       addMemo(TODO_DETAIL);
       addTodoData(TODO_DETAIL);
       addSidebarBottom(TODO_DETAIL);
-
     })
     .catch((error) => {
       alert("통신에 실패하였습니다.");
@@ -30,6 +29,7 @@ function loadTodoDetail(todoIdx) {
 // 동적으로 사이드바에 요소 만들기
 //----- todo-title 영역 -----
 function addTodoTitle(TODO_DETAIL) {
+  delSidebarEl();
   //----- todo-title 상단영역 -----
   const todoTitle = document.querySelector(".todo-title");
 
@@ -45,7 +45,13 @@ function addTodoTitle(TODO_DETAIL) {
   impBtn.innerHTML = `<i class="fab fa-star"></i>`;
   impBtn.value = "";
 
-  //중요표시 불러오기 
+  const filters = {
+    //filter 기본값
+    todo_idx: TODO_DETAIL.todo_idx,
+    user_id: loginUserId
+  };
+
+  //중요표시 불러오기
   if (TODO_DETAIL.fil_imp == "1") {
     impBtn.innerHTML = `<i class="fas fa-star"></i>`;
     impBtn.value = "imp";
@@ -55,11 +61,7 @@ function addTodoTitle(TODO_DETAIL) {
   }
 
   impBtn.addEventListener("click", function (event) {
-    const filters = {
-      //filter 기본값
-      todo_idx: TODO_DETAIL.todo_idx,
-      user_id: loginUserId
-    };
+    event.preventDefault();
 
     if (impBtn.value == "imp") {
       //imp 중요 속성이면
@@ -73,10 +75,7 @@ function addTodoTitle(TODO_DETAIL) {
       impBtn.innerHTML = `<i class="fas fa-star"></i>`;
     }
 
-    console.log(filters);
     changeFilter(filters);
-    delSidebarEl();
-    loadTodoDetail(TODO_DETAIL.todo_idx);
   });
 
   //완료된 작업 불러올 시 체크박스 체크
@@ -88,10 +87,21 @@ function addTodoTitle(TODO_DETAIL) {
     todoTitleTextarea.style = "none";
   }
 
+  cmpltChk.addEventListener("click", function () {
+    if (cmpltChk.checked) {
+      filters.fil_cmplt = "1";
+    } else {
+      filters.fil_cmplt = "0";
+    }
+
+    console.log(filters);
+    changeFilter(filters);
+  });
+
   todoTitle.append(cmpltChk);
   todoTitle.append(todoTitleTextarea);
   todoTitle.append(impBtn);
-};
+}
 
 //----- sidebar-main 영역 -----
 function addTodayBtn(TODO_DETAIL) {
@@ -122,7 +132,7 @@ function addTodayBtn(TODO_DETAIL) {
 
     if (todayBtn.value == "tdy") {
       //오늘 할 일이면
-      filters.fil_tdy = "0" //오늘 할 일 취소
+      filters.fil_tdy = "0"; //오늘 할 일 취소
       todayBtn.value = ""; //속성 없애기
       todayBtn.innerText = "나의 하루에 추가";
     } else {
@@ -133,11 +143,8 @@ function addTodayBtn(TODO_DETAIL) {
     }
 
     changeFilter(filters);
-    delSidebarEl();
-    loadTodoDetail(TODO_DETAIL.todo_idx);
-  })
-
-};
+  });
+}
 
 // ----- todo-ddln 드랍메뉴 만들기 -----
 function addDdln(TODO_DETAIL) {
@@ -197,7 +204,7 @@ function addDdln(TODO_DETAIL) {
   optionBtnCal.classList.add("calendar");
   optionBtnCal.id = TODO_DETAIL.todo_idx;
   optionBtnCal.innerText = "날짜 선택";
-  dropdownWeek.append(optionBtnCal);
+  dropdownCalendar.append(optionBtnCal);
 
   const datePicker = document.createElement("input");
   datePicker.setAttribute("type", "text");
@@ -205,7 +212,7 @@ function addDdln(TODO_DETAIL) {
   datePicker.className = "hidden";
   dropdownCalendar.append(datePicker);
 
-  menuList.append(dropdownToday); //ul에 li 붙이기 
+  menuList.append(dropdownToday); //ul에 li 붙이기
   menuList.append(dropdownTommorrow);
   menuList.append(dropdownWeek);
   menuList.append(dropdownCalendar);
@@ -215,33 +222,71 @@ function addDdln(TODO_DETAIL) {
 
   todoDdln.append(dropdownForm); //드랍다운 추가
   todoDdln.append(datePicker);
-  //초기값을 오늘 날짜로 설정   
-};
+  //초기값을 오늘 날짜로 설정
+}
 
 $(document).ready(function () {
   $(document).on("click", ".calendar", function () {
-    let todo_idx = $(this).closest('.dropdown').find('.dropdown-toggle').attr('id');
+    let todo_idx = $(this)
+      .closest(".dropdown")
+      .find(".dropdown-toggle")
+      .attr("id");
     console.log(todo_idx);
 
     $("#datepicker").datepicker({
-      dateFormat: 'yy-mm-dd' //달력 날짜 형태
-      , showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-      , showMonthAfterYear: true // 월- 년 순서가아닌 년도 - 월 순서
-      , changeYear: true //option값 년 선택 가능
-      , changeMonth: true //option값  월 선택 가능                
-      , showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-      , buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-      , buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
-      , buttonText: "선택" //버튼 호버 텍스트              
-      , yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
-      , monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'] //달력의 월 부분 텍스트
-      , monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'] //달력의 월 부분 Tooltip
-      , dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'] //달력의 요일 텍스트
-      , dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'] //달력의 요일 Tooltip
-      , minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-      , maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+      dateFormat: "yy-mm-dd", //달력 날짜 형태
+      showOtherMonths: true, //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+      showMonthAfterYear: true, // 월- 년 순서가아닌 년도 - 월 순서
+      changeYear: true, //option값 년 선택 가능
+      changeMonth: true, //option값  월 선택 가능
+      showOn: "both", //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시
+      buttonImage:
+        "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
+      buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
+      buttonText: "선택", //버튼 호버 텍스트
+      yearSuffix: "년", //달력의 년도 부분 뒤 텍스트
+      monthNamesShort: [
+        "1월",
+        "2월",
+        "3월",
+        "4월",
+        "5월",
+        "6월",
+        "7월",
+        "8월",
+        "9월",
+        "10월",
+        "11월",
+        "12월"
+      ], //달력의 월 부분 텍스트
+      monthNames: [
+        "1월",
+        "2월",
+        "3월",
+        "4월",
+        "5월",
+        "6월",
+        "7월",
+        "8월",
+        "9월",
+        "10월",
+        "11월",
+        "12월"
+      ], //달력의 월 부분 Tooltip
+      dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"], //달력의 요일 텍스트
+      dayNames: [
+        "일요일",
+        "월요일",
+        "화요일",
+        "수요일",
+        "목요일",
+        "금요일",
+        "토요일"
+      ], //달력의 요일 Tooltip
+      minDate: "-5Y", //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+      maxDate: "+5y", //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)
 
-      , onSelect: function (dateString) {
+      onSelect: function (dateString) {
         console.log(dateString);
         $.ajax({
           type: "POST",
@@ -252,13 +297,14 @@ $(document).ready(function () {
           },
           dataType: "json",
           data: JSON.stringify({
-            "todo_idx": todo_idx, // 클릭된 .calendar 요소에 연결된 .dropdown-toggle 버튼의 id 사용
-            "todo_ddln": dateString,
-            "user_id": loginUserId
+            todo_idx: todo_idx, // 클릭된 .calendar 요소에 연결된 .dropdown-toggle 버튼의 id 사용
+            todo_ddln: dateString,
+            user_id: loginUserId
           }),
           success: function (result) {
-            alert("변경 되었습니다.");
             console.log(result);
+            onLoadList();
+            loadTodoDetail(filters.todo_idx);
           },
           error: function (error) {
             alert("실패");
@@ -268,10 +314,9 @@ $(document).ready(function () {
       }
     });
 
-    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)         
+    $("#datepicker").datepicker("setDate", "today"); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
   });
 });
-
 
 // ----- memo -----
 function addMemo(TODO_DETAIL) {
@@ -283,13 +328,13 @@ function addMemo(TODO_DETAIL) {
   memoTextarea.placeholder = "메모를 입력하세요.";
 
   // textarea의 높이를 자동으로 조절하는 이벤트 핸들러 추가
-  memoTextarea.addEventListener('input', function () {
-    this.style.height = 'auto';
-    this.style.height = this.scrollHeight + 'px';
+  memoTextarea.addEventListener("input", function () {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
   });
 
   todoMemo.append(memoTextarea);
-};
+}
 
 // ----- 수정시간 정보 -----
 function addTodoData(TODO_DETAIL) {
@@ -300,7 +345,7 @@ function addTodoData(TODO_DETAIL) {
     dataP.innerText = `${elapsedTime(TODO_DETAIL.deleted_time)}에 삭제됨.`;
   } else if (TODO_DETAIL.updated_time != null) {
     dataP.innerText = `${elapsedTime(TODO_DETAIL.updated_time)} 수정됨.`;
-  };
+  }
 
   todoMemo.append(dataP);
 }
@@ -326,16 +371,24 @@ const elapsedTime = (date) => {
   const end = new Date();
 
   const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
-  if (seconds < 60) { return '방금 전' };
+  if (seconds < 60) {
+    return "방금 전";
+  }
 
   const minutes = seconds / 60;
-  if (minutes < 60) { return `${Math.floor(minutes)}분 전` };
+  if (minutes < 60) {
+    return `${Math.floor(minutes)}분 전`;
+  }
 
   const hours = minutes / 60;
-  if (hours < 24) { return `${Math.floor(hours)}시간 전` };
+  if (hours < 24) {
+    return `${Math.floor(hours)}시간 전`;
+  }
 
   const days = hours / 24;
-  if (days < 7) { return `${Math.floor(days)}일 전` };
+  if (days < 7) {
+    return `${Math.floor(days)}일 전`;
+  }
 
   return `${start.toLocaleDateString()}`;
 };
@@ -344,34 +397,35 @@ const elapsedTime = (date) => {
 // ----- 텍스트박스 -----
 document.querySelector(".todo-title").addEventListener("click", function () {
   const todoTitleTextarea = document.querySelector("textarea");
-  todoTitleTextarea.onkeydown = function (event) {
+  todoTitleTextarea.onkeyup = function (event) {
     let updateTitle = todoTitleTextarea.value;
 
     const todoObj = {
       todo_idx: todoTitleTextarea.id,
       user_id: loginUserId,
       todo_title: updateTitle
-    }
+    };
     mykeydown(event, todoObj);
   };
 });
 
 // ----- 메모박스 -----
-document.querySelector("form .todo-memo").addEventListener("click", function () {
-  const todoMemoTextarea = document.querySelector(".memo-textarea");
+document
+  .querySelector("form .todo-memo")
+  .addEventListener("click", function () {
+    const todoMemoTextarea = document.querySelector(".memo-textarea");
 
-  todoMemoTextarea.onkeydown = function (event) {
-    let updateMemo = todoMemoTextarea.value;
+    todoMemoTextarea.onkeydown = function (event) {
+      let updateMemo = todoMemoTextarea.value;
 
-    const todoObj = {
-      todo_idx: todoMemoTextarea.id,
-      user_id: loginUserId,
-      todo_memo: updateMemo
-    }
-    mykeydown(event, todoObj);
-  };
-});
-
+      const todoObj = {
+        todo_idx: todoMemoTextarea.id,
+        user_id: loginUserId,
+        todo_memo: updateMemo
+      };
+      mykeydown(event, todoObj);
+    };
+  });
 
 // ----- 기한 선택 -----
 document.querySelector(".todo-ddln").addEventListener("click", function () {
@@ -384,7 +438,7 @@ document.querySelector(".todo-ddln").addEventListener("click", function () {
 
   dropdownBtn.addEventListener("blur", function () {
     menuList.classList.remove("show");
-  })
+  });
 
   const tdyBtn = document.querySelector(".tdy");
   const tmrwBtn = document.querySelector(".tmrw");
@@ -417,29 +471,29 @@ document.querySelector(".todo-ddln").addEventListener("click", function () {
     datePicker.classList.remove("hidden");
   });
 
-
-
   // fetch 함수호출
   function updateDdln(formatDate) {
     let requestData = {
-      "todo_idx": dropdownBtn.id,
-      "todo_ddln": formatDate,
-      "user_id": loginUserId
-    }
+      todo_idx: dropdownBtn.id,
+      todo_ddln: formatDate,
+      user_id: loginUserId
+    };
 
-    fetch('/api/todo/update', {
+    fetch("/api/todo/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestData)
-    }).then(response => response.json())
-      .then(response => {
-        alert("변경되었습니다.");
+    })
+      .then((response) => response.json())
+      .then((response) => {
         console.log(response);
       })
-      .catch(error => { alert("실패"); console.log(error); });
+      .catch((error) => {
+        alert("실패");
+        console.log(error);
+      });
   }
 });
-
 
 // 기한 변경 함수
 function changeDdln(option) {
@@ -450,7 +504,7 @@ function changeDdln(option) {
 
   // 날짜 포맷팅
   if (option === "today") {
-    // 그대로 유지 
+    // 그대로 유지
   } else if (option === "tomorrow") {
     day += 1;
   } else if (option === "nextWeek") {
@@ -469,34 +523,39 @@ function changeDdln(option) {
   }
 
   // 날짜를 yyyy-MM-dd 형식으로 반환
-  return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  return `${year}-${month.toString().padStart(2, "0")}-${day
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 // ----- 삭제 버튼에 기능 추가 -----
-document.querySelector(".sidebar-bottom").addEventListener("click", function (event) {
-  const deleteBtn = document.querySelector(".button");
+document
+  .querySelector(".sidebar-bottom")
+  .addEventListener("click", function (event) {
+    const deleteBtn = document.querySelector(".button");
 
-  deleteBtn.addEventListener("click", function () {
-    if (
-      confirm("작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다.")
-    ) {
-      fetch(`/api/todo/delete/${deleteBtn.id}`, {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response);
-          alert("삭제되었습니다.");
-          window.location.reload(); //페이지 새로고침
+    deleteBtn.addEventListener("click", function () {
+      if (
+        confirm(
+          "작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다."
+        )
+      ) {
+        fetch(`/api/todo/delete/${deleteBtn.id}`, {
+          headers: { "Content-Type": "application/json" },
+          method: "POST"
         })
-        .catch((error) => {
-          alert("통신에 실패하였습니다.");
-          console.log(error);
-        });
-    }
+          .then((response) => response.json())
+          .then((response) => {
+            console.log(response);
+            alert("삭제되었습니다.");
+          })
+          .catch((error) => {
+            alert("통신에 실패하였습니다.");
+            console.log(error);
+          });
+      }
+    });
   });
-});
 
 // 동적으로 그린 요소들 모두 삭제
 function delSidebarEl() {
@@ -531,17 +590,17 @@ function delSidebarEl() {
   }
 }
 
-// textarea 엔터키 이벤트 
+// textarea 엔터키 이벤트
 function mykeydown(event, todoObj) {
-  if (event.keyCode == 13) //enter 일 경우
-  {
+  if (event.keyCode == 13) {
+    //enter 일 경우
     fetch("/api/todo/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(todoObj)
     })
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         console.log(response);
 
         //textarea focus blur
@@ -550,8 +609,9 @@ function mykeydown(event, todoObj) {
         todoTitleTextarea.blur();
         todoMemoTextarea.blur();
       })
-      .catch(error => {
-        alert("변경에 실패하였습니다."); console.log(error);
+      .catch((error) => {
+        alert("변경에 실패하였습니다.");
+        console.log(error);
       });
   }
 }

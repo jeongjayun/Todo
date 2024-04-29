@@ -109,7 +109,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getTodoDetail">
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id} 
-		   AND FIL_DLT = '0'
 		   AND TODO_IDX = #{todo_idx}
 	</select>
 
@@ -126,10 +125,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="filterTdy">
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
-		   AND FIL_TDY = '1'
-		   AND FIL_DLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1
-		    OR TRUNC(CREATED_TIME) = TRUNC(SYSDATE)+1
+		   AND (FIL_TDY = '1' AND FIL_DLT = '0')
+		   AND (TRUNC(TODO_DDLN) = TRUNC(SYSDATE) OR TRUNC(CREATED_TIME) = TRUNC(SYSDATE))
 		 ORDER BY CREATED_TIME DESC
 	</select>
 
@@ -138,8 +135,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 어제 
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)-1 -- 마감일 어제 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -148,18 +144,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 오늘 
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 오늘 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
 <!-- 마감일 내일 -->
-	<select id="ddlnTommorrow">
+	<select id="ddlnTommorrow">	
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+2 -- 마감일 내일 
+		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 내일 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -167,10 +161,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="ddlnLastWeek">
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'		   
-		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 6
-		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 1 -- 마감일 1주일 전
+		   AND FIL_DLT = '0'   
+		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 7
+		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) - 2
 		 ORDER BY CREATED_TIME DESC
 	</select>
 
@@ -179,9 +172,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
-		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 1
-		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 8 -- 마감일 1주일 전
+		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 2
+		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 7 -- 마감일 1주일 전
 		 ORDER BY CREATED_TIME DESC
 	</select>
 
@@ -190,8 +182,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
- 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 8 -- 마감일 나중에 
+ 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 
@@ -200,8 +191,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
-		   AND FIL_CMPLT = '0'
- 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 6 -- 마감일 이전에 
+ 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
 		 ORDER BY CREATED_TIME DESC
 	</select>
 	
@@ -228,7 +218,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="filterNotCmplt">
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
-		   AND FIL_CMPLT ='0'
 		   AND FIL_DLT = '0'
 		 ORDER BY CREATED_TIME DESC
 	</select>

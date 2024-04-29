@@ -118,97 +118,95 @@ function delCmpltList() {
   }
 }
 //동적으로 그린 li 안의 요소에 이벤트 할당
-document.querySelector(".list-todo ul").addEventListener("click", function (event) {
-  const filters = {
-    //filter 기본값
-    todo_idx: event.target.parentElement.id,
-    user_id: loginUserId
-  };
+document
+  .querySelector(".list-todo ul")
+  .addEventListener("click", function (event) {
+    const filters = {
+      //filter 기본값
+      todo_idx: event.target.parentElement.id,
+      user_id: loginUserId
+    };
 
-  //완료버튼
-  if (event.target.nodeName == "INPUT") {
-    if (event.target.checked) {
-      filters.fil_cmplt = "1";
-    } else {
-      filters.fil_cmplt = "0";
+    //완료버튼
+    if (event.target.nodeName == "INPUT") {
+      if (event.target.checked) {
+        filters.fil_cmplt = "1";
+      } else {
+        filters.fil_cmplt = "0";
+      }
     }
-  }
 
-  //중요버튼
-  if (event.target.nodeName == "BUTTON") {
-    if (event.target.value == "imp") {
-      //imp 중요 속성이면
-      filters.fil_imp = "0"; //중요 취소
-      event.target.value = ""; //속성 없애기
-      event.target.innerText = "중요X";
-    } else {
-      //imp 중요속성이 아니면
-      filters.fil_imp = "1"; //중요로 변경
-      event.target.value = "imp"; //속성 추가
-      event.target.innerText = "중요O";
+    //중요버튼
+    if (event.target.nodeName == "BUTTON") {
+      if (event.target.value == "imp") {
+        //imp 중요 속성이면
+        filters.fil_imp = "0"; //중요 취소
+        event.target.value = ""; //속성 없애기
+        event.target.innerText = "중요X";
+      } else {
+        //imp 중요속성이 아니면
+        filters.fil_imp = "1"; //중요로 변경
+        event.target.value = "imp"; //속성 추가
+        event.target.innerText = "중요O";
+      }
     }
-  }
-  //사이드바
-  if (event.target.nodeName == "SPAN") {
-    const wrap = document.querySelector(".wrap");
-    wrap.classList.remove("collapse");
+    //사이드바
+    if (event.target.nodeName == "SPAN") {
+      const wrap = document.querySelector(".wrap");
+      wrap.classList.remove("collapse");
 
-    delSidebarEl();
-    loadTodoDetail(filters.todo_idx);
-    return false;
-  }
-
-  changeFilter(filters);
-  delTodoList();
-  delCmpltList();
-  onLoadList();
-});
-
-document.querySelector(".list-todo div ul").addEventListener("click", function (event) {
-  const filters = {
-    //filter 기본값
-    todo_idx: event.target.parentElement.id,
-    user_id: loginUserId
-  };
-
-  //완료버튼
-  if (event.target.nodeName == "INPUT") {
-    if (event.target.checked) {
-      filters.fil_cmplt = "1";
-    } else {
-      filters.fil_cmplt = "0";
+      delSidebarEl();
+      loadTodoDetail(filters.todo_idx);
+      return false;
     }
-  }
 
-  //중요버튼
-  if (event.target.nodeName == "BUTTON") {
-    if (event.target.value == "imp") {
-      //imp 중요 속성이면
-      filters.fil_imp = "0"; //중요 취소
-      event.target.value = ""; //속성 없애기
-      event.target.innerText = "중요X";
-    } else {
-      //imp 중요속성이 아니면
-      filters.fil_imp = "1"; //중요로 변경
-      event.target.value = "imp"; //속성 추가
-      event.target.innerText = "중요O";
+    changeFilter(filters);
+  });
+
+document
+  .querySelector(".list-todo div ul")
+  .addEventListener("click", function (event) {
+    const filters = {
+      //filter 기본값
+      todo_idx: event.target.parentElement.id,
+      user_id: loginUserId
+    };
+
+    //완료버튼
+    if (event.target.nodeName == "INPUT") {
+      if (event.target.checked) {
+        filters.fil_cmplt = "1";
+      } else {
+        filters.fil_cmplt = "0";
+      }
     }
-  }
-  //사이드바
-  if (event.target.nodeName == "SPAN") {
-    const wrap = document.querySelector(".wrap");
-    wrap.classList.remove("collapse");
 
-    delSidebarEl();
-    loadTodoDetail(filters.todo_idx);
-    return false;
-  }
+    //중요버튼
+    if (event.target.nodeName == "BUTTON") {
+      if (event.target.value == "imp") {
+        //imp 중요 속성이면
+        filters.fil_imp = "0"; //중요 취소
+        event.target.value = ""; //속성 없애기
+        event.target.innerText = "중요X";
+      } else {
+        //imp 중요속성이 아니면
+        filters.fil_imp = "1"; //중요로 변경
+        event.target.value = "imp"; //속성 추가
+        event.target.innerText = "중요O";
+      }
+    }
+    //사이드바
+    if (event.target.nodeName == "SPAN") {
+      const wrap = document.querySelector(".wrap");
+      wrap.classList.remove("collapse");
 
-  changeFilter(filters);
-  delTodoList();
-  delCmpltList();
-  onLoadList();
-});
+      delSidebarEl();
+      loadTodoDetail(filters.todo_idx);
+      return false;
+    }
+
+    changeFilter(filters);
+  });
 
 //목록 스위치 초기화
 let isTdy = true;
@@ -281,74 +279,169 @@ function onChangeList(url) {
       toDos = response;
 
       if (isScheduled) {
+        let hasFilCmplt = false; //플래그
 
+        function checkFilCmplt(element) {
+          if (element.fil_cmplt == "0") {
+            //완료체크가 안된 요소가 있는지 확인
+            return true;
+          }
+        }
+
+        // 1.이전에
+        console.log(response);
         const ddlnBeforeData = response["마감기한 이전에"];
+
         if (ddlnBeforeData.length > 0) {
-          addSection("이전에");
-          ddlnBeforeData.forEach(data => {
-            addTodo(data);
+          let sectionChk = ddlnBeforeData.filter(checkFilCmplt); //sectionChk라는 이름의 완료체크가 안된 요소로 배열 재생성
+
+          if (sectionChk.length > 0) {
+            //완료체크가 안된 요소가 1개라도 존재하면 섹션 타이틀 달기
+            addSection("이전에");
+          }
+
+          ddlnBeforeData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
+        // 2.일주일 전
         const ddlnLastWeekData = response["마감기한 일주일 전"];
         if (ddlnLastWeekData.length > 0) {
-          addSection("일주일 전");
-          ddlnLastWeekData.forEach(data => {
-            addTodo(data);
+          sectionChk = ddlnLastWeekData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("일주일 전");
+          }
+
+          ddlnLastWeekData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
+        // 3.어제
         const ddlnYesterDayData = response["마감기한 어제"];
         if (ddlnYesterDayData.length > 0) {
-          addSection("어제");
-          ddlnYesterDayData.forEach(data => {
-            addTodo(data);
+          sectionChk = ddlnYesterDayData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("어제");
+          }
+
+          ddlnYesterDayData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
+        // 4. 오늘
         const ddlnTodayData = response["마감기한 오늘"];
         if (ddlnTodayData.length > 0) {
-          addSection("오늘");
-          ddlnTodayData.forEach(data => {
-            addTodo(data);
+          sectionChk = ddlnTodayData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("오늘");
+          }
+
+          ddlnTodayData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
+        // 5. 내일
         const ddlnTommorrowData = response["마감기한 내일"];
         if (ddlnTommorrowData.length > 0) {
-          addSection("내일");
-          ddlnTommorrowData.forEach(data => {
-            addTodo(data);
+          sectionChk = ddlnTommorrowData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("내일");
+          }
+
+          ddlnTommorrowData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
+        // 6. 일주일 후
         const ddlnNextWeekData = response["마감기한 일주일 후"];
         if (ddlnNextWeekData.length > 0) {
-          addSection("다음 주");
-          ddlnNextWeekData.forEach(data => {
-            addTodo(data);
+          secitonChk = ddlnNextWeekData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("다음 주");
+          }
+
+          ddlnNextWeekData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
-
+        // 7. 나중에
         const ddlnAfterData = response["마감기한 나중에"];
         if (ddlnAfterData.length > 0) {
-          addSection("나중에");
-          ddlnAfterData.forEach(data => {
-            addTodo(data);
+          secitonChk = ddlnNextWeekData.filter(checkFilCmplt);
+
+          if (sectionChk.length > 0) {
+            addSection("나중에");
+          }
+
+          ddlnAfterData.forEach((data) => {
+            if (data.fil_cmplt == "1") {
+              addCmpltTodo(data);
+              hasFilCmplt = true;
+            } else {
+              addTodo(data);
+            }
           });
         }
 
-      }
-
-      if (isTdy || isImp) {
+        // fil_cmplt가 '1'인 경우가 없으면 div를 숨김
+        if (!hasFilCmplt) {
+          cmpltListDiv.classList.add("hidden");
+        } else {
+          cmpltListDiv.classList.remove("hidden");
+        }
+      } else if (isTdy || isImp || isNotCmplt) {
         // 리스트를 추가할지 여부를 결정하기 위한 플래그 변수
         let hasFilCmplt = false;
 
         // toDos 배열을 순회하며 조건에 맞는 항목이 있는지 확인
-        toDos.forEach(todo => {
+        toDos.forEach((todo) => {
           // todo가 isTdy 또는 isImp 조건을 만족하고, fil_cmplt가 '1'인 경우에만 리스트 추가
-          if ((isTdy && todo.fil_tdy == "1") || (isImp && todo.fil_imp == "1")) {
+          if (
+            (isTdy && todo.fil_tdy == "1") ||
+            (isImp && todo.fil_imp == "1") ||
+            isNotCmplt
+          ) {
             if (todo.fil_cmplt == "1") {
               addCmpltTodo(todo);
               hasFilCmplt = true; // fil_cmplt가 '1'인 경우가 존재함을 표시
@@ -359,16 +452,15 @@ function onChangeList(url) {
         });
 
         // fil_cmplt가 '1'인 경우가 없으면 div를 숨김
-        if (!hasFilCmplt || isScheduled) {
+        if (!hasFilCmplt) {
           cmpltListDiv.classList.add("hidden");
         } else {
           cmpltListDiv.classList.remove("hidden");
         }
-      } else if (!isScheduled) {
+      } else {
         cmpltListDiv.classList.add("hidden");
         toDos.forEach(addTodo);
       }
-
     })
     .catch((error) => {
       alert("불러오기에 실패하였습니다.");
@@ -386,6 +478,8 @@ function changeFilter(filters) {
     .then((response) => response.json())
     .then((response) => {
       console.log(response);
+      loadTodoDetail(filters.todo_idx);
+      onLoadList();
     })
     .catch((error) => {
       alert("변경에 실패하였습니다.");
@@ -397,7 +491,7 @@ function changeFilter(filters) {
 const filTdy = document.getElementById("fil-tdy");
 filTdy.addEventListener("click", changeTdy);
 
-function changeTdy(event) {
+function changeTdy() {
   isTdy = true;
   isImp = false;
   isScheduled = false;
@@ -412,7 +506,7 @@ function changeTdy(event) {
 const filImp = document.getElementById("fil-imp");
 filImp.addEventListener("click", changeImp);
 
-function changeImp(event) {
+function changeImp() {
   isTdy = false;
   isImp = true;
   isScheduled = false;
@@ -427,7 +521,7 @@ function changeImp(event) {
 const filScheduled = document.getElementById("fil-scheduled");
 filScheduled.addEventListener("click", changeSchduled);
 
-function changeSchduled(event) {
+function changeSchduled() {
   isTdy = false;
   isImp = false;
   isScheduled = true;
@@ -442,7 +536,7 @@ function changeSchduled(event) {
 const filCmplt = document.getElementById("fil-cmplt");
 filCmplt.addEventListener("click", changeCmplt);
 
-function changeCmplt(event) {
+function changeCmplt() {
   isTdy = false;
   isImp = false;
   isScheduled = false;
@@ -457,7 +551,7 @@ function changeCmplt(event) {
 const filNotCmplt = document.getElementById("fil-notCmplt");
 filNotCmplt.addEventListener("click", changeNotCmplt);
 
-function changeNotCmplt(event) {
+function changeNotCmplt() {
   isTdy = false;
   isImp = false;
   isScheduled = false;

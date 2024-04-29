@@ -14,6 +14,13 @@ function handleToDoSubmit(event) {
   event.preventDefault();
 
   const newTodo = todoInput.value;
+
+  if (newTodo == "") {
+    alert("저장할 내용이 없습니다.");
+    todoInput.focus();
+    return false;
+  }
+
   todoInput.value = "";
   const newDdln = new Date(ddlnInput.value); // 문자열로부터 날짜 객체 생성
 
@@ -21,8 +28,8 @@ function handleToDoSubmit(event) {
   const newTodoObj = {
     todo_title: newTodo,
     user_id: loginUserId,
-    fil_tdy: isTdy ? '1' : '0',
-    fil_imp: isImp ? '1' : '0'
+    fil_tdy: isTdy ? "1" : "0",
+    fil_imp: isImp ? "1" : "0"
   };
 
   if (cmpltInput.checked) {

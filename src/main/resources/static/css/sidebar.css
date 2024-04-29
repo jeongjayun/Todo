@@ -172,3 +172,36 @@
 .wrap > .sidebar > .sidebar-top > .toggle > span {
   transition: all 0.3s linear;
 }
+
+/* textarea */
+textarea {
+  border: none;
+  resize: none;
+}
+
+textarea:focus {
+  outline: none;
+}
+.wrap > .sidebar > .sidebar-main > form > .todo-memo,
+.wrap > .sidebar > .sidebar-main > form > .todo-title {
+  border-radius: 10px;
+}
+.wrap > .sidebar > .sidebar-main > form > .todo-memo:focus-within,
+.wrap > .sidebar > .sidebar-main > form > .todo-title:focus-within {
+  border-bottom: 3px solid #3c9eec;
+}
+
+.wrap .sidebar button {
+  background-color: #3c9eec;
+  border-radius: 10px;
+  border: none;
+  color: white;
+}
+
+.wrap .sidebar button:hover {
+  background-color: #357ebd;
+}
+
+.dropdown-item {
+  margin-bottom: 5px;
+}
