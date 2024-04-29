@@ -52,6 +52,7 @@ function handleToDoSubmit(event) {
       newTodoObj.todo_idx = parsedData.todo_idx;
       addTodo(newTodoObj);
       console.log(newTodoObj);
+      onLoadList();
     })
     .catch((error) => {
       alert("저장에 실패하였습니다.");

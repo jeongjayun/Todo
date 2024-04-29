@@ -313,7 +313,7 @@ function onChangeList(url) {
         // 2.일주일 전
         const ddlnLastWeekData = response["마감기한 일주일 전"];
         if (ddlnLastWeekData.length > 0) {
-          sectionChk = ddlnLastWeekData.filter(checkFilCmplt);
+          let sectionChk = ddlnLastWeekData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("일주일 전");
@@ -332,7 +332,7 @@ function onChangeList(url) {
         // 3.어제
         const ddlnYesterDayData = response["마감기한 어제"];
         if (ddlnYesterDayData.length > 0) {
-          sectionChk = ddlnYesterDayData.filter(checkFilCmplt);
+          let sectionChk = ddlnYesterDayData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("어제");
@@ -351,7 +351,7 @@ function onChangeList(url) {
         // 4. 오늘
         const ddlnTodayData = response["마감기한 오늘"];
         if (ddlnTodayData.length > 0) {
-          sectionChk = ddlnTodayData.filter(checkFilCmplt);
+          let sectionChk = ddlnTodayData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("오늘");
@@ -370,7 +370,7 @@ function onChangeList(url) {
         // 5. 내일
         const ddlnTommorrowData = response["마감기한 내일"];
         if (ddlnTommorrowData.length > 0) {
-          sectionChk = ddlnTommorrowData.filter(checkFilCmplt);
+          let sectionChk = ddlnTommorrowData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("내일");
@@ -389,7 +389,7 @@ function onChangeList(url) {
         // 6. 일주일 후
         const ddlnNextWeekData = response["마감기한 일주일 후"];
         if (ddlnNextWeekData.length > 0) {
-          secitonChk = ddlnNextWeekData.filter(checkFilCmplt);
+          let sectionChk = ddlnNextWeekData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("다음 주");
@@ -408,7 +408,7 @@ function onChangeList(url) {
         // 7. 나중에
         const ddlnAfterData = response["마감기한 나중에"];
         if (ddlnAfterData.length > 0) {
-          secitonChk = ddlnNextWeekData.filter(checkFilCmplt);
+          let sectionChk = ddlnNextWeekData.filter(checkFilCmplt);
 
           if (sectionChk.length > 0) {
             addSection("나중에");

@@ -198,8 +198,7 @@ function addDdln(TODO_DETAIL) {
 
   const dropdownCalendar = document.createElement("li"); //날짜 선택
   dropdownCalendar.className = "dropdown-item";
-
-  const optionBtnCal = document.createElement("button"); //다음 주 선택 버튼
+  const optionBtnCal = document.createElement("button"); //날짜 선택 버튼
   optionBtnCal.className = "dropdown-option";
   optionBtnCal.classList.add("calendar");
   optionBtnCal.id = TODO_DETAIL.todo_idx;
@@ -487,6 +486,7 @@ document.querySelector(".todo-ddln").addEventListener("click", function () {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
+        onLoadList();
       })
       .catch((error) => {
         alert("실패");
