@@ -3,10 +3,12 @@ package com.eco.todo.dto;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class Todo {
+@Getter
+@Setter
+public class Todo{
 	private int todo_idx;
 	private String user_id;
 	private String todo_title;

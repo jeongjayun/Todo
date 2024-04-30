@@ -319,3 +319,5 @@ SELECT * FROM V_TODO_FILTER
 WHERE USER_ID ='soran'
 AND FIL_TDY ='1'
 AND FIL_DLT='0';
+
+-- sort 기능 써보기

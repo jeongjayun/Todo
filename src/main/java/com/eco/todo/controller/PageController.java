@@ -37,7 +37,6 @@ public class PageController {
 	
 	@GetMapping("/settings")
 	public String settingPage(Authentication authentication) {
-		
 		if (authentication != null && authentication.isAuthenticated()) {
 			String user_id = authentication.getName();
 			return "settings";

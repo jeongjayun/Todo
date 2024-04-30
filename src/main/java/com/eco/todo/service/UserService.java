@@ -42,6 +42,11 @@ public class UserService implements UserDetailsService {
 		logger.info("service. 중복 아이디 확인");
 		return mapper.chkUserId(user_id);
 	}
+	
+	public Users chkUserSetting(String user_id) {
+		logger.info("service. 유저가 지정한 설정확인");
+		return mapper.findUser(user_id);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {

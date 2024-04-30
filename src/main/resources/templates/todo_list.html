@@ -76,6 +76,7 @@
             <div class="user-img"></div>
             <div class="user-detail">
               <span th:text="${#authentication.name}"></span>
+              <span><a th:href="@{/settings}">설정</a></span>
               <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
             </div>
           </div>

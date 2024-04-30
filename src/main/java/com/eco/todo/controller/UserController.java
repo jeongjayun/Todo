@@ -48,5 +48,4 @@ public class UserController {
 		service.join(userJoinForm.getUser_id(), userJoinForm.getUser_pw(), userJoinForm.getUser_nm()); // 회원가입 로직 실행
 		return "redirect:/";
 	}
-
 }

@@ -24,5 +24,4 @@ public class TodoAndFilter {
 	private char fil_imp;
 	private char fil_cmplt;
 	private char fil_dlt;
-
 }

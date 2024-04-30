@@ -1,6 +1,5 @@
 package com.eco.todo.mapper;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -10,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
+import com.eco.todo.dto.Users;
 
 @Mapper
 public interface TodoMapper {
@@ -32,32 +32,33 @@ public interface TodoMapper {
 	// 조회
 	public TodoAndFilter getTodoDetail(@Param("user_id") String user_id, @Param("todo_idx") int todo_idx);
 
-	public ArrayList<TodoAndFilter> findAllTodo(String user_id);
+	public ArrayList<TodoAndFilter> findAllTodo(Users user);
 
-	public ArrayList<TodoAndFilter> filterTdy(String user_id);
+	public ArrayList<TodoAndFilter> filterTdy(Users user);
 
-	public ArrayList<TodoAndFilter> filterImp(String user_id);
+	public ArrayList<TodoAndFilter> filterImp(Users user);
 
-	public ArrayList<TodoAndFilter> filterCmplt(String user_id);
-
-	public ArrayList<TodoAndFilter> filterNotCmplt(String user_id);
+	public ArrayList<TodoAndFilter> filterCmplt(Users user);
 
 	// 마감 기한 별 조회
-	public ArrayList<TodoAndFilter> ddlnToday(String user_id);
+	public ArrayList<TodoAndFilter> ddlnToday(Users user);
 	
-	public ArrayList<TodoAndFilter> ddlnTommorrow(String user_id);
+	public ArrayList<TodoAndFilter> ddlnTommorrow(Users user);
 
-	public ArrayList<TodoAndFilter> ddlnYesterDay(String user_id);
+	public ArrayList<TodoAndFilter> ddlnYesterDay(Users user);
 
-	public ArrayList<TodoAndFilter> ddlnLastWeek(String user_id);
+	public ArrayList<TodoAndFilter> ddlnLastWeek(Users user);
 
-	public ArrayList<TodoAndFilter> ddlnNextWeek(String user_id);
+	public ArrayList<TodoAndFilter> ddlnNextWeek(Users user);
 
-	public ArrayList<TodoAndFilter> ddlnAfter(String user_id);
+	public ArrayList<TodoAndFilter> ddlnAfter(Users user);
 
-	public ArrayList<TodoAndFilter> ddlnBefore(String user_id);
+	public ArrayList<TodoAndFilter> ddlnBefore(Users user);
 
 	// 검색
 	public ArrayList<TodoAndFilter> search(@Param("user_id") String user_id, @Param("todo_title") String todo_title);
+	
+	// 설정
+	
 
 }

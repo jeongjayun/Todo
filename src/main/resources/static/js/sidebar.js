@@ -548,6 +548,7 @@ document
           .then((response) => {
             console.log(response);
             alert("삭제되었습니다.");
+            onLoadList();
           })
           .catch((error) => {
             alert("통신에 실패하였습니다.");

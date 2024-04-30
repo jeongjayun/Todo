@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
+import com.eco.todo.dto.Users;
 import com.eco.todo.mapper.TodoMapper;
+import com.eco.todo.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class TodoService {
 
 	private final TodoMapper mapper;
-	private static Logger logger = LoggerFactory.getLogger("ApiController.class");
+	private final UserMapper userMapper;
+	private static Logger logger = LoggerFactory.getLogger("TodoService.class");
 
 	public Map<String, Object> saveTodo(TodoAndFilter todoAndFilter) {
 
@@ -46,34 +49,36 @@ public class TodoService {
 		}
 
 	}
-	
+
 	public ArrayList<TodoAndFilter> search(String user_id, String todo_title) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
 		list = mapper.search(user_id, todo_title);
 		return list;
 	}
 
-	public ArrayList<TodoAndFilter> findAllTodo(String user_id) {
+	public ArrayList<TodoAndFilter> findAllTodo(Users user) {
+		logger.info("정렬확인");
+		System.out.println("엥 왜 안되ㅐ?");
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.findAllTodo(user_id);
+		list = mapper.findAllTodo(user);
 		return list;
 	}
 
-	public ArrayList<TodoAndFilter> filterTdy(String user_id) {
+	public ArrayList<TodoAndFilter> filterTdy(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.filterTdy(user_id);
+		list = mapper.filterTdy(user);
 		return list;
 	}
 
-	public ArrayList<TodoAndFilter> filterImp(String user_id) {
+	public ArrayList<TodoAndFilter> filterImp(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.filterImp(user_id);
+		list = mapper.filterImp(user);
 		return list;
 	}
 
-	public ArrayList<TodoAndFilter> filterCmplt(String user_id) {
+	public ArrayList<TodoAndFilter> filterCmplt(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.filterCmplt(user_id);
+		list = mapper.filterCmplt(user);
 		return list;
 	}
 
@@ -84,7 +89,7 @@ public class TodoService {
 		Map<String, Object> responseData = new HashMap<>();
 
 		Timestamp updated_Time = new Timestamp(System.currentTimeMillis());
-		
+
 		int todo_idx = todo.getTodo_idx();
 		int update_result = mapper.updateTodo(todo);
 
@@ -103,11 +108,6 @@ public class TodoService {
 		return responseData;
 	}
 
-	public ArrayList<TodoAndFilter> filterNotCmplt(String user_id) {
-		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.filterNotCmplt(user_id);
-		return list;
-	}
 
 	public Map<String, Object> updateFilters(Filters filter) {
 		logger.info("filter 수정하기, 수정시간 업데이트 하기");
@@ -186,46 +186,46 @@ public class TodoService {
 		TodoAndFilter todoAndFilter = mapper.getTodoDetail(user_id, todo_idx);
 		return todoAndFilter;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnYesterDay(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnYesterDay(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnYesterDay(user_id);
+		list = mapper.ddlnYesterDay(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnToday(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnToday(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnToday(user_id);
+		list = mapper.ddlnToday(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnTommorrow(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnTommorrow(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnTommorrow(user_id);
+		list = mapper.ddlnTommorrow(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnLastWeek(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnLastWeek(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnLastWeek(user_id);
+		list = mapper.ddlnLastWeek(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnNextWeek(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnNextWeek(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnNextWeek(user_id);
+		list = mapper.ddlnNextWeek(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnAfter(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnAfter(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnAfter(user_id);
+		list = mapper.ddlnAfter(user);
 		return list;
 	}
-	
-	public ArrayList<TodoAndFilter> ddlnBefore(String user_id) {
+
+	public ArrayList<TodoAndFilter> ddlnBefore(Users user) {
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.ddlnBefore(user_id);
+		list = mapper.ddlnBefore(user);
 		return list;
 	}
 }

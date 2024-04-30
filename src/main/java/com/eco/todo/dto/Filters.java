@@ -1,8 +1,10 @@
 package com.eco.todo.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class Filters {
 	private int todo_idx;
 	private String user_id;

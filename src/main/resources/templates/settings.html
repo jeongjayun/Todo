@@ -7,64 +7,14 @@
     <title>설정</title>
 
     <link rel="stylesheet" type="text/css" href="/css/settings.css" />
-
-    <style>
-      label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-      }
-
-      [type="checkbox"] {
-        appearance: none;
-        position: relative;
-        border: max(2px, 0.1em) solid gray;
-        border-radius: 1.25em;
-        width: 2.25em;
-        height: 1.25em;
-      }
-
-      [type="checkbox"]::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        transform: scale(0.8);
-        background-color: gray;
-        transition: left 250ms linear;
-      }
-
-      [type="checkbox"]:checked::before {
-        background-color: white;
-        left: 1em;
-      }
-
-      [type="checkbox"]:checked {
-        background-color: tomato;
-        border-color: tomato;
-      }
-
-      [type="checkbox"]::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        transform: scale(0.8);
-        background-color: gray;
-        transition: left 250ms linear;
-      }
-    </style>
   </head>
 
   <body>
     <div class="main_container">
       <div class="container">
+        
         <h1>설정</h1>
+
         <!-- 현재 로그인 계정 정보 -->
         <div class="user-profile">
           <div class="user-img"></div>
@@ -74,15 +24,22 @@
           </div>
         </div>
 
-        <label><span>새로운 작업을 상단에 정렬</span><input role="switch" type="checkbox" /></label>
         <label>
-          <span>중요한 작업을 상단에 정렬</span><input role="switch" type="checkbox" />
+          <span>새로운 작업을 상단에 정렬</span>
+          <input role="switch" type="checkbox" />
+        </label>
+        <label>
+          <span>중요한 작업을 상단에 정렬</span>
+          <input role="switch" type="checkbox" />
         </label>
 
-
-
+        <span>
+          <a sec:authorize="isAuthenticated()" th:href="@{/list}">목록으로</a>
+        </span>
+      
       </div>
     </div>
+
     <script src=" /js/join.js" defer></script>
   </body>
 

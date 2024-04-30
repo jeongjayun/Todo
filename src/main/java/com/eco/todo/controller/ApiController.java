@@ -1,6 +1,5 @@
 package com.eco.todo.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
+import com.eco.todo.dto.Users;
 import com.eco.todo.service.TodoService;
 import com.eco.todo.service.UserService;
 
@@ -60,8 +61,9 @@ public class ApiController {
 		logger.info("ApiController. 오늘 할 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<TodoAndFilter> list = todoService.filterTdy(user_id);
-
+		Users user = userService.chkUserSetting(user_id);
+		
+		List<TodoAndFilter> list = todoService.filterTdy(user);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -70,8 +72,9 @@ public class ApiController {
 		logger.info("ApiController. 중요한 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<TodoAndFilter> list = todoService.filterImp(user_id);
-
+		Users user = userService.chkUserSetting(user_id);
+		
+		List<TodoAndFilter> list = todoService.filterImp(user);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -80,18 +83,23 @@ public class ApiController {
 		logger.info("ApiController. 완료된 일 불러오기");
 
 		String user_id = authentication.getName();
-		List<TodoAndFilter> list = todoService.filterCmplt(user_id);
+		Users user = userService.chkUserSetting(user_id);
+		System.out.println(user);
+		
+		List<TodoAndFilter> list = todoService.filterCmplt(user);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-
+	
 	@GetMapping("/todo/NotCmpltList")
 	public ResponseEntity<List<TodoAndFilter>> filterNotCmplt(Authentication authentication) {
 		logger.info("ApiController. 작업 불러오기");
-
 		String user_id = authentication.getName();
-		List<TodoAndFilter> list = todoService.filterNotCmplt(user_id);
 
+		Users user = userService.chkUserSetting(user_id);
+		System.out.println(user);
+
+		List<TodoAndFilter> list = todoService.findAllTodo(user);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -149,35 +157,36 @@ public class ApiController {
 		List<TodoAndFilter> list = todoService.search(user_id, todo_title);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
 
 	@GetMapping("/todo/scheduledList/{user_id}")
-	public ResponseEntity<Map<String, List<TodoAndFilter>>> scheduledList(
-			@PathVariable("user_id") String user_id) {
+	public ResponseEntity<Map<String, List<TodoAndFilter>>> scheduledList(@PathVariable("user_id") String user_id) {
 
 		Map<String, List<TodoAndFilter>> responseData = new HashMap<>();
 		
+		Users user = userService.chkUserSetting(user_id);
+		System.out.println(user);
+
 		List<TodoAndFilter> ddlnTodayList = new ArrayList<>();
-		ddlnTodayList = todoService.ddlnToday(user_id);
-		
+		ddlnTodayList = todoService.ddlnToday(user);
+
 		List<TodoAndFilter> ddlnTommorrowList = new ArrayList<>();
-		ddlnTommorrowList = todoService.ddlnTommorrow(user_id);
+		ddlnTommorrowList = todoService.ddlnTommorrow(user);
 
 		List<TodoAndFilter> ddlnYesterDayList = new ArrayList<>();
-		ddlnYesterDayList = todoService.ddlnYesterDay(user_id);
-		
+		ddlnYesterDayList = todoService.ddlnYesterDay(user);
+
 		List<TodoAndFilter> ddlnLastWeekList = new ArrayList<>();
-		ddlnLastWeekList = todoService.ddlnLastWeek(user_id);
-		
+		ddlnLastWeekList = todoService.ddlnLastWeek(user);
+
 		List<TodoAndFilter> ddlnNextWeekList = new ArrayList<>();
-		ddlnNextWeekList = todoService.ddlnNextWeek(user_id);
-		
+		ddlnNextWeekList = todoService.ddlnNextWeek(user);
+
 		List<TodoAndFilter> ddlnAfterList = new ArrayList<>();
-		ddlnAfterList = todoService.ddlnAfter(user_id);
-		
+		ddlnAfterList = todoService.ddlnAfter(user);
+
 		List<TodoAndFilter> ddlnBeforeList = new ArrayList<>();
-		ddlnBeforeList = todoService.ddlnBefore(user_id);
-		
+		ddlnBeforeList = todoService.ddlnBefore(user);
+
 		responseData.put("마감기한 이전에", ddlnBeforeList);
 		responseData.put("마감기한 일주일 전", ddlnLastWeekList);
 		responseData.put("마감기한 어제", ddlnYesterDayList);
@@ -189,4 +198,7 @@ public class ApiController {
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
 
+
+	@PostMapping("/settings/update")
+//	public ResponseEntity
 }
