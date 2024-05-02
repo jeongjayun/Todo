@@ -1,11 +1,11 @@
-package com.eco.todo.controller;
+package com.eco.todo.common;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.eco.todo.form.UserJoinForm;
-import com.eco.todo.form.UserLoginForm;
+import com.eco.todo.users.form.UserJoinForm;
+import com.eco.todo.users.form.UserLoginForm;
 
 @Controller // 페이지 이동 시 사용하는 컨트롤러
 public class PageController {

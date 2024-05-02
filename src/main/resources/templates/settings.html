@@ -19,18 +19,18 @@
         <div class="user-profile">
           <div class="user-img"></div>
           <div class="user-detail">
-            <span th:text="${#authentication.name}"></span>
+            <span id="user-id-span" th:text="${#authentication.name}"></span>
             <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
           </div>
         </div>
 
         <label>
           <span>새로운 작업을 상단에 정렬</span>
-          <input role="switch" type="checkbox" />
+          <input id="newTodo-input" role="switch" type="checkbox" />
         </label>
         <label>
           <span>중요한 작업을 상단에 정렬</span>
-          <input role="switch" type="checkbox" />
+          <input id="impTodo-input" role="switch" type="checkbox" />
         </label>
 
         <span>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <script src=" /js/join.js" defer></script>
+    <script src=" /js/settings.js" defer></script>
   </body>
 
   </html>

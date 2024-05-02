@@ -1,14 +1,13 @@
-// 할 일 저장하기 (filter 아직)
 const todoForm = document.getElementById("todo-form");
 const todoInput = document.querySelector("#todo-form .todo-input");
 const ddlnInput = document.querySelector("#todo-form .todoCalendar");
 const cmpltInput = document.querySelector("#todo-form .cmpltChk");
 
-todoForm.addEventListener("submit", handleToDoSubmit);
-
 const loginUserId = document.querySelector(
   ".user-detail span:first-child"
 ).textContent;
+
+todoForm.addEventListener("submit", handleToDoSubmit);
 
 function handleToDoSubmit(event) {
   event.preventDefault();

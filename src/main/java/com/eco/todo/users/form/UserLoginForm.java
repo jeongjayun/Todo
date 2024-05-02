@@ -1,4 +1,4 @@
-package com.eco.todo.form;
+package com.eco.todo.users.form;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.eco.todo.controller;
+package com.eco.todo.users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.eco.todo.form.UserJoinForm;
-import com.eco.todo.service.UserService;
+import com.eco.todo.users.form.UserJoinForm;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

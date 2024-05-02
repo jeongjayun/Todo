@@ -22,7 +22,7 @@ public class SecurityConfig {
 		http
 				.csrf(csrf->csrf.disable()) //csrf 비활성화 
 				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**","/join/**","/api/**", "/").permitAll() // 인증이 필요없음
+						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**","/join/**", "/api/user/chkId", "/").permitAll() // 인증이 필요없음
 						.anyRequest().authenticated())
 				.headers((headers) -> headers.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))

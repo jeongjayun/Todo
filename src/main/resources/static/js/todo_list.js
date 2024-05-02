@@ -1,471 +1,91 @@
-// 페이지 로딩 시 Today 기능 켜기
+//목록 플래그 기본값
+let isTdy = true; // 로그인 후 메인화면이 '오늘 할 일' 이도록 하는 변수
+let isImp = false;
+let isScheduled = false;
+let isCmplt = false;
+let isAll = false;
+let isSearch = false;
+
 window.addEventListener("DOMContentLoaded", onLoadList);
 
 const listTitle = document.querySelector(".list-title h1");
 const todoList = document.querySelector(".list-todo ul");
 const cmpltList = document.querySelector(".list-todo div ul");
+const cmpltListDiv = document.querySelector(".list-todo div");
 
-//동적으로 li 데이터 생성
-function addTodo(newTodo) {
-  const li = document.createElement("li");
-  li.id = newTodo.todo_idx;
+// 메뉴항목
+const filTdy = document.getElementById("fil-tdy");
+const filImp = document.getElementById("fil-imp");
+const filScheduled = document.getElementById("fil-scheduled");
+const filCmplt = document.getElementById("fil-cmplt");
+const filNotCmplt = document.getElementById("fil-notCmplt");
 
-  const cmpltChk = document.createElement("input");
-  cmpltChk.setAttribute("type", "checkbox");
+filTdy.addEventListener("click", changeTdy);
+filImp.addEventListener("click", changeImp);
+filScheduled.addEventListener("click", changeSchduled);
+filNotCmplt.addEventListener("click", changeNotCmplt);
 
-  const span = document.createElement("span");
-  span.innerText = newTodo.todo_title;
-
-  //완료된 작업 불러올 시 체크박스 체크
-  if (newTodo.fil_cmplt == "1") {
-    cmpltChk.checked = true;
-    span.style = "text-decoration:line-through;";
-  }
-
-  const impBtn = document.createElement("button");
-  impBtn.className = "imp-btn";
-  impBtn.innerHTML = `<i class="fab fa-star"></i>`;
-  impBtn.value = "";
-
-  //중요 표시 된 작업들
-  if (newTodo.fil_imp == "1") {
-    impBtn.innerHTML = `<i class="fas fa-star"></i>`;
-    impBtn.value = "imp";
-  }
-
-  li.appendChild(cmpltChk);
-  li.appendChild(span);
-
-  if (newTodo.todo_ddln != "" && newTodo.todo_ddln != null) {
-    const todoDdln = document.createElement("span");
-    todoDdln.innerText = newTodo.todo_ddln;
-    li.append(todoDdln);
-  }
-
-  li.appendChild(impBtn);
-  todoList.append(li);
-}
-
-// section 만들기
-function addSection(title) {
-  const section = document.createElement("div");
-  section.className = "todo-section";
-
-  const sectionHeader = document.createElement("h2");
-
-  sectionHeader.innerText = title;
-  section.appendChild(sectionHeader);
-  todoList.appendChild(section);
-}
-
-// 완료표시 불러올 작업들
-function addCmpltTodo(newTodo) {
-  const li = document.createElement("li");
-  li.id = newTodo.todo_idx;
-
-  const cmpltChk = document.createElement("input");
-  cmpltChk.setAttribute("type", "checkbox");
-
-  const span = document.createElement("span");
-  span.innerText = newTodo.todo_title;
-
-  //완료된 작업 불러올 시 체크박스 체크
-  if (newTodo.fil_cmplt == "1") {
-    cmpltChk.checked = true;
-    span.style = "text-decoration:line-through;";
-  }
-
-  const impBtn = document.createElement("button");
-  impBtn.className = "imp-btn";
-  impBtn.innerHTML = `<i class="fab fa-star"></i>`;
-  impBtn.value = "";
-
-  //중요 표시 된 작업들
-  if (newTodo.fil_imp == "1") {
-    impBtn.innerHTML = `<i class="fas fa-star"></i>`;
-    impBtn.value = "imp";
-  }
-
-  li.appendChild(cmpltChk);
-  li.appendChild(span);
-
-  if (newTodo.todo_ddln != "" && newTodo.todo_ddln != null) {
-    const todoDdln = document.createElement("span");
-    todoDdln.innerText = newTodo.todo_ddln;
-    li.append(todoDdln);
-  }
-
-  li.appendChild(impBtn);
-  cmpltList.append(li);
-}
-
-//동적으로 그린 li 전부 지우기
-function delTodoList() {
-  while (todoList.firstChild) {
-    todoList.removeChild(todoList.firstChild);
-  }
-
-  // 이전에 추가된 searchNodata 요소 제거
-  const existingSearchNodata = document.querySelector(".search-no-data");
-  if (existingSearchNodata) {
-    existingSearchNodata.remove();
-  }
-}
-
-function delCmpltList() {
-  while (cmpltList.firstChild) {
-    cmpltList.removeChild(cmpltList.firstChild);
-  }
-}
 //동적으로 그린 li 안의 요소에 이벤트 할당
-document
-  .querySelector(".list-todo ul")
-  .addEventListener("click", function (event) {
-    const filters = {
-      //filter 기본값
-      todo_idx: event.target.parentElement.id,
-      user_id: loginUserId
-    };
-
-    //완료버튼
-    if (event.target.nodeName == "INPUT") {
-      if (event.target.checked) {
-        filters.fil_cmplt = "1";
-      } else {
-        filters.fil_cmplt = "0";
-      }
-    }
-
-    //중요버튼
-    if (event.target.nodeName == "BUTTON") {
-      if (event.target.value == "imp") {
-        //imp 중요 속성이면
-        filters.fil_imp = "0"; //중요 취소
-        event.target.value = ""; //속성 없애기
-        event.target.innerText = "중요X";
-      } else {
-        //imp 중요속성이 아니면
-        filters.fil_imp = "1"; //중요로 변경
-        event.target.value = "imp"; //속성 추가
-        event.target.innerText = "중요O";
-      }
-    }
-    //사이드바
-    if (event.target.nodeName == "SPAN") {
-      const wrap = document.querySelector(".wrap");
-      wrap.classList.remove("collapse");
-
-      delSidebarEl();
-      loadTodoDetail(filters.todo_idx);
-      return false;
-    }
-
-    changeFilter(filters);
-  });
-
-document
-  .querySelector(".list-todo div ul")
-  .addEventListener("click", function (event) {
-    const filters = {
-      //filter 기본값
-      todo_idx: event.target.parentElement.id,
-      user_id: loginUserId
-    };
-
-    //완료버튼
-    if (event.target.nodeName == "INPUT") {
-      if (event.target.checked) {
-        filters.fil_cmplt = "1";
-      } else {
-        filters.fil_cmplt = "0";
-      }
-    }
-
-    //중요버튼
-    if (event.target.nodeName == "BUTTON") {
-      if (event.target.value == "imp") {
-        //imp 중요 속성이면
-        filters.fil_imp = "0"; //중요 취소
-        event.target.value = ""; //속성 없애기
-        event.target.innerText = "중요X";
-      } else {
-        //imp 중요속성이 아니면
-        filters.fil_imp = "1"; //중요로 변경
-        event.target.value = "imp"; //속성 추가
-        event.target.innerText = "중요O";
-      }
-    }
-    //사이드바
-    if (event.target.nodeName == "SPAN") {
-      const wrap = document.querySelector(".wrap");
-      wrap.classList.remove("collapse");
-
-      delSidebarEl();
-      loadTodoDetail(filters.todo_idx);
-      return false;
-    }
-
-    changeFilter(filters);
-  });
-
-//목록 스위치 초기화
-let isTdy = true;
-let isImp = false;
-let isScheduled = false;
-let isCmplt = false;
-let isNotCmplt = false;
-let isSearch = false;
-
-function onLoadList() {
-  delTodoList(); //todo 삭제 후 밑의 함수에서 새로 그리기
-  delCmpltList();
-
-  const listTop = document.querySelector(".list-top");
-
-  if (isSearch) {
-    listTop.classList.add("hidden");
-  } else {
-    listTop.classList.remove("hidden");
-  }
-
-  if (isTdy) {
-    const url = "tdyList";
-    listTitle.innerText = "오늘 할 일";
-    today.classList.remove("hidden");
-
-    onChangeList(url);
-  }
-
-  if (isImp) {
-    const url = "impList";
-    listTitle.innerText = "중요한 일";
-    today.classList.add("hidden");
-
-    onChangeList(url);
-  }
-
-  if (isScheduled) {
-    const url = `scheduledList/${loginUserId}`;
-    listTitle.innerText = "계획된 일";
-    today.classList.add("hidden");
-    onChangeList(url);
-  }
-
-  if (isCmplt) {
-    const url = "cmpltList";
-    listTitle.innerText = "완료된 일";
-    today.classList.add("hidden");
-
-    onChangeList(url);
-  }
-
-  if (isNotCmplt) {
-    const url = "NotCmpltList";
-    listTitle.innerText = "작업";
-    today.classList.add("hidden");
-
-    onChangeList(url);
-  }
-}
+document.querySelector(".list-todo ul").addEventListener("click", clickLi); //todoList
+document.querySelector(".list-todo div ul").addEventListener("click", clickLi); //cmpltList
 
 let toDos = [];
 
-const cmpltListDiv = document.querySelector(".list-todo div");
+///////////////////////////////////////////////////////////////////// 정리 된 함수
 
-function onChangeList(url) {
-  fetch(`/api/todo/${url}`)
-    .then((response) => response.json())
-    .then((response) => {
-      toDos = response;
+//1. 오늘 할 일
+function changeTdy() {
+  isTdy = true;
+  isImp = false;
+  isScheduled = false;
+  isCmplt = false;
+  isAll = false;
+  isSearch = false;
+  onLoadList();
+}
 
-      if (isScheduled) {
-        let hasFilCmplt = false; //플래그
+//2. 중요한 일
+function changeImp() {
+  isTdy = false;
+  isImp = true;
+  isScheduled = false;
+  isCmplt = false;
+  isAll = false;
+  isSearch = false;
+  onLoadList();
+}
 
-        function checkFilCmplt(element) {
-          if (element.fil_cmplt == "0") {
-            //완료체크가 안된 요소가 있는지 확인
-            return true;
-          }
-        }
+//3. 계획된 일
+function changeSchduled() {
+  isTdy = false;
+  isImp = false;
+  isScheduled = true;
+  isCmplt = false;
+  isAll = false;
+  isSearch = false;
+  onLoadList();
+}
 
-        // 1.이전에
-        console.log(response);
-        const ddlnBeforeData = response["마감기한 이전에"];
+//4. 완료된 일
+function changeCmplt() {
+  isTdy = false;
+  isImp = false;
+  isScheduled = false;
+  isCmplt = true;
+  isAll = false;
+  isSearch = false;
+  onLoadList();
+}
 
-        if (ddlnBeforeData.length > 0) {
-          let sectionChk = ddlnBeforeData.filter(checkFilCmplt); //sectionChk라는 이름의 완료체크가 안된 요소로 배열 재생성
-
-          if (sectionChk.length > 0) {
-            //완료체크가 안된 요소가 1개라도 존재하면 섹션 타이틀 달기
-            addSection("이전에");
-          }
-
-          ddlnBeforeData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 2.일주일 전
-        const ddlnLastWeekData = response["마감기한 일주일 전"];
-        if (ddlnLastWeekData.length > 0) {
-          let sectionChk = ddlnLastWeekData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("일주일 전");
-          }
-
-          ddlnLastWeekData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 3.어제
-        const ddlnYesterDayData = response["마감기한 어제"];
-        if (ddlnYesterDayData.length > 0) {
-          let sectionChk = ddlnYesterDayData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("어제");
-          }
-
-          ddlnYesterDayData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 4. 오늘
-        const ddlnTodayData = response["마감기한 오늘"];
-        if (ddlnTodayData.length > 0) {
-          let sectionChk = ddlnTodayData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("오늘");
-          }
-
-          ddlnTodayData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 5. 내일
-        const ddlnTommorrowData = response["마감기한 내일"];
-        if (ddlnTommorrowData.length > 0) {
-          let sectionChk = ddlnTommorrowData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("내일");
-          }
-
-          ddlnTommorrowData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 6. 일주일 후
-        const ddlnNextWeekData = response["마감기한 일주일 후"];
-        if (ddlnNextWeekData.length > 0) {
-          let sectionChk = ddlnNextWeekData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("다음 주");
-          }
-
-          ddlnNextWeekData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // 7. 나중에
-        const ddlnAfterData = response["마감기한 나중에"];
-        if (ddlnAfterData.length > 0) {
-          let sectionChk = ddlnNextWeekData.filter(checkFilCmplt);
-
-          if (sectionChk.length > 0) {
-            addSection("나중에");
-          }
-
-          ddlnAfterData.forEach((data) => {
-            if (data.fil_cmplt == "1") {
-              addCmpltTodo(data);
-              hasFilCmplt = true;
-            } else {
-              addTodo(data);
-            }
-          });
-        }
-
-        // fil_cmplt가 '1'인 경우가 없으면 div를 숨김
-        if (!hasFilCmplt) {
-          cmpltListDiv.classList.add("hidden");
-        } else {
-          cmpltListDiv.classList.remove("hidden");
-        }
-      } else if (isTdy || isImp || isNotCmplt) {
-        // 리스트를 추가할지 여부를 결정하기 위한 플래그 변수
-        let hasFilCmplt = false;
-
-        // toDos 배열을 순회하며 조건에 맞는 항목이 있는지 확인
-        toDos.forEach((todo) => {
-          // todo가 isTdy 또는 isImp 조건을 만족하고, fil_cmplt가 '1'인 경우에만 리스트 추가
-          if (
-            (isTdy && todo.fil_tdy == "1") ||
-            (isImp && todo.fil_imp == "1") ||
-            isNotCmplt
-          ) {
-            if (todo.fil_cmplt == "1") {
-              addCmpltTodo(todo);
-              hasFilCmplt = true; // fil_cmplt가 '1'인 경우가 존재함을 표시
-            } else {
-              addTodo(todo);
-            }
-          }
-        });
-
-        // fil_cmplt가 '1'인 경우가 없으면 div를 숨김
-        if (!hasFilCmplt) {
-          cmpltListDiv.classList.add("hidden");
-        } else {
-          cmpltListDiv.classList.remove("hidden");
-        }
-      } else {
-        cmpltListDiv.classList.add("hidden");
-        toDos.forEach(addTodo);
-      }
-    })
-    .catch((error) => {
-      alert("불러오기에 실패하였습니다.");
-      console.log(error);
-    });
+//5. 작업 (미완료)
+function changeNotCmplt() {
+  isTdy = false;
+  isImp = false;
+  isScheduled = false;
+  isCmplt = false;
+  isAll = true;
+  isSearch = false;
+  onLoadList();
 }
 
 // filter 변경 Fetch 함수
@@ -487,77 +107,272 @@ function changeFilter(filters) {
     });
 }
 
-//1. 오늘 할 일
-const filTdy = document.getElementById("fil-tdy");
-filTdy.addEventListener("click", changeTdy);
+// 동적으로 그린 li에 이벤트
+function clickLi(event) {
+  const filters = {
+    //filter 기본값
+    todo_idx: event.target.parentElement.id,
+    user_id: loginUserId
+  };
 
-function changeTdy() {
-  isTdy = true;
-  isImp = false;
-  isScheduled = false;
-  isCmplt = false;
-  isNotCmplt = false;
-  isSearch = false;
+  //완료버튼
+  if (event.target.nodeName == "INPUT") {
+    if (event.target.checked) {
+      filters.fil_cmplt = "1";
+    } else {
+      filters.fil_cmplt = "0";
+    }
+  }
 
-  onLoadList();
+  //중요버튼
+  if (event.target.nodeName == "BUTTON") {
+    if (event.target.value == "imp") {
+      //imp 중요 속성이면
+      filters.fil_imp = "0"; //중요 취소
+      event.target.value = ""; //속성 없애기
+      event.target.innerText = "중요X";
+    } else {
+      //imp 중요속성이 아니면
+      filters.fil_imp = "1"; //중요로 변경
+      event.target.value = "imp"; //속성 추가
+      event.target.innerText = "중요O";
+    }
+  }
+  //사이드바
+  if (event.target.nodeName == "SPAN") {
+    const wrap = document.querySelector(".wrap");
+    wrap.classList.remove("collapse");
+
+    delSidebarEl();
+    loadTodoDetail(filters.todo_idx);
+    return false;
+  }
+
+  changeFilter(filters);
 }
 
-//2. 중요한 일
-const filImp = document.getElementById("fil-imp");
-filImp.addEventListener("click", changeImp);
+// 동적으로 li 그리기
+function addTodo(newTodo) {
+  // DOM 생성
+  const li = document.createElement("li");
+  li.id = newTodo.todo_idx;
 
-function changeImp() {
-  isTdy = false;
-  isImp = true;
-  isScheduled = false;
-  isCmplt = false;
-  isNotCmplt = false;
-  isSearch = false;
+  const cmpltChk = document.createElement("input");
+  cmpltChk.setAttribute("type", "checkbox");
 
-  onLoadList();
+  const span = document.createElement("span");
+  span.innerText = newTodo.todo_title;
+
+  const impBtn = document.createElement("button");
+  impBtn.className = "imp-btn";
+  impBtn.innerHTML = `<i class="fab fa-star"></i>`;
+  impBtn.value = "";
+
+  const todoDdln = document.createElement("span");
+  todoDdln.innerText = newTodo.todo_ddln;
+
+  //완료된 작업 불러올 시 체크박스 체크
+  if (newTodo.fil_cmplt == "1") {
+    cmpltChk.checked = true;
+    span.style = "text-decoration:line-through;";
+  }
+
+  //중요 표시 된 작업들
+  if (newTodo.fil_imp == "1") {
+    impBtn.innerHTML = `<i class="fas fa-star"></i>`;
+    impBtn.value = "imp";
+  }
+
+  li.appendChild(cmpltChk);
+  li.appendChild(span);
+
+  if (newTodo.todo_ddln != "" && newTodo.todo_ddln != null) {
+    li.append(todoDdln);
+  }
+
+  li.appendChild(impBtn);
+
+  if (newTodo.fil_cmplt == "1") {
+    //완료된 항목이면 완료 list div 에 붙이고
+    cmpltList.append(li);
+  } else {
+    //아닐 시 todolist div 에 붙이기
+    todoList.append(li);
+  }
 }
 
-//3. 계획된 일
-const filScheduled = document.getElementById("fil-scheduled");
-filScheduled.addEventListener("click", changeSchduled);
+// section 만들기
+function addSection(title) {
+  const section = document.createElement("div");
+  section.className = "todo-section";
 
-function changeSchduled() {
-  isTdy = false;
-  isImp = false;
-  isScheduled = true;
-  isCmplt = false;
-  isNotCmplt = false;
-  isSearch = false;
+  const sectionHeader = document.createElement("h2");
 
-  onLoadList();
+  sectionHeader.innerText = title;
+  section.appendChild(sectionHeader);
+  todoList.appendChild(section);
 }
 
-//4. 완료된 일
-const filCmplt = document.getElementById("fil-cmplt");
-filCmplt.addEventListener("click", changeCmplt);
+//동적으로 그린 li 전부 지우기
+function delTodoList() {
+  while (todoList.firstChild) {
+    todoList.removeChild(todoList.firstChild);
+  }
 
-function changeCmplt() {
-  isTdy = false;
-  isImp = false;
-  isScheduled = false;
-  isCmplt = true;
-  isNotCmplt = false;
-  isSearch = false;
-
-  onLoadList();
+  // 이전에 추가된 searchNodata 요소 제거
+  const existingSearchNodata = document.querySelector(".search-no-data");
+  if (existingSearchNodata) {
+    existingSearchNodata.remove();
+  }
 }
 
-//5. 작업 (미완료)
-const filNotCmplt = document.getElementById("fil-notCmplt");
-filNotCmplt.addEventListener("click", changeNotCmplt);
+function delCmpltList() {
+  while (cmpltList.firstChild) {
+    cmpltList.removeChild(cmpltList.firstChild);
+  }
+}
 
-function changeNotCmplt() {
-  isTdy = false;
-  isImp = false;
-  isScheduled = false;
-  isCmplt = false;
-  isNotCmplt = true;
-  isSearch = false;
+// 리스트 플래그 변경
+function onLoadList() {
+  delTodoList(); //todo 삭제 후 밑의 함수에서 새로 그리기
+  delCmpltList();
 
-  onLoadList();
+  const listTop = document.querySelector(".list-top");
+
+  if (isSearch) {
+    listTop.classList.add("hidden");
+  } else {
+    listTop.classList.remove("hidden");
+  }
+
+  if (isTdy) {
+    const url = "today";
+    listTitle.innerText = "오늘 할 일";
+    today.classList.remove("hidden");
+    onChangeList(url);
+  }
+
+  if (isImp) {
+    const url = "important";
+    listTitle.innerText = "중요한 일";
+    today.classList.add("hidden");
+    onChangeList(url);
+  }
+
+  if (isScheduled) {
+    const url = `scheduled?id=${loginUserId}`;
+    listTitle.innerText = "계획된 일";
+    today.classList.add("hidden");
+    onChangeList(url);
+  }
+
+  if (isCmplt) {
+    const url = "complete";
+    listTitle.innerText = "완료된 일";
+    today.classList.add("hidden");
+    onChangeList(url);
+  }
+
+  if (isAll) {
+    const url = "all";
+    listTitle.innerText = "작업";
+    today.classList.add("hidden");
+    onChangeList(url);
+  }
+}
+
+// 리스트 변경하는 함수
+function onChangeList(url) {
+  fetch(`/api/list/${url}`)
+    .then((response) => response.json())
+    .then((response) => {
+      toDos = response;
+
+      if (isScheduled) {
+        let hasFilCmplt = false; //플래그
+
+        const ddlnBeforeData = response["마감기한 이전에"];
+        const ddlnLastWeekData = response["마감기한 일주일 전"];
+        const ddlnYesterDayData = response["마감기한 어제"];
+        const ddlnTodayData = response["마감기한 오늘"];
+        const ddlnTommorrowData = response["마감기한 내일"];
+        const ddlnNextWeekData = response["마감기한 일주일 후"];
+        const ddlnAfterData = response["마감기한 나중에"];
+
+        separateSection(ddlnBeforeData, "이전에");
+        separateSection(ddlnLastWeekData, "지난 주");
+        separateSection(ddlnYesterDayData, "어제");
+        separateSection(ddlnTodayData, "오늘");
+        separateSection(ddlnTommorrowData, "내일");
+        separateSection(ddlnNextWeekData, "다음 주");
+        separateSection(ddlnAfterData, "나중에");
+
+        //완료체크가 안된 요소가 있는지 확인
+        function checkFilCmplt(element) {
+          if (element.fil_cmplt == "0") {
+            return true;
+          }
+        }
+
+        //기간 별 섹션 나누기
+        function separateSection(toDos, title) {
+          if (toDos.length > 0) {
+            let sectionChk = toDos.filter(checkFilCmplt); //sectionChk라는 이름의 완료체크가 안된 요소로 배열 재생성
+
+            if (sectionChk.length > 0) {
+              //완료체크가 안된 요소가 1개라도 존재하면 섹션 타이틀 달기
+              addSection(title);
+            }
+
+            toDos.forEach((data) => {
+              if (data.fil_cmplt == "1") {
+                addTodo(data);
+                hasFilCmplt = true;
+              } else {
+                addTodo(data);
+              }
+            });
+          }
+        }
+
+        chkCmpltListDiv(hasFilCmplt);
+      } else if (isTdy || isImp || isAll) {
+        let hasFilCmplt = false; // 플래그 변수
+
+        // toDos 배열을 순회하며 조건에 맞는 항목이 있는지 확인
+        toDos.forEach((todo) => {
+          // todo가 isTdy 또는 isImp 조건을 만족하고, fil_cmplt가 '1'인 경우에만 리스트 추가
+          if (
+            (isTdy && todo.fil_tdy == "1") ||
+            (isImp && todo.fil_imp == "1") ||
+            isAll
+          ) {
+            if (todo.fil_cmplt == "1") {
+              addTodo(todo);
+              hasFilCmplt = true; // fil_cmplt가 '1'인 경우가 존재함을 표시
+            } else {
+              addTodo(todo);
+            }
+          }
+        });
+
+        chkCmpltListDiv(hasFilCmplt);
+      } else {
+        cmpltListDiv.classList.add("hidden");
+        toDos.forEach(addTodo);
+      }
+
+      // fil_cmplt가 '1'인 경우가 없으면 div를 숨김
+      function chkCmpltListDiv(hasFilCmplt) {
+        if (!hasFilCmplt) {
+          cmpltListDiv.classList.add("hidden");
+        } else {
+          cmpltListDiv.classList.remove("hidden");
+        }
+      }
+    })
+    .catch((error) => {
+      alert("불러오기에 실패하였습니다.");
+      console.log(error);
+    });
 }

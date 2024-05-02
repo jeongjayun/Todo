@@ -1,4 +1,4 @@
-package com.eco.todo.service;
+package com.eco.todo.users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eco.todo.dto.UserSettings;
 import com.eco.todo.dto.Users;
-import com.eco.todo.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,8 +44,28 @@ public class UserService implements UserDetailsService {
 	}
 	
 	public Users chkUserSetting(String user_id) {
-		logger.info("service. 유저가 지정한 설정확인");
+		logger.info("service. 사용자 지정한 정렬 설정확인");
 		return mapper.findUser(user_id);
+	}
+	
+	public UserSettings getUserSetting(String user_id) {
+		logger.info("service. 사용자 지정한 정렬 설정확인");
+		return mapper.findUserSettings(user_id);
+			
+	}
+	
+	public String updateSettings(UserSettings setting) {
+		logger.info("service. 사용자 지정 설정 변경");
+		int result = mapper.updateSettings(setting);
+		
+		String message;
+		if(result>0) {
+			message="변경 되었습니다.";
+		} else {
+			message="변경되지 않았습니다.";
+		}
+		
+		return message;
 	}
 
 	@Override

@@ -11,7 +11,7 @@
 	</settings>
 
 	<typeAliases>
-		<package name="com.eco.todo.dto" />
+		<package name="com.eco.todo" />
 	</typeAliases>
 
 </configuration>

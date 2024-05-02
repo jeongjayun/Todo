@@ -42,7 +42,7 @@
 
           <div>
             <label for="user_nm" class="form-label">이름</label>
-            <input type="text" th:field="*{user_nm}">
+            <input type="text" th:field="*{user_nm}" maxlength="10" minlength="2">
             <div id="nm-chk-msg"></div>
             <div class="field-error" th:errors="*{user_nm}"></div>
           </div>

@@ -312,6 +312,7 @@ ORDER BY CREATED_TIME DESC;
 
 SELECT * FROM filters;
 SELECT * FROM todo;
+SELECT * FROM users;
 
 
 

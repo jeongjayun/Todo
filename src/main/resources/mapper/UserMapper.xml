@@ -3,10 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eco.todo.mapper.UserMapper">
+<mapper namespace="com.eco.todo.users.UserMapper">
 
 <!-- 아이디 중복확인 -->
-	<select id="chkUserId">
+	<select id="chkUserId" resultType="int">
 		SELECT COUNT(USER_ID) AS 아이디검색개수
 		  FROM USERS
 		 WHERE USER_ID = #{user_id}
@@ -31,5 +31,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM USERS
 		 WHERE USER_ID = #{user_id}
 	</select>
+	
+<!-- 설정찾기 -->
+	<select id="findUserSettings">
+		SELECT USER_ID, NEWTODO_TOP, IMPTODO_TOP
+		  FROM USERS
+		 WHERE USER_ID = #{user_id}
+	</select>
+	
+<!-- 설정 -->
+	<update id="updateSettings" parameterType="UserSettings">
+		UPDATE USERS
+		<trim prefix="SET" suffixOverrides=",">
+	        <if test="newTodo_top != null and newTodo_top != ''">NEWTODO_TOP = #{newTodo_top},</if>
+	        <if test="impTodo_top != null and impTodo_top != ''">IMPTODO_TOP = #{impTodo_top}</if>
+	    </trim>
+		 WHERE USER_ID = #{user_id}
+	</update>
 
 </mapper>
