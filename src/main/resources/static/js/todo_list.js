@@ -6,6 +6,8 @@ let isCmplt = false;
 let isAll = false;
 let isSearch = false;
 
+let url;
+
 window.addEventListener("DOMContentLoaded", onLoadList);
 
 const listTitle = document.querySelector(".list-title h1");
@@ -22,7 +24,8 @@ const filNotCmplt = document.getElementById("fil-notCmplt");
 
 filTdy.addEventListener("click", changeTdy);
 filImp.addEventListener("click", changeImp);
-filScheduled.addEventListener("click", changeSchduled);
+filScheduled.addEventListener("click", changeScheduled);
+filCmplt.addEventListener("click", changeCmplt);
 filNotCmplt.addEventListener("click", changeNotCmplt);
 
 //동적으로 그린 li 안의 요소에 이벤트 할당
@@ -30,8 +33,6 @@ document.querySelector(".list-todo ul").addEventListener("click", clickLi); //to
 document.querySelector(".list-todo div ul").addEventListener("click", clickLi); //cmpltList
 
 let toDos = [];
-
-///////////////////////////////////////////////////////////////////// 정리 된 함수
 
 //1. 오늘 할 일
 function changeTdy() {
@@ -56,7 +57,7 @@ function changeImp() {
 }
 
 //3. 계획된 일
-function changeSchduled() {
+function changeScheduled() {
   isTdy = false;
   isImp = false;
   isScheduled = true;
@@ -122,10 +123,8 @@ function clickLi(event) {
     } else {
       filters.fil_cmplt = "0";
     }
-  }
-
-  //중요버튼
-  if (event.target.nodeName == "BUTTON") {
+  } else if (event.target.nodeName == "BUTTON") {
+    //중요버튼
     if (event.target.value == "imp") {
       //imp 중요 속성이면
       filters.fil_imp = "0"; //중요 취소
@@ -137,14 +136,15 @@ function clickLi(event) {
       event.target.value = "imp"; //속성 추가
       event.target.innerText = "중요O";
     }
-  }
-  //사이드바
-  if (event.target.nodeName == "SPAN") {
+  } else if (event.target.nodeName == "SPAN") {
+    //사이드바
     const wrap = document.querySelector(".wrap");
     wrap.classList.remove("collapse");
-
-    delSidebarEl();
+    // delSidebarEl();
     loadTodoDetail(filters.todo_idx);
+    return false;
+  } else {
+    //span, input, button 외 클릭막기
     return false;
   }
 
@@ -193,8 +193,12 @@ function addTodo(newTodo) {
   li.appendChild(impBtn);
 
   if (newTodo.fil_cmplt == "1") {
-    //완료된 항목이면 완료 list div 에 붙이고
-    cmpltList.append(li);
+    if (isCmplt) {
+      todoList.append(li);
+    } else {
+      //완료된 항목이면 완료 list div 에 붙이고
+      cmpltList.append(li);
+    }
   } else {
     //아닐 시 todolist div 에 붙이기
     todoList.append(li);
@@ -246,35 +250,35 @@ function onLoadList() {
   }
 
   if (isTdy) {
-    const url = "today";
+    url = "today";
     listTitle.innerText = "오늘 할 일";
     today.classList.remove("hidden");
     onChangeList(url);
   }
 
   if (isImp) {
-    const url = "important";
+    url = "important";
     listTitle.innerText = "중요한 일";
     today.classList.add("hidden");
     onChangeList(url);
   }
 
   if (isScheduled) {
-    const url = `scheduled?id=${loginUserId}`;
+    url = `scheduled?id=${loginUserId}`;
     listTitle.innerText = "계획된 일";
     today.classList.add("hidden");
     onChangeList(url);
   }
 
   if (isCmplt) {
-    const url = "complete";
+    url = "complete";
     listTitle.innerText = "완료된 일";
     today.classList.add("hidden");
     onChangeList(url);
   }
 
   if (isAll) {
-    const url = "all";
+    url = "all";
     listTitle.innerText = "작업";
     today.classList.add("hidden");
     onChangeList(url);
@@ -288,9 +292,9 @@ function onChangeList(url) {
     .then((response) => {
       toDos = response;
 
-      if (isScheduled) {
-        let hasFilCmplt = false; //플래그
+      let hasFilCmplt = false; //플래그
 
+      if (isScheduled) {
         const ddlnBeforeData = response["마감기한 이전에"];
         const ddlnLastWeekData = response["마감기한 일주일 전"];
         const ddlnYesterDayData = response["마감기한 어제"];
@@ -306,6 +310,8 @@ function onChangeList(url) {
         separateSection(ddlnTommorrowData, "내일");
         separateSection(ddlnNextWeekData, "다음 주");
         separateSection(ddlnAfterData, "나중에");
+
+        chkCmpltListDiv(hasFilCmplt);
 
         //완료체크가 안된 요소가 있는지 확인
         function checkFilCmplt(element) {
@@ -326,30 +332,25 @@ function onChangeList(url) {
 
             toDos.forEach((data) => {
               if (data.fil_cmplt == "1") {
-                addTodo(data);
                 hasFilCmplt = true;
-              } else {
-                addTodo(data);
               }
+              addTodo(data);
             });
           }
         }
-
-        chkCmpltListDiv(hasFilCmplt);
       } else if (isTdy || isImp || isAll) {
         let hasFilCmplt = false; // 플래그 변수
 
         // toDos 배열을 순회하며 조건에 맞는 항목이 있는지 확인
         toDos.forEach((todo) => {
-          // todo가 isTdy 또는 isImp 조건을 만족하고, fil_cmplt가 '1'인 경우에만 리스트 추가
           if (
             (isTdy && todo.fil_tdy == "1") ||
             (isImp && todo.fil_imp == "1") ||
             isAll
           ) {
             if (todo.fil_cmplt == "1") {
-              addTodo(todo);
               hasFilCmplt = true; // fil_cmplt가 '1'인 경우가 존재함을 표시
+              addTodo(todo);
             } else {
               addTodo(todo);
             }
@@ -358,8 +359,9 @@ function onChangeList(url) {
 
         chkCmpltListDiv(hasFilCmplt);
       } else {
-        cmpltListDiv.classList.add("hidden");
+        hasFilCmplt = false;
         toDos.forEach(addTodo);
+        chkCmpltListDiv(hasFilCmplt);
       }
 
       // fil_cmplt가 '1'인 경우가 없으면 div를 숨김

@@ -1,9 +1,9 @@
 // 사이드바에서 메뉴 상태 변경 버튼 누르면 main_container의 상태 변경하도록
-window.addEventListener("load", function () {
-  this.document.querySelector(".toggle").addEventListener("click", function () {
-    document.querySelector(".wrap").classList.toggle("collapse");
-  });
-});
+// window.addEventListener("load", function () {
+//   this.document.querySelector(".toggle").addEventListener("click", function () {
+//     document.querySelector(".wrap").classList.toggle("collapse");
+//   });
+// });
 
 //사이드바에 데이터 불러오고 수정도 해야됨
 function loadTodoDetail(todoIdx) {
@@ -21,12 +21,12 @@ function loadTodoDetail(todoIdx) {
       addSidebarBottom(TODO_DETAIL);
     })
     .catch((error) => {
-      alert("통신에 실패하였습니다.");
       console.log(error);
     });
 }
 
 // 동적으로 사이드바에 요소 만들기
+
 //----- todo-title 영역 -----
 function addTodoTitle(TODO_DETAIL) {
   delSidebarEl();
@@ -409,92 +409,92 @@ document.querySelector(".todo-title").addEventListener("click", function () {
 });
 
 // ----- 메모박스 -----
-document
-  .querySelector("form .todo-memo")
-  .addEventListener("click", function () {
-    const todoMemoTextarea = document.querySelector(".memo-textarea");
+// document
+//   .querySelector("form .todo-memo")
+//   .addEventListener("click", function () {
+//     const todoMemoTextarea = document.querySelector(".memo-textarea");
 
-    todoMemoTextarea.onkeydown = function (event) {
-      let updateMemo = todoMemoTextarea.value;
+//     todoMemoTextarea.onkeydown = function (event) {
+//       let updateMemo = todoMemoTextarea.value;
 
-      const todoObj = {
-        todo_idx: todoMemoTextarea.id,
-        user_id: loginUserId,
-        todo_memo: updateMemo
-      };
-      mykeydown(event, todoObj);
-    };
-  });
+//       const todoObj = {
+//         todo_idx: todoMemoTextarea.id,
+//         user_id: loginUserId,
+//         todo_memo: updateMemo
+//       };
+//       mykeydown(event, todoObj);
+//     };
+//   });
 
 // ----- 기한 선택 -----
-document.querySelector(".todo-ddln").addEventListener("click", function () {
-  const menuList = document.querySelector(".dropdown-menu");
-  const dropdownBtn = document.querySelector(".dropdown-toggle");
-  // dropdownBtn 클릭하면 menuList 나오고 사라진다.
-  dropdownBtn.addEventListener("click", function () {
-    menuList.classList.toggle("show");
-  });
+// document.querySelector(".todo-ddln").addEventListener("click", function () {
+//   const menuList = document.querySelector(".dropdown-menu");
+//   const dropdownBtn = document.querySelector(".dropdown-toggle");
+//   // dropdownBtn 클릭하면 menuList 나오고 사라진다.
+//   dropdownBtn.addEventListener("click", function () {
+//     menuList.classList.toggle("show");
+//   });
 
-  dropdownBtn.addEventListener("blur", function () {
-    menuList.classList.remove("show");
-  });
+//   dropdownBtn.addEventListener("blur", function () {
+//     menuList.classList.remove("show");
+//   });
 
-  const tdyBtn = document.querySelector(".tdy");
-  const tmrwBtn = document.querySelector(".tmrw");
-  const weekBtn = document.querySelector(".week");
-  const calBtn = document.querySelector(".calendar");
+//   const tdyBtn = document.querySelector(".tdy");
+//   const tmrwBtn = document.querySelector(".tmrw");
+//   const weekBtn = document.querySelector(".week");
+//   const calBtn = document.querySelector(".calendar");
 
-  // 오늘, 내일, 다음 주, 날짜선택 버튼 클릭 이벤트 핸들러
-  tdyBtn.addEventListener("click", function () {
-    const formatDate = changeDdln("today");
-    dropdownBtn.innerText = formatDate;
-    updateDdln(formatDate);
-  });
+//   // 오늘, 내일, 다음 주, 날짜선택 버튼 클릭 이벤트 핸들러
+//   tdyBtn.addEventListener("click", function () {
+//     const formatDate = changeDdln("today");
+//     dropdownBtn.innerText = formatDate;
+//     updateDdln(formatDate);
+//   });
 
-  tmrwBtn.addEventListener("click", function () {
-    alert("click");
-    const formatDate = changeDdln("tomorrow");
-    dropdownBtn.innerText = formatDate;
-    updateDdln(formatDate);
-  });
+//   tmrwBtn.addEventListener("click", function () {
+//     alert("click");
+//     const formatDate = changeDdln("tomorrow");
+//     dropdownBtn.innerText = formatDate;
+//     updateDdln(formatDate);
+//   });
 
-  weekBtn.addEventListener("click", function () {
-    const formatDate = changeDdln("nextWeek");
-    dropdownBtn.innerText = formatDate;
-    updateDdln(formatDate);
-  });
+//   weekBtn.addEventListener("click", function () {
+//     const formatDate = changeDdln("nextWeek");
+//     dropdownBtn.innerText = formatDate;
+//     updateDdln(formatDate);
+//   });
 
-  const datePicker = document.querySelector("#datepicker");
+//   const datePicker = document.querySelector("#datepicker");
 
-  calBtn.addEventListener("click", function () {
-    dropdownBtn.innerText = "날짜 선택";
-    datePicker.classList.remove("hidden");
-  });
+//   calBtn.addEventListener("click", function () {
+//     dropdownBtn.innerText = "날짜 선택";
+//     datePicker.classList.remove("hidden");
+//   });
 
-  // fetch 함수호출
-  function updateDdln(formatDate) {
-    let requestData = {
-      todo_idx: dropdownBtn.id,
-      todo_ddln: formatDate,
-      user_id: loginUserId
-    };
+//   // fetch 함수호출
+//   function updateDdln(formatDate) {
+//     let requestData = {
+//       todo_idx: dropdownBtn.id,
+//       todo_ddln: formatDate,
+//       user_id: loginUserId
+//     };
 
-    fetch("/api/todo/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestData)
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        onLoadList();
-      })
-      .catch((error) => {
-        alert("실패");
-        console.log(error);
-      });
-  }
-});
+//     fetch("/api/todo/update", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(requestData)
+//     })
+//       .then((response) => response.json())
+//       .then((response) => {
+//         console.log(response);
+//         onLoadList();
+//       })
+//       .catch((error) => {
+//         alert("실패");
+//         console.log(error);
+//       });
+//   }
+// });
 
 // 기한 변경 함수
 function changeDdln(option) {
@@ -560,37 +560,37 @@ document
   });
 
 // 동적으로 그린 요소들 모두 삭제
-function delSidebarEl() {
-  const todoTitle = document.querySelector(".todo-title");
-  while (todoTitle.firstChild) {
-    todoTitle.removeChild(todoTitle.firstChild);
-  }
+// function delSidebarEl() {
+//   const todoTitle = document.querySelector(".todo-title");
+//   while (todoTitle.firstChild) {
+//     todoTitle.removeChild(todoTitle.firstChild);
+//   }
 
-  const todayBtnDiv = document.querySelector(".today-btn-div");
-  while (todayBtnDiv.firstChild) {
-    todayBtnDiv.removeChild(todayBtnDiv.firstChild);
-  }
+//   const todayBtnDiv = document.querySelector(".today-btn-div");
+//   while (todayBtnDiv.firstChild) {
+//     todayBtnDiv.removeChild(todayBtnDiv.firstChild);
+//   }
 
-  const todoDdln = document.querySelector(".todo-ddln");
-  while (todoDdln.firstChild) {
-    todoDdln.removeChild(todoDdln.firstChild);
-  }
+//   const todoDdln = document.querySelector(".todo-ddln");
+//   while (todoDdln.firstChild) {
+//     todoDdln.removeChild(todoDdln.firstChild);
+//   }
 
-  const todoMemo = document.querySelector(".todo-memo");
-  while (todoMemo.firstChild) {
-    todoMemo.removeChild(todoMemo.firstChild);
-  }
+//   const todoMemo = document.querySelector(".todo-memo");
+//   while (todoMemo.firstChild) {
+//     todoMemo.removeChild(todoMemo.firstChild);
+//   }
 
-  const todoData = document.querySelector(".todo-data");
-  while (todoData.firstChild) {
-    todoData.removeChild(todoData.firstChild);
-  }
+//   const todoData = document.querySelector(".todo-data");
+//   while (todoData.firstChild) {
+//     todoData.removeChild(todoData.firstChild);
+//   }
 
-  const sidebarBottom = document.querySelector(".sidebar-bottom");
-  while (sidebarBottom.firstChild) {
-    sidebarBottom.removeChild(sidebarBottom.firstChild);
-  }
-}
+//   const sidebarBottom = document.querySelector(".sidebar-bottom");
+//   while (sidebarBottom.firstChild) {
+//     sidebarBottom.removeChild(sidebarBottom.firstChild);
+//   }
+// }
 
 // textarea 엔터키 이벤트
 function mykeydown(event, todoObj) {
