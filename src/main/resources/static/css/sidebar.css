@@ -51,18 +51,15 @@
   margin-top: 50px;
   gap: 20px;
 }
-.wrap > .sidebar > .sidebar-main > form > .todo-title {
+.wrap > .sidebar > .sidebar-main > .todo-title {
   width: 100%;
   height: 70px;
   display: flex;
   justify-content: space-between;
 }
 
-.wrap > .sidebar > .sidebar-main > form > .todo-title > textarea {
+.wrap > .sidebar > .sidebar-main > .todo-title > form > textarea {
   width: inherit;
-}
-
-.wrap > .sidebar > .sidebar-main > form > .todo-title > button {
 }
 
 .wrap > .sidebar > .sidebar-main .today-btn-div > button {
@@ -75,20 +72,14 @@
   height: auto;
 }
 
-#datepicker {
-  height: 70px;
-  width: 100%;
-  text-align: center;
-}
-
-.wrap > .sidebar > .sidebar-main > form > .todo-memo {
+.wrap > .sidebar > .sidebar-main > .todo-memo > form {
   width: 100%;
   max-height: 250px;
   box-sizing: content-box;
   overflow-y: auto;
 }
 
-.wrap > .sidebar > .sidebar-main > form > .todo-memo > textarea {
+.wrap > .sidebar > .sidebar-main > .todo-memo > form > textarea {
   width: inherit;
   min-height: 5rem;
   overflow-y: hidden;
@@ -122,6 +113,9 @@
   width: 1.5rem;
   height: 1.5rem;
   right: 0;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
 }
 
 /* 사이드바 메뉴 버튼 */
@@ -182,12 +176,12 @@ textarea {
 textarea:focus {
   outline: none;
 }
-.wrap > .sidebar > .sidebar-main > form > .todo-memo,
-.wrap > .sidebar > .sidebar-main > form > .todo-title {
+.wrap > .sidebar > .sidebar-main > .todo-memo,
+.wrap > .sidebar > .sidebar-main > .todo-title {
   border-radius: 10px;
 }
-.wrap > .sidebar > .sidebar-main > form > .todo-memo:focus-within,
-.wrap > .sidebar > .sidebar-main > form > .todo-title:focus-within {
+.wrap > .sidebar > .sidebar-main > .todo-memo:focus-within,
+.wrap > .sidebar > .sidebar-main > .todo-title:focus-within {
   border-bottom: 3px solid #3c9eec;
 }
 
@@ -195,7 +189,7 @@ textarea:focus {
   background-color: #3c9eec;
   border-radius: 10px;
   border: none;
-  color: white;
+  color: #fff;
 }
 
 .wrap .sidebar button:hover {
@@ -204,4 +198,12 @@ textarea:focus {
 
 .dropdown-item {
   margin-bottom: 5px;
+}
+
+#datepicker {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 5px;
 }

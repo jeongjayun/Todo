@@ -16,6 +16,20 @@ body {
   background-repeat: no-repeat; /* 배경 이미지 반복 없음 */
 }
 
+ul,
+li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+button {
+  padding: 8px;
+  background-color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
 /* rem 사용을 위한 루트글자 크기 설정 */
 html {
   font-size: 15px;
@@ -24,6 +38,7 @@ html {
 .wrap {
   position: relative;
 }
+
 .wrap > .sidebar {
   background-color: #fff;
   position: fixed;
@@ -35,7 +50,7 @@ html {
   width: 20rem;
 
   padding: 1rem;
-  z-index: 9999;
+  z-index: 888;
 
   border-radius: 30px 0 0 30px;
 }
@@ -131,14 +146,6 @@ html {
   border: 1px solid transparent;
 }
 
-/* 버튼 스타일 */
-.search-div button {
-  padding: 8px;
-  background-color: white;
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
 .search-div input[type="text"] {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -155,10 +162,6 @@ html {
   color: #333;
 }
 
-.menu-div .menu-list ul {
-  list-style: none;
-}
-
 .menu-div .menu-list li {
   height: 50px;
   margin: 10px 5px;
@@ -172,11 +175,11 @@ html {
 }
 
 #copyright {
-  position: fixed; /* 위치를 고정합니다. */
-  bottom: 10px; /* 아래쪽 여백을 10px로 설정합니다. */
-  right: 10px; /* 오른쪽 여백을 10px로 설정합니다. */
-  color: #555; /* 텍스트 색상을 회색으로 설정합니다. */
-  font-size: 12px; /* 폰트 크기를 12px로 설정합니다. */
+  position: fixed; /* 위치를 고정 */
+  bottom: 10px;
+  right: 10px;
+  color: #555;
+  font-size: 12px;
 }
 
 .list-div {
@@ -259,12 +262,10 @@ html {
   text-align: center;
 }
 
-.list-div .list-todo li .cmplt-btn {
-}
-
 .list-div .list-todo li .imp-btn {
   border: none;
   color: #3c9eec;
+  font-size: 15px;
 }
 
 .list-div .new-todo-div {
@@ -317,13 +318,6 @@ html {
   position: relative;
   z-index: 1;
   margin-bottom: 8px;
-}
-
-ul,
-li {
-  list-style-type: none;
-  padding-left: 0;
-  margin-left: 0;
 }
 
 .dropdown-toggle {

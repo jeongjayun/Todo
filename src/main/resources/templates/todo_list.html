@@ -5,20 +5,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>할 일 목록</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/modal.css" />
   <link rel="stylesheet" type="text/css" href="/css/main.css" />
   <link rel="stylesheet" type="text/css" href="/css/sidebar.css" />
 
-  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- 제이쿼리 -->
+  <script src="/js/jquery-3.2.1.js"></script>
+  <script src="/js/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="/css/jquery-ui.css">
 </head>
 
 <body>
   <!-- 큰 영역 -->
-  <div class="wrap">
-     <!-- 사이드바 영역 -->
-     <div class="sidebar">
+  <div class="wrap collapse">
+
+    <!-- 사이드바 영역 -->
+    <div class="sidebar">
 
       <div class="sidebar-top">
         <div>
@@ -34,13 +37,13 @@
 
       <div class="sidebar-main">
 
-          <div class="todo-title">
-            <input type="checkbox"/>
-            <form>
-              <textarea placeholder="할 일을 적어주세요."></textarea>
-            </form>
-            <button type="button" class="imp-btn">중요버튼</button>
-          </div>
+        <div class="todo-title">
+          <input type="checkbox" />
+          <form>
+            <textarea placeholder="할 일을 적어주세요."></textarea>
+          </form>
+          <button type="button" class="imp-btn">☆</button>
+        </div>
 
         <div class="today-btn-div">
           <button>나의 하루에 추가</button>
@@ -49,111 +52,80 @@
         <div class="todo-ddln">
           <div class="dropdown">
             <button class="dropdown-toggle">기간 선택</button>
-            <button>삭제</button>
 
             <ul class="dropdown-menu">
-                <li class="dropdown-item">
-                  <button class="dropdown-option">오늘</button>
-                </li>
-                <li class="dropdown-item">
-                  <button class="dropdown-option">내일</button>
-                </li>
-                <li class="dropdown-item">
-                  <button class="dropdown-option">다음 주</button>
-                </li>
-                <li class="dropdown-item">
-                  <button class="dropdown-option">날짜 선택</button>
-                  <!-- datepicker -->
-                </li>
+              <li class="dropdown-item">
+                <button class="dropdown-option tdy">오늘</button>
+              </li>
+              <li class="dropdown-item">
+                <button class="dropdown-option tommorow" value="">내일</button>
+              </li>
+              <li class="dropdown-item">
+                <button class="dropdown-option nextweek">다음 주</button>
+              </li>
+              <li class="dropdown-item">
+                <button class="dropdown-option selectCal">날짜 선택</button>
+                <!-- datepicker -->
+                <input type="text" id="datepicker" class="hidden" />
+              </li>
+              <li class="dropdown-item">
+                <button class="dropdown-option date-reset-btn">기한 삭제</button>
+              </li>
             </ul>
 
           </div>
         </div>
 
-      
-          <div class="todo-memo">
-            <form>
+
+        <div class="todo-memo">
+          <form>
             <textarea placeholder="메모를 입력하세요."></textarea>
-            </form>
-          </div>
-      
+          </form>
+        </div>
+
         <div class="todo-data">
-          <p>수정됨</p>
+          <p>
+            <!-- db에서 데이터 가져오기 / 언제언제 수정 또는 삭제됨 -->
+          </p>
         </div>
 
       </div>
 
       <div class="sidebar-bottom">
-        <span>언제 작성됨</span>
-        <button type="button">삭제</button>
+        <span>
+          <!-- db에서 데이터 가져오기 / 언제언제 작성됨 -->
+        </span>
+        <button type="button"><i class="fa fa-trash-o"></i></button>
       </div>
 
     </div>
 
-    <!-- 사이드바 영역 원본 -->
-    <!-- <div class="sidebar">
-      <div class="sidebar-top">
-        <div>
-          버튼 이동
-        </div>
-
-        <label class="toggle">
-          메뉴 상태 변경 버튼 추가
-          <span></span>
-          <span></span>
-          <span></span>
-        </label>
-        
-      </div>
-
-
-      <div class="sidebar-main">
-
-        <form>
-          <div class="todo-title">
-            요소 생성하기
-          </div>
-        </form>
-
-        <div class="today-btn-div">
-          나의 하루에 추가버튼
-        </div>
-
-        <div class="todo-ddln">
-          드랍메뉴를 동적으로 그려
-        </div>
-
-        <form>
-          <div class="todo-memo">
-            동적으로 메모공간 만들기
-          </div>
-        </form>
-
-        <div class="todo-data">
-          동적으로 메모공간 만들기
-        </div>
-
-      </div>
-
-      <div class="sidebar-bottom">
-        동적으로 생성됨
-      </div>
-
-    </div> -->
-
     <!-- 메인 영역 -->
     <div class="main_container">
+
+      <!-- 로그아웃 모달 -->
+      <div class="modal">
+        <div class="modal_body">
+          <h2> <span th:text="${#authentication.name}"></span></h2>
+          <p>정말 로그아웃 하시겠습니까?</p>
+          <button><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></button>
+          <button class="btn-close-modal">닫기</button>
+        </div>
+      </div>
+
+
       <!-- 컨텐츠 영역 -->
       <div class="container">
-        <div class="menu-div">
 
+
+
+        <div class="menu-div">
           <!-- 현재 로그인 계정 정보 -->
           <div class="user-profile">
             <div class="user-img"></div>
             <div class="user-detail">
-              <span th:text="${#authentication.name}"></span>
-              <span><a th:href="@{/settings}">설정</a></span>
-              <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
+              <a th:href="@{/settings}"><span th:text="${#authentication.name}"></span></a>
+              <button class="btn-open-modal">로그아웃</button>
             </div>
           </div>
 
@@ -227,9 +199,9 @@
   <script src="/js/todo_list.js"></script>
   <script src="/js/date.js"></script>
   <script src="/js/todo_save.js"></script>
-  <!-- <script src="/js/sidebar.js"></script> -->
-  <script src="/js/sidebarCopy.js"></script>
+  <script src="/js/sidebar.js"></script>
   <script src="/js/search.js"></script>
+  <script src="/js/modal.js"></script>
 
 
 

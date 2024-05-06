@@ -129,12 +129,12 @@ function clickLi(event) {
       //imp 중요 속성이면
       filters.fil_imp = "0"; //중요 취소
       event.target.value = ""; //속성 없애기
-      event.target.innerText = "중요X";
+      event.target.innerHTML = `<i class="fa fa-star-o"></i>`;
     } else {
       //imp 중요속성이 아니면
       filters.fil_imp = "1"; //중요로 변경
       event.target.value = "imp"; //속성 추가
-      event.target.innerText = "중요O";
+      event.target.innerHTML = `<i class="fa fa-star"></i>`;
     }
   } else if (event.target.nodeName == "SPAN") {
     //사이드바
@@ -165,7 +165,7 @@ function addTodo(newTodo) {
 
   const impBtn = document.createElement("button");
   impBtn.className = "imp-btn";
-  impBtn.innerHTML = `<i class="fab fa-star"></i>`;
+  impBtn.innerHTML = `<i class="fa fa-star-o"></i>`;
   impBtn.value = "";
 
   const todoDdln = document.createElement("span");
@@ -179,7 +179,7 @@ function addTodo(newTodo) {
 
   //중요 표시 된 작업들
   if (newTodo.fil_imp == "1") {
-    impBtn.innerHTML = `<i class="fas fa-star"></i>`;
+    impBtn.innerHTML = `<i class="fa fa-star"></i>`;
     impBtn.value = "imp";
   }
 

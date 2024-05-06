@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND (FIL_TDY = '1' AND FIL_DLT = '0')
-		   AND (TRUNC(TODO_DDLN) = TRUNC(SYSDATE) OR TRUNC(CREATED_TIME) = TRUNC(SYSDATE))
+		   AND (TRUNC(TODO_DDLN) = TRUNC(SYSDATE))
 		<include refid="ViewSettings"></include>
 	</select>
 	

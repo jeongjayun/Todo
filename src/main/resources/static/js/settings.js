@@ -3,6 +3,7 @@ const impTodo = document.getElementById("impTodo-input");
 const user_id = document.getElementById("user-id-span").textContent;
 
 console.log(user_id);
+
 const settings = {
   user_id: user_id
 };
@@ -39,6 +40,21 @@ newTodo.addEventListener("change", function () {
     settings.newTodo_top = "0";
   }
 
+  saveSetting(settings);
+});
+
+impTodo.addEventListener("change", function () {
+  if (impTodo.checked) {
+    settings.impTodo_top = "1";
+  } else {
+    settings.impTodo_top = "0";
+  }
+
+  saveSetting(settings);
+
+});
+
+function saveSetting(settings) {
   fetch("/api/user/settings", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -52,26 +68,4 @@ newTodo.addEventListener("change", function () {
       console.log(error);
       alert(error);
     });
-});
-
-impTodo.addEventListener("change", function () {
-  if (impTodo.checked) {
-    settings.impTodo_top = "1";
-  } else {
-    settings.impTodo_top = "0";
-  }
-
-  fetch("/api/settings", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(settings)
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
-});
+}

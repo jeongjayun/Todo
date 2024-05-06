@@ -12,17 +12,11 @@
   <body>
     <div class="main_container">
       <div class="container">
-        
+
         <h1>설정</h1>
 
         <!-- 현재 로그인 계정 정보 -->
-        <div class="user-profile">
-          <div class="user-img"></div>
-          <div class="user-detail">
-            <span id="user-id-span" th:text="${#authentication.name}"></span>
-            <span><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></span>
-          </div>
-        </div>
+        <span id="user-id-span" th:text="${#authentication.name}"></span>
 
         <label>
           <span>새로운 작업을 상단에 정렬</span>
@@ -34,9 +28,9 @@
         </label>
 
         <span>
-          <a sec:authorize="isAuthenticated()" th:href="@{/list}">목록으로</a>
+          <button> <a sec:authorize="isAuthenticated()" th:href="@{/list}">목록으로</a></button>
         </span>
-      
+
       </div>
     </div>
 
