@@ -44,7 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND (FIL_TDY = '1' AND FIL_DLT = '0')
-		   AND (TRUNC(TODO_DDLN) = TRUNC(SYSDATE))
+			 OR (FIL_CMPLT = '1' AND TRUNC(UPDATED_TIME) <![CDATA[>]]>TRUNC(SYSDATE)-1) --완료면서 수정된 후 24시간이 지나지 않은 것들 필터링
+		   OR (TRUNC(TODO_DDLN) = TRUNC(SYSDATE))
 		<include refid="ViewSettings"></include>
 	</select>
 	
@@ -52,7 +53,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="filterImp">
 	    <include refid="selectView"></include>
 	    WHERE USER_ID = #{user_id}
-	      AND (FIL_IMP = '1' OR FIL_CMPLT = '1') -- 중요한 항목이거나 완료된 항목만 선택
+	      AND (FIL_IMP = '1' OR FIL_CMPLT = '1') --중요한 항목이거나 완료된 항목만 선택
+				OR (FIL_CMPLT = '1' AND TRUNC(UPDATED_TIME) <![CDATA[>]]>TRUNC(SYSDATE)-1)
 	      AND FIL_DLT = '0' -- 삭제되지 않은 항목만 선택
 		<include refid="ViewSettings"></include>
 	</select>
@@ -119,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
- 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
+ 	     AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
 		<include refid="ViewSettings"></include>
 	</select>
 
@@ -128,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectView"></include>
 		 WHERE USER_ID = #{user_id}
 		   AND FIL_DLT = '0'
- 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
+ 	     AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
 		<include refid="ViewSettings"></include>
 	</select>
 

@@ -350,10 +350,8 @@ function onChangeList(url) {
           ) {
             if (todo.fil_cmplt == "1") {
               hasFilCmplt = true; // fil_cmplt가 '1'인 경우가 존재함을 표시
-              addTodo(todo);
-            } else {
-              addTodo(todo);
             }
+            addTodo(todo);
           }
         });
 

@@ -274,9 +274,6 @@ function changeImpBtn() {
   changeFilter(filters);
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////////
 function getFilters(object) {
   const filters = {
     todo_idx: object.id,
