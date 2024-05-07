@@ -86,7 +86,7 @@ html {
 .menu-div {
   flex: 1;
   max-width: 30%;
-  background-color: #3c9eec;
+  background-color: rgba(60, 158, 236, 0.9);
   color: #fff;
 }
 

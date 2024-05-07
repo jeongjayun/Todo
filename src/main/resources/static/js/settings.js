@@ -2,8 +2,6 @@ const newTodo = document.getElementById("newTodo-input");
 const impTodo = document.getElementById("impTodo-input");
 const user_id = document.getElementById("user-id-span").textContent;
 
-console.log(user_id);
-
 const settings = {
   user_id: user_id
 };
@@ -12,10 +10,8 @@ window.addEventListener("DOMContentLoaded", function () {
   this.fetch(`/api/user/settings?id=${user_id}`)
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
-
       const settings = response["현재 설정"];
-      console.log(settings);
+
       if (settings.impTodo_top == "1") {
         impTodo.checked = true;
       } else {
@@ -51,7 +47,6 @@ impTodo.addEventListener("change", function () {
   }
 
   saveSetting(settings);
-
 });
 
 function saveSetting(settings) {

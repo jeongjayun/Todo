@@ -82,6 +82,9 @@ function onPwChk() {
     msg = "비밀번호는 최소 8글자여야 합니다.";
     pwChkMsg.textContent = msg;
     pwInput1.focus();
+  } else {
+    msg = "";
+    pwChkMsg.textContent = msg;
   }
 }
 

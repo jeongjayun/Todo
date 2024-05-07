@@ -6,25 +6,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.eco.todo.lists.ListMapper">
 <!-- view  중복문 -->
 	<sql id="selectView">
-		SELECT  TODO_IDX          -- 투두 인덱스 --
-				, USER_ID					-- 사용자 아이디 --
-				, TODO_TITLE			-- 투두 제목 --
-				, TODO_MEMO				-- 투두 메모 --
-				, TODO_DDLN				-- 투두 마감기한 --
-				, CREATED_TIME		-- 생성 일시 --	
-				, UPDATED_TIME		-- 수정 일시 --
-				, DELETED_TIME		-- 삭제 일시 --
-				, FIL_TDY					-- 하루 여부 --
-				, FIL_IMP					-- 중요 여부 --
-				, FIL_CMPLT				-- 완료 여부 --
-				, FIL_DLT					-- 삭제 여부 --
-		FROM V_TODO_FILTER	
+		SELECT TODO_IDX         -- 투두 인덱스 
+			 , USER_ID			-- 사용자 아이디 
+			 , TODO_TITLE		-- 투두 제목 
+			 , TODO_MEMO		-- 투두 메모 
+			 , TODO_DDLN		-- 투두 마감기한 
+			 , CREATED_TIME		-- 생성 일시 
+			 , UPDATED_TIME		-- 수정 일시 
+			 , DELETED_TIME		-- 삭제 일시
+			 , FIL_TDY			-- 하루 여부 
+			 , FIL_IMP			-- 중요 여부 
+			 , FIL_CMPLT		-- 완료 여부 
+			 , FIL_DLT			-- 삭제 여부 
+		  FROM V_TODO_FILTER	
 	</sql>
 	
 <!-- ASC,DESC 중복문 -->
 	<sql id="ViewSettings">
 	 	<trim prefix="ORDER BY" suffixOverrides=",">
-				<if test="impTodo_top == '0'">fil_imp ASC,</if>
 				<if test="impTodo_top != '0'">fil_imp DESC,</if>
 				<if test="newTodo_top == '0'">CREATED_TIME ASC,</if>
 				<if test="newTodo_top != '0'">CREATED_TIME DESC,</if>
@@ -34,28 +33,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 작업 조회 쿼리 -->
 	<select id="findAllTodo" parameterType="Users">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
 		<include refid="ViewSettings"></include>
 	</select>
 
 <!-- 오늘 할 일 필터 -->
 	<select id="filterTdy" parameterType="Users">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND (FIL_TDY = '1' AND FIL_DLT = '0')
-			 OR (FIL_CMPLT = '1' AND TRUNC(UPDATED_TIME) <![CDATA[>]]>TRUNC(SYSDATE)-1) --완료면서 수정된 후 24시간이 지나지 않은 것들 필터링
-		   OR (TRUNC(TODO_DDLN) = TRUNC(SYSDATE))
+			 WHERE USER_ID = #{user_id}
+			   AND (
+			   		 (FIL_TDY='1' AND FIL_DLT='0' AND FIL_CMPLT='0')
+			   		 -- 오늘 할일이고, 삭제되지 않았고, 완료되지 않은 것
+			   		 OR 
+			   		 (FIL_CMPLT = '1' AND FIL_DLT='0' -- 완료되고 삭제되지 않은 것 
+			   			AND TRUNC(UPDATED_TIME) <![CDATA[>]]>= TRUNC(SYSDATE)-1) -- 수정시간이 24시간 이내인 것
+			   	   )
+			   	   	-- trunc ㄴㄴ dateformat 씁시다. --
 		<include refid="ViewSettings"></include>
 	</select>
 	
 <!-- 중요한 일만 필터 -->
 	<select id="filterImp">
 	    <include refid="selectView"></include>
-	    WHERE USER_ID = #{user_id}
-	      AND (FIL_IMP = '1' OR FIL_CMPLT = '1') --중요한 항목이거나 완료된 항목만 선택
-				OR (FIL_CMPLT = '1' AND TRUNC(UPDATED_TIME) <![CDATA[>]]>TRUNC(SYSDATE)-1)
-	      AND FIL_DLT = '0' -- 삭제되지 않은 항목만 선택
+		    WHERE USER_ID = #{user_id}
+		      AND FIL_IMP = '1'  -- 중요한 항목이고
+		      AND FIL_CMPLT = '0' -- 완료되지 않은 항목이고
+		      AND FIL_DLT = '0' -- 삭제되지 않은 항목만 선택
 		<include refid="ViewSettings"></include>
 	</select>
 
@@ -63,74 +67,74 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 완료된 일만 필터 -->
 	<select id="filterCmplt">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_CMPLT='1'
-		   AND FIL_DLT = '0'
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_CMPLT = '1'
+			   AND FIL_DLT = '0'
 		<include refid="ViewSettings"></include>
 	</select>
 
 <!-- 마감일 어제 -->
 	<select id="ddlnYesterDay">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)-1 -- 마감일 어제 
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)-1 -- 마감일 어제 
 		<include refid="ViewSettings"></include>
 	</select>
 	
 <!-- 마감일 오늘 -->
 	<select id="ddlnToday">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 오늘 
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 오늘 
 		<include refid="ViewSettings"></include>
 	</select>
 	
 <!-- 마감일 내일 -->
 	<select id="ddlnTommorrow">	
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
-		   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 내일 
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 내일 
 		<include refid="ViewSettings"></include>
 	</select>
 	
 <!-- 지난 주 -->
 	<select id="ddlnLastWeek">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'   
-		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 7
-		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) - 2
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'   
+			   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 7
+			   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) - 2
 		<include refid="ViewSettings"></include>
 	</select>
 
 <!-- 다음 주 -->
 	<select id="ddlnNextWeek">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
-		   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 2
-		   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 7 -- 마감일 1주일 전
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+			   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 2
+			   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 7 -- 마감일 1주일 전
 		<include refid="ViewSettings"></include>
 	</select>
 
 <!-- 나중에 -->
 	<select id="ddlnAfter">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
- 	     AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+	 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
 		<include refid="ViewSettings"></include>
 	</select>
 
 <!-- 이전에 -->
 	<select id="ddlnBefore">
 		<include refid="selectView"></include>
-		 WHERE USER_ID = #{user_id}
-		   AND FIL_DLT = '0'
- 	     AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
+			 WHERE USER_ID = #{user_id}
+			   AND FIL_DLT = '0'
+	 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
 		<include refid="ViewSettings"></include>
 	</select>
 

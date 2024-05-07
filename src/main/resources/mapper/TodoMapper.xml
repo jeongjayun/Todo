@@ -66,7 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								<if test="fil_tdy == null or fil_tdy == ''">, 0</if>
 								<if test="fil_imp != null and fil_imp != ''">, #{fil_imp}</if>
 								<if test="fil_imp == null or fil_imp == ''">, 0</if>
-							   , 0		
+								<if test="fil_cmplt != null and fil_cmplt != ''">, #{fil_cmplt}</if>
+								<if test="fil_cmplt == null or fil_cmplt == ''">, 0</if>
 				   	 		   , 0
 				   	 		   )
 				   	 	SELECT * FROM DUAL   				   	 		   
@@ -93,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        <if test="todo_memo != null and todo_memo != ''">TODO_MEMO = #{todo_memo},</if>
 	        UPDATED_TIME = #{updated_time},
 	        TODO_DDLN = #{todo_ddln, jdbcType=DATE}
-	    </trim>
+	     </trim>
 		 WHERE TODO_IDX = #{todo_idx}
 		   AND USER_ID = #{user_id}
 	</update>
@@ -123,7 +124,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND TODO_IDX = #{todo_idx}
 	</select>
 
-	
 <!-- 투두 검색 -->
 	<select id="search">
 		<include refid="selectView"></include>

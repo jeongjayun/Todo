@@ -7,8 +7,6 @@ function getDate() {
   const date = new Date();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-
-  const dayOfWeek = date.getDay();
   let weekday = new Array();
   weekday[0] = "일";
   weekday[1] = "월";

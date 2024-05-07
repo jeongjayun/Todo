@@ -99,7 +99,7 @@ public class ListApiController {
 
 	// 모든 작업 불러오기 
 	@GetMapping("/all")
-	public ResponseEntity<List<TodoAndFilter>> filterNotCmplt(Authentication authentication) {
+	public ResponseEntity<List<TodoAndFilter>> filterAllTodo(Authentication authentication) {
 		String user_id = authentication.getName();
 		Users user = userService.chkUserSetting(user_id);
 

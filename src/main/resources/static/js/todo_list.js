@@ -15,7 +15,6 @@ const todoList = document.querySelector(".list-todo ul");
 const cmpltList = document.querySelector(".list-todo div ul");
 const cmpltListDiv = document.querySelector(".list-todo div");
 
-// 메뉴항목
 const filTdy = document.getElementById("fil-tdy");
 const filImp = document.getElementById("fil-imp");
 const filScheduled = document.getElementById("fil-scheduled");

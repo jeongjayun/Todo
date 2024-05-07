@@ -53,7 +53,7 @@ dropdownTommorrow.addEventListener("click", function () {
   updateDdln(formatDate);
 
   menuList.classList.remove("show");
-})
+});
 
 dropdownNextweek.addEventListener("click", function () {
   const formatDate = changeDdln("nextWeek");
@@ -61,15 +61,15 @@ dropdownNextweek.addEventListener("click", function () {
   updateDdln(formatDate);
 
   menuList.classList.remove("show");
-})
+});
 
 dropdownSelect.addEventListener("click", function () {
   datePicker.classList.toggle("hidden");
-})
+});
 
 datePicker.addEventListener("blur", function () {
   menuList.classList.remove("show");
-})
+});
 
 //엔터키 이벤트 적용
 todoTitleTextarea.onkeydown = function (event) {
@@ -78,7 +78,7 @@ todoTitleTextarea.onkeydown = function (event) {
   todoObj = getTodoObj(todoTitleTextarea);
   todoObj.todo_title = updateTitle;
   mykeydown(event, todoObj);
-}
+};
 
 todoMemoTextarea.onkeydown = function (event) {
   let updateMemo = todoMemoTextarea.value;
@@ -87,7 +87,6 @@ todoMemoTextarea.onkeydown = function (event) {
   todoObj.todo_memo = updateMemo;
   mykeydown(event, todoObj);
 };
-
 
 // 메세지창 길이
 todoMemoTextarea.addEventListener("input", function () {
@@ -105,9 +104,7 @@ dateResetBtn.addEventListener("click", function () {
   dropdownBtn.innerText = "기간 선택";
   formatDate = "";
   updateDdln(formatDate);
-
-})
-
+});
 
 $(document).ready(function () {
   $("#datepicker").datepicker({
@@ -164,7 +161,7 @@ $(document).ready(function () {
     maxDate: "+5y", //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)
     beforeShow: function () {
       setTimeout(function () {
-        $('.ui-datepicker').css('z-index', 99999999999999);
+        $(".ui-datepicker").css("z-index", 99999999999999);
       }, 0);
     },
     onSelect: function (dateString) {
@@ -203,9 +200,7 @@ function updateDdln(formatDate) {
 // 할 일 삭제
 function deleteTodo() {
   if (
-    confirm(
-      "작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다."
-    )
+    confirm("작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다.")
   ) {
     fetch(`/api/todo/delete/${delBtn.id}`, {
       headers: { "Content-Type": "application/json" },
@@ -217,6 +212,7 @@ function deleteTodo() {
         alert("삭제되었습니다.");
         loadTodoDetail(delBtn.id);
         onLoadList();
+        document.querySelector(".wrap").classList.toggle("collapse");
       })
       .catch((error) => {
         alert("통신에 실패하였습니다.");
@@ -278,16 +274,15 @@ function getFilters(object) {
   const filters = {
     todo_idx: object.id,
     user_id: loginUserId
-  }
-  console.log("getFilters", filters);
+  };
   return filters;
 }
 
 function getTodoObj(object) {
   const todoObj = {
     todo_idx: object.id,
-    user_id: loginUserId,
-  }
+    user_id: loginUserId
+  };
   return todoObj;
 }
 //사이드바에 데이터 불러오기
@@ -337,14 +332,14 @@ function loadTodoDetail(todoIdx) {
       }
 
       // 마감일이 있으면
-      if (TODO_DETAIL.todo_ddln > '0') {
+      if (TODO_DETAIL.todo_ddln > "0") {
         dropdownBtn.innerText = TODO_DETAIL.todo_ddln;
       }
 
       //메모 여부
       todoMemoTextarea.textContent = TODO_DETAIL.todo_memo;
 
-      //수정시간이 있으면 
+      //수정시간이 있으면
       if (TODO_DETAIL.updated_time != null) {
         todoData.innerText = `${elapsedTime(TODO_DETAIL.updated_time)} 수정됨.`;
       }

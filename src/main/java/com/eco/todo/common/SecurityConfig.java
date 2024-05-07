@@ -16,11 +16,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+//xml로도 가입햅괴 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.csrf(csrf->csrf.disable()) //csrf 비활성화 
+				.csrf(csrf->csrf.disable()) //크로스 사이트 요청위조 비활성화 
 				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**","/join/**", "/api/user/chkId", "/").permitAll() // 인증이 필요없음
 						.anyRequest().authenticated())

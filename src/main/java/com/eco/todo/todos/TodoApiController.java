@@ -31,9 +31,8 @@ public class TodoApiController {
 
 	@PostMapping("/save")
 	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody TodoAndFilter todoAndFilter) {
-		// 오늘 할 일 목록 또는 중요 목록에서 투두 작성 시 카테고리에 맞게 저장됨
 		Map<String, Object> result = todoService.saveTodo(todoAndFilter);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/update")

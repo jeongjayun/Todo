@@ -50,7 +50,6 @@ function handleToDoSubmit(event) {
       const parsedData = JSON.parse(jsonData);
       newTodoObj.todo_idx = parsedData.todo_idx;
       addTodo(newTodoObj);
-      console.log(newTodoObj);
       onLoadList();
     })
     .catch((error) => {

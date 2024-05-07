@@ -93,8 +93,7 @@ ALTER TABLE FILTERS FOREIGN KEY(USER_ID)
 DROP TABLE settings;
 ---------------------------------------
 
-ALTER TABLE users ADD NEWTODO_TOP char(1) DEFAULT 0;
-ALTER TABLE users ADD IMPTODO_TOP char(1) DEFAULT 0;
+
 
 SELECT * FROM users;
 

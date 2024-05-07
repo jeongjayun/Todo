@@ -23,7 +23,9 @@ public class UserController {
 	@PostMapping("/join")
 	public String postJoin(@Valid @ModelAttribute("userJoinForm") UserJoinForm userJoinForm,
 			BindingResult bindingResult, Model model) {
-
+		//성공플래그 사용해서 로직 한번에 처리
+		//결과에 따라 이동할 페이지가 많으면 마지막에서 이동처리 
+		
 		// 아이디 중복검사
 		int idChk = service.chkUserId(userJoinForm.getUser_id());
 
@@ -38,6 +40,7 @@ public class UserController {
 			return "join_form";
 		}
 
+	
 		// 검증 실패 시 입력폼으로 되돌아가기
 		if (bindingResult.hasErrors()) {
 			logger.info("Errors = {}", bindingResult);
