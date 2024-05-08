@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.eco.todo.dto.Filters;
 import com.eco.todo.dto.Todo;
 import com.eco.todo.dto.TodoAndFilter;
-import com.eco.todo.dto.Users;
 import com.eco.todo.users.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class TodoService {
 
 	private final TodoMapper mapper;
-	private final UserMapper userMapper;
 	private static Logger logger = LoggerFactory.getLogger("TodoService.class");
 
 	// 저장하기
@@ -38,7 +36,6 @@ public class TodoService {
 		if (result > 0) {
 			String message = "저장되었습니다.";
 			returnData.put("message", message);
-			returnData.put("todo_idx", todoAndFilter.getTodo_idx());
 			return returnData;
 
 		} else {
@@ -69,31 +66,35 @@ public class TodoService {
 		return responseData;
 	}
 
-	public ArrayList<TodoAndFilter> search(String user_id, String todo_title) {
+	// 검색하기
+	public ArrayList<TodoAndFilter> searchTitle(String user_id, String todo_title) {
+		logger.info("검색하기");
 		ArrayList<TodoAndFilter> list = new ArrayList<>();
-		list = mapper.search(user_id, todo_title);
+		list = mapper.searchTitle(user_id, todo_title);
 		return list;
 	}
 
+	// 상세조회
 	public TodoAndFilter getTodoDetail(String user_id, int todo_idx) {
 		logger.info("선택한 투두 상세정보 불러오기");
 		TodoAndFilter todoAndFilter = mapper.getTodoDetail(user_id, todo_idx);
+		System.out.println(todoAndFilter);
 		return todoAndFilter;
 	}
 
 	public Map<String, Object> updateFilters(Filters filter) {
 		logger.info("filter 수정하기");
-
-		int result = mapper.updateFilters(filter);
-
 		Map<String, Object> responseData = new HashMap<>();
 
-		Timestamp updated_Time = new Timestamp(System.currentTimeMillis());
+		int updateResult = mapper.updateFilters(filter); // 필터 변경한 결과
+
 		int todo_idx = filter.getTodo_idx();
-		mapper.updateTodoTime(todo_idx, updated_Time);
+		Timestamp updated_Time = new Timestamp(System.currentTimeMillis());
+		int updateTimeResult = mapper.updateTodoTime(todo_idx, updated_Time); // 수정시간 변경한 결과
+		// 수정된 시간은 todo table에 있어서 todo table의 수정시간만 수정해준다.
 
 		String message;
-		if (result > 0) {
+		if (updateResult > 0 && updateTimeResult > 0) { // 둘 다 성공했을 때
 			message = "데이터를 수정했습니다.";
 		} else {
 			message = "데이터를 수정하지 못했습니다.";
@@ -105,32 +106,21 @@ public class TodoService {
 
 	public Map<String, Object> deleteTodo(int todo_idx) {
 		logger.info("선택한 투두 삭제하기, 삭제시간 업데이트 하기");
-
 		Map<String, Object> responseData = new HashMap<>();
 
+		int deleteResult = mapper.deleteTodo(todo_idx); // 항목 삭제한 결과
+
 		Timestamp deleted_Time = new Timestamp(System.currentTimeMillis());
-		int delete_result = mapper.deleteTodo(todo_idx);
+		int deleteTimeResult = mapper.deleteTodoTime(todo_idx, deleted_Time); // 삭제한 시간 변경 결과
 
 		String message;
-		if (delete_result > 0) {
+		if (deleteResult > 0 && deleteTimeResult > 0) { // 둘 다 성공했을 때 
 			message = "데이터를 삭제했습니다.";
 		} else {
 			message = "데이터를 삭제하지 못했습니다.";
 		}
 
-		mapper.deleteTodoTime(todo_idx, deleted_Time);
-
 		responseData.put("삭제 결과", message);
 		return responseData;
-	}
-
-	int updateTodoTime(int todo_idx, Timestamp updated_Time) {
-		logger.info("수정시간 업데이트하기");
-		return mapper.updateTodoTime(todo_idx, updated_Time);
-	}
-
-	int deleteTodoTime(int todo_idx, Timestamp deleted_Time) {
-		logger.info("삭제시간 업데이트하기");
-		return mapper.deleteTodoTime(todo_idx, deleted_Time);
 	}
 }

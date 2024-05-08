@@ -295,19 +295,11 @@ function onChangeList(url) {
 
       if (isScheduled) {
         const ddlnBeforeData = response["마감기한 이전에"];
-        const ddlnLastWeekData = response["마감기한 일주일 전"];
-        const ddlnYesterDayData = response["마감기한 어제"];
         const ddlnTodayData = response["마감기한 오늘"];
-        const ddlnTommorrowData = response["마감기한 내일"];
-        const ddlnNextWeekData = response["마감기한 일주일 후"];
         const ddlnAfterData = response["마감기한 나중에"];
 
         separateSection(ddlnBeforeData, "이전에");
-        separateSection(ddlnLastWeekData, "지난 주");
-        separateSection(ddlnYesterDayData, "어제");
         separateSection(ddlnTodayData, "오늘");
-        separateSection(ddlnTommorrowData, "내일");
-        separateSection(ddlnNextWeekData, "다음 주");
         separateSection(ddlnAfterData, "나중에");
 
         chkCmpltListDiv(hasFilCmplt);

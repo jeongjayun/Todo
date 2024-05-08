@@ -29,52 +29,62 @@ public class TodoApiController {
 	private static Logger logger = LoggerFactory.getLogger("TodoApiController.class");
 	private final TodoService todoService;
 
-	@PostMapping("/save")
+	@PostMapping("/save") // 저장하기
 	public ResponseEntity<Map<String, Object>> saveTodo(@RequestBody TodoAndFilter todoAndFilter) {
+		logger.info("할 일 저장하기");
 		Map<String, Object> result = todoService.saveTodo(todoAndFilter);
 		return ResponseEntity.ok(result);
 	}
 
-	@PostMapping("/update")
+	@PostMapping("/update") // 수정하기
 	public ResponseEntity<Map<String, Object>> updateTodo(@RequestBody Todo todo) {
-		Map<String, Object> responseData = new HashMap<>();
-		responseData = todoService.updateTodo(todo);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
+		logger.info("수정하기");
+		Map<String, Object> responseData = todoService.updateTodo(todo);
+		return ResponseEntity.ok(responseData);
 	}
 
-	@PostMapping("/filterUpdate")
+	@PostMapping("/filterUpdate") // 필터 수정하기(나의 하루에 추가, 중요한 일 추가, 완료체크)
 	public ResponseEntity<Map<String, Object>> updateFilters(@RequestBody Filters filters) {
-		Map<String, Object> responseData = new HashMap<>();
-		responseData = todoService.updateFilters(filters);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
+		logger.info("필터 수정하기");
+		Map<String, Object> responseData = todoService.updateFilters(filters);
+		return ResponseEntity.ok(responseData);
 	}
 
-	@PostMapping("/delete/{todo_idx}")
+	@PostMapping("/delete/{todo_idx}") // 삭제하기
 	public ResponseEntity<Map<String, Object>> deleteTodo(@PathVariable("todo_idx") int todo_idx,
 			Authentication authentication) {
-		Map<String, Object> responseData = new HashMap<>();
-		responseData = todoService.deleteTodo(todo_idx);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
+		logger.info("할 일 삭제하기");
+		Map<String, Object> responseData = todoService.deleteTodo(todo_idx);
+		return ResponseEntity.ok(responseData);
 	}
 
-	@GetMapping("/{todo_idx}")
+	@GetMapping("/{todo_idx}") // 상세조회
 	public ResponseEntity<Map<String, Object>> getTodoDetail(@PathVariable("todo_idx") int todo_idx,
 			Authentication authentication) {
+		logger.info("상세 조회하기");
 		Map<String, Object> responseData = new HashMap<>();
+
 		String user_id = authentication.getName();
 		TodoAndFilter todoAndFilter = todoService.getTodoDetail(user_id, todo_idx);
-		responseData.put("result", todoAndFilter);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
+
+		if (todoAndFilter == null) { 
+			// 작성한 사용자 아이디와 일치하지 않는 인덱스 번호를 검색하면 
+			String message = "해당되는 내용을 찾을 수 없습니다.";
+			responseData.put("result", message);
+		} else {
+			// 작성한 사용자 아이디와 조회하려는 인덱스 번호 일치하면 
+			responseData.put("result", todoAndFilter);
+		}
+
+		return ResponseEntity.ok(responseData);
 	}
 
-	@PostMapping("/search")
+	@PostMapping("/search") // 검색
 	public ResponseEntity<List<TodoAndFilter>> searchTitle(@RequestBody TodoAndFilter todoAndFilter) {
 		String user_id = todoAndFilter.getUser_id();
 		String todo_title = todoAndFilter.getTodo_title();
-		List<TodoAndFilter> list = todoService.search(user_id, todo_title);
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		List<TodoAndFilter> list = todoService.searchTitle(user_id, todo_title);
+		return ResponseEntity.ok(list);
 	}
-
-	
 
 }

@@ -173,54 +173,6 @@ $(document).ready(function () {
   $("#datepicker").datepicker("setDate", "today"); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 });
 
-// fetch 함수호출
-function updateDdln(formatDate) {
-  let requestData = {
-    todo_idx: dropdownBtn.id,
-    todo_ddln: formatDate,
-    user_id: loginUserId
-  };
-
-  fetch("/api/todo/update", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestData)
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response);
-      onLoadList();
-    })
-    .catch((error) => {
-      alert("실패");
-      console.log(error);
-    });
-}
-
-// 할 일 삭제
-function deleteTodo() {
-  if (
-    confirm("작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다.")
-  ) {
-    fetch(`/api/todo/delete/${delBtn.id}`, {
-      headers: { "Content-Type": "application/json" },
-      method: "POST"
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        alert("삭제되었습니다.");
-        loadTodoDetail(delBtn.id);
-        onLoadList();
-        document.querySelector(".wrap").classList.toggle("collapse");
-      })
-      .catch((error) => {
-        alert("통신에 실패하였습니다.");
-        console.log(error);
-      });
-  }
-}
-
 // 나의 하루에 추가
 function changeTdyBtn() {
   filters = getFilters(todayBtn);
@@ -421,6 +373,30 @@ function changeDdln(option) {
     .padStart(2, "0")}`;
 }
 
+// fetch 함수호출
+function updateDdln(formatDate) {
+  let requestData = {
+    todo_idx: dropdownBtn.id,
+    todo_ddln: formatDate,
+    user_id: loginUserId
+  };
+
+  fetch("/api/todo/update", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(requestData)
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+      onLoadList();
+    })
+    .catch((error) => {
+      alert("실패");
+      console.log(error);
+    });
+}
+
 // textarea 엔터키 이벤트
 function mykeydown(event, todoObj) {
   if (event.keyCode == 13) {
@@ -443,6 +419,30 @@ function mykeydown(event, todoObj) {
       })
       .catch((error) => {
         alert("변경에 실패하였습니다.");
+        console.log(error);
+      });
+  }
+}
+
+// 할 일 삭제
+function deleteTodo() {
+  if (
+    confirm("작업을 삭제하시겠습니까?\n삭제하면 데이터는 복구할 수 없습니다.")
+  ) {
+    fetch(`/api/todo/delete/${delBtn.id}`, {
+      headers: { "Content-Type": "application/json" },
+      method: "POST"
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        alert("삭제되었습니다.");
+        loadTodoDetail(delBtn.id);
+        onLoadList();
+        document.querySelector(".wrap").classList.toggle("collapse");
+      })
+      .catch((error) => {
+        alert("통신에 실패하였습니다.");
         console.log(error);
       });
   }

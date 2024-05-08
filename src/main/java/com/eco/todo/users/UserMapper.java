@@ -12,10 +12,10 @@ public interface UserMapper {
 	
 	public void join(Users user);
 	
-	public Users findUser(String user_id);
+	public Users findUser(String user_id); // User 내용 전부찾기 
 	
-	public UserSettings findUserSettings(String user_id);
+	public UserSettings findUserSettings(String user_id); // 설정관련 부분만 찾기
 	
-	public int updateSettings(UserSettings setting);
+	public int updateSettings(UserSettings setting); // 설정관련 부분만 변경하기
 	
 }

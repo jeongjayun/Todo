@@ -61,6 +61,8 @@ function onIdDplChk(event) {
   fetch(`/api/user/chkId?id=${idInput.value}`)
     .then((response) => response.json())
     .then((response) => {
+      console.log("onIdDplChk", response);
+
       let idDplResult = Object.values(response);
 
       if (idDplResult > 0) {

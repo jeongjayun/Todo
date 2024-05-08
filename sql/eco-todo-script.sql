@@ -101,3 +101,13 @@ select * FROM V_TODO_FILTER;
 
 UPDATE users SET newtodo_top='0' WHERE user_id='test';
 UPDATE users SET imptodo_top='1' WHERE user_id='test';
+
+SELECT SYSDATE-1 FROM DUAL;
+
+SELECT *
+  FROM V_TODO_FILTER
+ WHERE USER_ID = 'test'
+   AND FIL_DLT = '0'
+   AND (TRUNC(TODO_DDLN) > TRUNC(SYSDATE) -- 마감일 나중에 
+	 	);
+

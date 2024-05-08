@@ -25,46 +25,41 @@ public class UserService implements UserDetailsService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	public void join(String user_id, String user_pw, String user_nm) {
-		logger.info("service. 회원가입");
+		logger.info("회원가입");
 
 		Users user = new Users();
 		user.setUser_id(user_id);
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		user.setUser_pw(passwordEncoder.encode(user_pw));		
-
+		user.setUser_pw(passwordEncoder.encode(user_pw)); // 비밀번호 암호화
+		
 		user.setUser_nm(user_nm);
-
+		
 		mapper.join(user);
 	}
 
 	public int chkUserId(String user_id) {
-		logger.info("service. 중복 아이디 확인");
+		logger.info("중복 아이디 확인");
 		return mapper.chkUserId(user_id);
 	}
-	
-	public Users chkUserSetting(String user_id) {
-		logger.info("service. 사용자 지정한 정렬 설정확인");
-		return mapper.findUser(user_id);
-	}
-	
+
 	public UserSettings getUserSetting(String user_id) {
-		logger.info("service. 사용자 지정한 정렬 설정확인");
+		logger.info("사용자 지정한 정렬 설정확인");
 		return mapper.findUserSettings(user_id);
-			
+
 	}
-	
+
 	public String updateSettings(UserSettings setting) {
-		logger.info("service. 사용자 지정 설정 변경");
+		logger.info("사용자 지정 설정 변경");
 		int result = mapper.updateSettings(setting);
-		
+
 		String message;
-		if(result>0) {
-			message="변경 되었습니다.";
+		if (result > 0) {
+			message = "변경 되었습니다.";
 		} else {
-			message="변경되지 않았습니다.";
+			message = "변경되지 않았습니다.";
 		}
-		
+
 		return message;
 	}
 

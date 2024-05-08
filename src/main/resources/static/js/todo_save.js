@@ -1,3 +1,5 @@
+// list 페이지 하단의 할 일 작성 form
+
 const todoForm = document.getElementById("todo-form");
 const todoInput = document.querySelector("#todo-form .todo-input");
 const ddlnInput = document.querySelector("#todo-form .todoCalendar");
@@ -51,6 +53,7 @@ function handleToDoSubmit(event) {
       newTodoObj.todo_idx = parsedData.todo_idx;
       addTodo(newTodoObj);
       onLoadList();
+      console.log(response);
     })
     .catch((error) => {
       alert("저장에 실패하였습니다.");

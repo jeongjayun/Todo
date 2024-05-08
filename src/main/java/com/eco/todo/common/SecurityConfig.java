@@ -16,7 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//xml로도 가입햅괴 
+//공부장님 코멘트 : 스프링 시큐리티 외에 xml로도 회원가입해보기 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -34,7 +34,6 @@ public class SecurityConfig {
 				.logout((logout)->logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/"));
-		
 		return http.build();
 	}
 

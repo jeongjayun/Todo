@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TodoAndFilter {
+public class TodoAndFilter { //V_TODO_FILTER 라는 view 에서 사용
 	private int todo_idx;
 	private String user_id;
 	private String todo_title;

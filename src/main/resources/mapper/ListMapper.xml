@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eco.todo.lists.ListMapper">
+<mapper namespace="com.eco.todo.todos.ListMapper">
 <!-- view  중복문 -->
 	<sql id="selectView">
 		SELECT TODO_IDX         -- 투두 인덱스 
@@ -24,9 +24,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- ASC,DESC 중복문 -->
 	<sql id="ViewSettings">
 	 	<trim prefix="ORDER BY" suffixOverrides=",">
-				<if test="impTodo_top != '0'">fil_imp DESC,</if>
-				<if test="newTodo_top == '0'">CREATED_TIME ASC,</if>
-				<if test="newTodo_top != '0'">CREATED_TIME DESC,</if>
+			<if test="impTodo_top != '0'">fil_imp DESC,</if>
+			<if test="newTodo_top == '0'">CREATED_TIME ASC,</if>
+			<if test="newTodo_top != '0'">CREATED_TIME DESC,</if>
 		</trim>
 	</sql>
 
@@ -39,22 +39,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 <!-- 오늘 할 일 필터 -->
-	<select id="filterTdy" parameterType="Users">
+	<select id="filterTdy" parameterType="UserSettings">
 		<include refid="selectView"></include>
 			 WHERE USER_ID = #{user_id}
 			   AND (
-			   		 (FIL_TDY='1' AND FIL_DLT='0' AND FIL_CMPLT='0')
-			   		 -- 오늘 할일이고, 삭제되지 않았고, 완료되지 않은 것
-			   		 OR 
-			   		 (FIL_CMPLT = '1' AND FIL_DLT='0' -- 완료되고 삭제되지 않은 것 
-			   			AND TRUNC(UPDATED_TIME) <![CDATA[>]]>= TRUNC(SYSDATE)-1) -- 수정시간이 24시간 이내인 것
+			   		 (FIL_TDY = '1' AND FIL_DLT = '0' AND FIL_CMPLT = '0') -- 오늘 할일, 삭제되지 않고, 완료되지 않은 것
+			   		 OR -- 또는
+			   		 (FIL_CMPLT = '1' AND FIL_DLT = '0' -- 완료, 삭제되지 않은 것 
+			   		  AND TO_CHAR(UPDATED_TIME, 'YYYY-MM-DD') <![CDATA[>]]>= TO_CHAR(SYSDATE-1, 'YYYY-MM-DD')) -- 그리고 수정이 어제보다 크거나 같다
 			   	   )
-			   	   	-- trunc ㄴㄴ dateformat 씁시다. --
 		<include refid="ViewSettings"></include>
 	</select>
 	
+<!-- turnc 함수 사용하여 날짜계산 -->
+<!--  <select id="filterTdy" parameterType="UserSettings">
+		<include refid="selectView"></include>
+			 WHERE USER_ID = #{user_id}
+			   AND (
+			   		 (FIL_TDY = '1' AND FIL_DLT = '0' AND FIL_CMPLT = '0') 
+			   		 OR 
+			   		 (FIL_CMPLT = '1' AND FIL_DLT = '0' 
+			   			AND TRUNC(UPDATED_TIME) <![CDATA[>]]>= TRUNC(SYSDATE)-1) 
+			   	   )
+		<include refid="ViewSettings"></include>
+	</select>
+-->
+	
 <!-- 중요한 일만 필터 -->
-	<select id="filterImp">
+	<select id="filterImp" parameterType="UserSettings">
 	    <include refid="selectView"></include>
 		    WHERE USER_ID = #{user_id}
 		      AND FIL_IMP = '1'  -- 중요한 항목이고
@@ -65,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	
 <!-- 완료된 일만 필터 -->
-	<select id="filterCmplt">
+	<select id="filterCmplt" parameterType="UserSettings">
 		<include refid="selectView"></include>
 			 WHERE USER_ID = #{user_id}
 			   AND FIL_CMPLT = '1'
@@ -73,12 +85,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="ViewSettings"></include>
 	</select>
 
-<!-- 마감일 어제 -->
-	<select id="ddlnYesterDay">
+<!-- 계획된 일정 -->
+<!-- 이전에 -->
+	<select id="ddlnBefore">
 		<include refid="selectView"></include>
 			 WHERE USER_ID = #{user_id}
 			   AND FIL_DLT = '0'
-			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)-1 -- 마감일 어제 
+	 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) -- 마감일 이전에 
 		<include refid="ViewSettings"></include>
 	</select>
 	
@@ -90,52 +103,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE) -- 마감일 오늘 
 		<include refid="ViewSettings"></include>
 	</select>
-	
-<!-- 마감일 내일 -->
-	<select id="ddlnTommorrow">	
-		<include refid="selectView"></include>
-			 WHERE USER_ID = #{user_id}
-			   AND FIL_DLT = '0'
-			   AND TRUNC(TODO_DDLN) = TRUNC(SYSDATE)+1 -- 마감일 내일 
-		<include refid="ViewSettings"></include>
-	</select>
-	
-<!-- 지난 주 -->
-	<select id="ddlnLastWeek">
-		<include refid="selectView"></include>
-			 WHERE USER_ID = #{user_id}
-			   AND FIL_DLT = '0'   
-			   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) - 7
-			   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) - 2
-		<include refid="ViewSettings"></include>
-	</select>
-
-<!-- 다음 주 -->
-	<select id="ddlnNextWeek">
-		<include refid="selectView"></include>
-			 WHERE USER_ID = #{user_id}
-			   AND FIL_DLT = '0'
-			   AND TODO_DDLN <![CDATA[>]]> TRUNC(SYSDATE) + 2
-			   AND TODO_DDLN <![CDATA[<]]> TRUNC(SYSDATE) + 7 -- 마감일 1주일 전
-		<include refid="ViewSettings"></include>
-	</select>
 
 <!-- 나중에 -->
 	<select id="ddlnAfter">
 		<include refid="selectView"></include>
 			 WHERE USER_ID = #{user_id}
 			   AND FIL_DLT = '0'
-	 	       AND TODO_DDLN  <![CDATA[>]]> TRUNC(SYSDATE) + 7 -- 마감일 나중에 
+	 	       AND TRUNC(TODO_DDLN)  <![CDATA[>]]> TRUNC(SYSDATE) -- 마감일 나중에
 		<include refid="ViewSettings"></include>
 	</select>
-
-<!-- 이전에 -->
-	<select id="ddlnBefore">
-		<include refid="selectView"></include>
-			 WHERE USER_ID = #{user_id}
-			   AND FIL_DLT = '0'
-	 	       AND TODO_DDLN  <![CDATA[<]]> TRUNC(SYSDATE) - 7 -- 마감일 이전에 
-		<include refid="ViewSettings"></include>
-	</select>
-
 </mapper>

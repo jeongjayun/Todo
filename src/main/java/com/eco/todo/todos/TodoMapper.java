@@ -31,6 +31,6 @@ public interface TodoMapper {
 	public int deleteTodoTime(@Param("todo_idx") int todo_idx, @Param("deleted_time") Timestamp deleted_time);
 
 	// 검색
-	public ArrayList<TodoAndFilter> search(@Param("user_id") String user_id, @Param("todo_title") String todo_title);
+	public ArrayList<TodoAndFilter> searchTitle(@Param("user_id") String user_id, @Param("todo_title") String todo_title);
 	
 }
