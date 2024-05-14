@@ -25,7 +25,6 @@
 ## DB 구조도
 ![image](https://github.com/jeongjayun/Todo/assets/116062065/9f32892a-d581-4201-8f22-5c5028493cd5)
 - Todo 테이블과 Filters 를 View 로 엮어서 조회 시 사용함
-- 되도록 Todo, Filters 의 각 테이블에 직접 값을 저장, 삭제, 수정함.
 
 ## 주요 기능
   1. Spring Security 활용한 회원가입, 로그인/로그아웃
