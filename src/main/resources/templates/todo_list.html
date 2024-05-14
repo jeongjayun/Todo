@@ -107,8 +107,8 @@
         <div class="modal_body">
           <h2> <span th:text="${#authentication.name}"></span></h2>
           <p>정말 로그아웃 하시겠습니까?</p>
-          <button><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></button>
-          <button class="btn-close-modal">닫기</button>
+          <button id="logout-btn"><a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></button>
+          <button id="close-btn" class="btn-close-modal">닫기</button>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
             <div class="user-img"></div>
             <div class="user-detail">
               <a th:href="@{/settings}"><span th:text="${#authentication.name}"></span></a>
-              <button class="btn-open-modal">로그아웃</button>
+              <button class="btn-open-modal">x</button>
             </div>
           </div>
 

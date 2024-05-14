@@ -32,7 +32,7 @@ public class PageController {
 	@GetMapping("/list")
 	public String listPage(Authentication authentication) {
 		String user_id = authentication.getName(); // 로그인해야만 list 페이지로 이동
-		return "todo_list"; // todo_list 에서 타임리프 문법 사용하여 authentication 유지
+		return "todo_list";
 	}
 
 	@GetMapping("/settings")

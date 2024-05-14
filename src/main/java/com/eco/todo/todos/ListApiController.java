@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ListApiController {
 	private static Logger logger = LoggerFactory.getLogger("ListApiController.class");
+	
 	private final ListService listService;
 	private final UserService userService;
 

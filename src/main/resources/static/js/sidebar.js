@@ -390,6 +390,7 @@ function updateDdln(formatDate) {
     .then((response) => {
       console.log(response);
       onLoadList();
+      loadTodoDetail(requestData.todo_idx);
     })
     .catch((error) => {
       alert("실패");

@@ -31,3 +31,25 @@
 
   transform: translateY(-50%);
 }
+
+#logout-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+#close-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

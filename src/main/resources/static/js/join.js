@@ -45,7 +45,7 @@ pwInput2.addEventListener("change", onPwDblChk);
 // 이름 입력확인
 nmInput.addEventListener("change", function () {
   if (nmInput.value.length > 10 || nmInput.value.length <= "1") {
-    nmChkMsg.textContent = `이름은 특수문자를 제외한 2~10자리여야 합니다.`;
+    nmChkMsg.textContent = `이름은 2~10자리여야 합니다.`;
     nmInput.focus();
   } else {
     nmOk = true;

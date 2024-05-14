@@ -139,7 +139,6 @@ function clickLi(event) {
     //사이드바
     const wrap = document.querySelector(".wrap");
     wrap.classList.remove("collapse");
-    // delSidebarEl();
     loadTodoDetail(filters.todo_idx);
     return false;
   } else {
@@ -314,7 +313,8 @@ function onChangeList(url) {
         //기간 별 섹션 나누기
         function separateSection(toDos, title) {
           if (toDos.length > 0) {
-            let sectionChk = toDos.filter(checkFilCmplt); //sectionChk라는 이름의 완료체크가 안된 요소로 배열 재생성
+            let sectionChk = toDos.filter(checkFilCmplt);
+            //sectionChk라는 이름의 완료체크가 안된 요소로 배열 재생성
 
             if (sectionChk.length > 0) {
               //완료체크가 안된 요소가 1개라도 존재하면 섹션 타이틀 달기

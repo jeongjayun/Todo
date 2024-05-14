@@ -51,20 +51,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="ViewSettings"></include>
 	</select>
 	
-<!-- turnc 함수 사용하여 날짜계산 -->
-<!--  <select id="filterTdy" parameterType="UserSettings">
-		<include refid="selectView"></include>
-			 WHERE USER_ID = #{user_id}
-			   AND (
-			   		 (FIL_TDY = '1' AND FIL_DLT = '0' AND FIL_CMPLT = '0') 
-			   		 OR 
-			   		 (FIL_CMPLT = '1' AND FIL_DLT = '0' 
-			   			AND TRUNC(UPDATED_TIME) <![CDATA[>]]>= TRUNC(SYSDATE)-1) 
-			   	   )
-		<include refid="ViewSettings"></include>
-	</select>
--->
-	
 <!-- 중요한 일만 필터 -->
 	<select id="filterImp" parameterType="UserSettings">
 	    <include refid="selectView"></include>

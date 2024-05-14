@@ -21,8 +21,8 @@ public class UserJoinForm {
 	@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
 	private String user_pw2;
 
-//	@Size(min = 2, max = 10)
-	@Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "이름은 특수문자를 제외한 2~10자리여야 합니다.")
+	@Size(min = 2, max = 10)
+	@Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "이름은 2~10자리여야 합니다.")
 	@NotBlank(message = "이름은 필수항목입니다.")
 	private String user_nm;
 	

@@ -13,25 +13,24 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
-@EnableWebSecurity
+@Configuration // 스프링 환경설정 파일
+@EnableWebSecurity // 시큐리티 활성화
 public class SecurityConfig {
 //공부장님 코멘트 : 스프링 시큐리티 외에 xml로도 회원가입해보기 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-				.csrf(csrf->csrf.disable()) //크로스 사이트 요청위조 비활성화 
+		http.csrf(csrf -> csrf.disable()) // 크로스 사이트 요청위조 비활성화
 				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**","/join/**", "/api/user/chkId", "/").permitAll() // 인증이 필요없음
+						.requestMatchers("/img/**", "/js/**", "/css/**", "/login/**", "/join/**", "/api/user/chkId",
+								"/")
+						.permitAll() // 인증이 필요없음
 						.anyRequest().authenticated())
-				.headers((headers) -> headers.addHeaderWriter(
-						new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
 				.formLogin((formlogin) -> formlogin
 						.loginPage("/login")
 						.usernameParameter("user_id")
 						.passwordParameter("user_pw")
 						.defaultSuccessUrl("/list"))
-				.logout((logout)->logout
+				.logout((logout) -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/"));
 		return http.build();
@@ -40,7 +39,7 @@ public class SecurityConfig {
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
-		//시큐리티 인증 처리 
+		// 시큐리티 인증 처리
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
