@@ -4,7 +4,7 @@ const today = document.querySelector("#today h2");
 getDate();
 
 function getDate() {
-  const date = new Date();
+  const date = new Date(); // 자바스크립트에서 Date 생성
   const month = date.getMonth() + 1;
   const day = date.getDate();
   let weekday = new Array();

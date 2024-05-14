@@ -56,14 +56,14 @@ nmInput.addEventListener("change", function () {
 // 가입 버튼
 submitBtn.addEventListener("click", onSubmit);
 
+// 아이디 중복검사 함수
 function onIdDplChk(event) {
   event.preventDefault();
   fetch(`/api/user/chkId?id=${idInput.value}`)
     .then((response) => response.json())
     .then((response) => {
       console.log("onIdDplChk", response);
-
-      let idDplResult = Object.values(response);
+      let idDplResult = Object.values(response); //자바에서 반환된 결과값
 
       if (idDplResult > 0) {
         idChkMsg.textContent = `이미 중복된 아이디 입니다.`;
@@ -79,6 +79,7 @@ function onIdDplChk(event) {
     .catch((error) => console.log(error));
 }
 
+// 비밀번호 입력 메서드
 function onPwChk() {
   if (pwInput1.value.length < 8) {
     msg = "비밀번호는 최소 8글자여야 합니다.";
@@ -90,12 +91,14 @@ function onPwChk() {
   }
 }
 
+// 비밀번호 입력 확인 메서드
 function onPwDblChk() {
   if (pwInput1.value != pwInput2.value) {
     msg = "비밀번호가 일치하지 않습니다.";
     pwChk2Msg.textContent = msg;
     pwInput2.focus();
   } else {
+    // 일치하면 pwOk
     pwOk = true;
     msg = "";
     pwChk2Msg.textContent = msg;

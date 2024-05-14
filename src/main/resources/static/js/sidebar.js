@@ -313,6 +313,7 @@ function loadTodoDetail(todoIdx) {
     });
 }
 
+// 현재 시간과 입력된 시간을 비교
 const elapsedTime = (date) => {
   const start = new Date(date);
   const end = new Date();

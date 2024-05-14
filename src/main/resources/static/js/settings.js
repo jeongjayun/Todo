@@ -10,14 +10,16 @@ window.addEventListener("DOMContentLoaded", function () {
   this.fetch(`/api/user/settings?id=${user_id}`)
     .then((response) => response.json())
     .then((response) => {
-      const settings = response["현재 설정"];
+      const settings = response["현재 설정"]; //응답 중 '현재 설정'이라는 배열을 settings 에 저장
 
       if (settings.impTodo_top == "1") {
+        // 값 확인하여 checked
         impTodo.checked = true;
       } else {
         impTodo.checked = false;
       }
       if (settings.newTodo_top == "1") {
+        // 값 확인하여 checked
         newTodo.checked = true;
       } else {
         newTodo.checked = false;

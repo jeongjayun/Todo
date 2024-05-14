@@ -26,7 +26,7 @@ function handleToDoSearch(event) {
 
   const SearchObj = {
     todo_title: search,
-    user_id: loginUserId,
+    user_id: loginUserId
   };
 
   fetch("/api/todo/search", {
@@ -61,5 +61,4 @@ function handleToDoSearch(event) {
       alert("저장에 실패하였습니다.");
       console.log(error);
     });
-
 }
