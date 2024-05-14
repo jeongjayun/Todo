@@ -17,7 +17,7 @@
   - 리팩토링 : 2024/04/30 - 2024/05/05 + 그 외 자잘한 오류 수정 
   
 ## 프로젝트 환경 및 기술
-- Language : HTML, CSS, JavaScript, Thymeleaf, Java SE - 17
+- Language : HTML, CSS, JavaScript, Java SE - 17
 - Framework : Spring Boot 3.24, MyBatis
 - DB : Oracle
 - TOOL : Eclipse, DBeaver, VSCode
